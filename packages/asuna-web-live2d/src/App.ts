@@ -36,9 +36,9 @@ export default new class App {
   async setupScene() {
     this.loader.resetLoader(LoaderStatus.PRELOAD)
     await this.loader.loadAll([
-      this.loader.loadModelAsset('model/000000')
+      this.loader.loadModelAsset('model/000001')
     ])
-    this.registerModel(new Model(this.assets.get('model/000000') as Live2dModel))
+    this.registerModel(new Model(this.assets.get('model/000001') as Live2dModel))
   }
 
   run() {

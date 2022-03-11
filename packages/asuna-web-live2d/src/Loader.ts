@@ -77,7 +77,7 @@ export class Loader {
       setting.getModelFileName,
       setting.getPhysicsFileName
     ]
-    const textureFiles = Array(setting.getTextureCount()).fill(true).map(() => `texture/${fname}.8192`) // TODO: proper filename mapping
+    const textureFiles = Array(setting.getTextureCount()).fill(true).map((_, idx) => `texture/${fname}.${idx}`) // TODO: proper filename mapping
     const res = await Promise.all([
       ...modelFiles.map(loadBuffer),
       ...textureFiles.map(this.loadTexture.bind(this))
