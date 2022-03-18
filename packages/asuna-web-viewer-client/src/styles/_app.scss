@@ -1,0 +1,15 @@
+html {
+  @apply bg-dark-600 text-white;
+  font-size: 14px;
+}
+
+html, body {
+  @apply h-screen;
+}
+
+.embed {
+  position:relative;
+  width: 510px;
+  height: 512px;
+  overflow: hidden;
+}

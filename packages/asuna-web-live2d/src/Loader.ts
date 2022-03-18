@@ -43,7 +43,6 @@ export class Loader {
     try {
       let res = await Promise.all(prom)
       this.loaderState.status = LoaderStatus.READY
-      console.log('loaded')
       return res
     } catch (err) {
       this.loaderState.status = LoaderStatus.ERROR
@@ -77,7 +76,7 @@ export class Loader {
       setting.getModelFileName,
       setting.getPhysicsFileName
     ]
-    const textureFiles = Array(setting.getTextureCount()).fill(true).map((_, idx) => `texture/${fname}.${idx}`) // TODO: proper filename mapping
+    const textureFiles = Array(setting.getTextureCount()).fill(true).map((_, idx) => `texture/${fname}.${idx}/00`)
     const res = await Promise.all([
       ...modelFiles.map(loadBuffer),
       ...textureFiles.map(this.loadTexture.bind(this))
@@ -121,10 +120,8 @@ export class Loader {
 
   async loadTexture(id: TextureId) {
     // TODO: model - texture directory structure
-    const path = `${define.URL_CDN}${id}/`
-    const fname = 'texture_00'
-
-    const img = await this.fetchResource(`${path}${fname}${define.EXT_TEXTURE}`, FetchFormat.Image) as HTMLImageElement
+    const path = `${define.URL_CDN}${id}`
+    const img = await this.fetchResource(`${path}${define.EXT_TEXTURE}`, FetchFormat.Image) as HTMLImageElement
     const tex = this.webgl.bindTexture(img, true)
     const asset = new Texture({
       id,
@@ -149,6 +146,7 @@ export class Loader {
         return new Promise((resolve, reject) => {
           img.onload = () => resolve(img)
           img.onerror = () => reject('Error loading image')
+          img.crossOrigin = 'anonymous'
           img.src = path
         })
       }

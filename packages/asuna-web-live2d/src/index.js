@@ -1,3 +1,3 @@
-import './App.ts'
+// package.json entrypoint
 export * from './external/Messenger'
 export * from './external/MessagePayload'

@@ -9,6 +9,7 @@ import { render } from './render/render'
 import { Model } from './state/Model'
 import { Live2dModel } from './asset/Live2dModel'
 import { update } from './update/update'
+import { MessageType, Messenger } from './external/Messenger'
 
 export default new class App {
   canvas: Canvas
@@ -16,6 +17,7 @@ export default new class App {
   webgl: WebGL
   assets: AssetStore
   state: WorldState
+  messenger: Messenger
 
   constructor() {
     CubismFramework.startUp()
@@ -26,8 +28,10 @@ export default new class App {
     this.canvas = new Canvas(this.state.view)
     this.webgl = new WebGL(this.canvas.element)
     this.loader = new Loader(this.webgl, this.assets, this.state.loader)
+    this.messenger = new Messenger(this.loader, this.assets)
 
     this.setupScene().then(() => {
+      this.messenger.sendMessage(MessageType.CS_Loaded, null)
       // TODO: load sync
       this.run()
     })
