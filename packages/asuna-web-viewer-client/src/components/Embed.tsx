@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { MithrilTsxComponent } from 'mithril-tsx-component'
-import store, { Dispatch } from '../store/store'
+import { Dispatch } from '../store/store'
 import { setIFrameElement } from '../store/iframe'
 import upgrade from '../hoc/upgrade'
 

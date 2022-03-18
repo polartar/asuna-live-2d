@@ -48,6 +48,7 @@ export class Messenger {
         const textureId = `texture/${payload.modelId.split('/')[1]}.${payload.index}/${String(payload.variant).padStart(2, '0')}`
         const texture = await loader.loadTexture(textureId)
         asset.getRenderer().bindTexture(payload.index, texture.data)
+        this.sendMessage(MessageType.CS_Complete, null, msg.id)
       }
     })
   }

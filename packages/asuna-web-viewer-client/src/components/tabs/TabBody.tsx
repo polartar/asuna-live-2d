@@ -10,9 +10,13 @@ type TabBodyAttrs = {
 
 class TabBody extends MithrilTsxComponent<TabBodyAttrs> {
   view({ attrs }: m.Vnode<TabBodyAttrs>) {
+    const handleClick = async () => {
+      await attrs.dispatch(swapTexture())
+    }
+
     return <div class='px-120 py-140'>
       <h1>Body</h1>
-      <button onclick={() => attrs.dispatch(swapTexture())}>click me</button>
+      <button onclick={handleClick}>click me</button>
     </div>
   }
 }

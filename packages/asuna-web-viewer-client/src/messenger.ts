@@ -9,15 +9,14 @@ let callbacks: { [id: MessageId]: (payload: any) => void } = {}
 export async function sendMessage<T>(type: MessageType, payload: T) {
   const elem = store.getState().iframe.iFrameElement
   if (!elem) {
-    return
+    throw 'IFrame element not initialized'
   }
   const targetWindow = elem.contentWindow
   if (!targetWindow) {
     throw 'IFrame window not initialized'
   }
-  console.log('blep')
   const msg: Message<T> = {
-    id: prevId++,
+    id: ++prevId,
     type,
     payload
   }
@@ -41,7 +40,7 @@ window.addEventListener('message', (event) => {
     store.dispatch(setStatus(IFrameStatus.Ready))
   } else if (msg.type === MessageType.CS_Complete) {
     if (!(msg.id in callbacks)) {
-      throw `Msg ${msg.id} already dispatched`
+      throw `Msg ${msg.id} not in callbacks`
     }
 
     callbacks[msg.id](msg.payload)

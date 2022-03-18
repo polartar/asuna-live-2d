@@ -1,5 +1,6 @@
 import m from 'mithril'
-import Layout from './components/Layout'
+import './store/store'
 import './messenger'
+import Layout from './components/Layout'
 
 m.mount(document.body, Layout)
