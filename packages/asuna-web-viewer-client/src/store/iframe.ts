@@ -13,16 +13,20 @@ const initialState = {
   iFrameElement: null as (HTMLIFrameElement | null)
 }
 
-export const swapTexture = createAsyncThunk<void, void, { dispatch: Dispatch, state: RootState }>('iframe/send',
-  async (_, { dispatch, getState }) => {
+export const swapTexture = createAsyncThunk<
+  void,
+  { modelId: string, index: number, variant: number },
+  { dispatch: Dispatch, state: RootState }
+>('iframe/swap',
+  async ({ modelId, index, variant }, { dispatch, getState }) => {
     if (getState().iframe.status === IFrameStatus.Pending) {
-      return
+      throw 'iframe action called while pending'
     }
     dispatch(setStatus(IFrameStatus.Pending))
     await sendMessage(MessageType.SC_SwapTexture, {
-      modelId: 'model/000001',
-      index: 0,
-      variant: 1
+      modelId,
+      index,
+      variant
     } as Payload_SC_SwapTexture)
     dispatch(setStatus(IFrameStatus.Ready))
   }

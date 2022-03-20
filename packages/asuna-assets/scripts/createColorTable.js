@@ -24,7 +24,11 @@ for (let y = 0; y < src.height; y++) {
 
     if (srcColor in mapping) {
       if (mapping[srcColor] !== tgtColor && !(src.data[idx + 3] === 0 && tgt.data[idx + 3] === 0)) {
-        throw `Colors don't have 1-1 mapping: mapping ${srcColor} to ${tgtColor}, prior value ${mapping[srcColor]}`
+        let dist = Math.pow(src.data[idx] - tgt.data[idx], 2) + Math.pow(src.data[idx + 1] - tgt.data[idx + 1], 2) + Math.pow(src.data[idx + 2] - tgt.data[idx + 2], 2)
+        dist = Math.min(dist, Math.pow(src.data[idx + 3] - tgt.data[idx + 3], 2))
+        if (dist > 40000) { // the limits of mapping...
+          throw `Dist:${dist} Colors don't have 1-1 mapping: mapping ${srcColor} to ${tgtColor}, prior value ${mapping[srcColor]}`
+        }
       }
     } else {
       mapping[srcColor] = tgtColor

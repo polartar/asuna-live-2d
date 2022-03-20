@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import tabReducer from './tab'
 import iframeReducer from './iframe'
+import itemsReducer from './items'
 
 const store = configureStore({
   reducer: {
     tab: tabReducer,
-    iframe: iframeReducer
+    iframe: iframeReducer,
+    items: itemsReducer
   }
 })
 

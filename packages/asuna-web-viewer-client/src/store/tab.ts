@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 export enum TabId {
   Body,
   Eye,
+  Hair,
   Parameters
 }
 
