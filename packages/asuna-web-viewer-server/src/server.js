@@ -10,7 +10,7 @@ const live2dPath = path.join(__dirname, '../../asuna-web-live2d/dist')
 const assetPath = path.join(__dirname, '../../asuna-assets/assets')
 const appHash = require(path.join(live2dPath, 'stats.json')).hash
 const app = express()
-const port = 8080
+const port = process.env.PORT || 8080
 
 app.use(cors())
 app.use(express.static('./public'))

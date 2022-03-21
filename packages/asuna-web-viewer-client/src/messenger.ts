@@ -2,7 +2,7 @@ import { MessageId, Message, MessageType } from 'asuna-web-live2d'
 import { IFrameStatus, setStatus } from './store/iframe'
 import store from "./store/store"
 
-const IFRAME_ORIGIN = 'http://localhost:8080'
+const IFRAME_ORIGIN = window.location.origin
 let prevId: MessageId = 0
 let callbacks: { [id: MessageId]: (payload: any) => void } = {}
 

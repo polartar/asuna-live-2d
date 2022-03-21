@@ -1,6 +1,6 @@
-const fs = require('fs')
 const path = require('path')
 
+const { StatsWriterPlugin } = require("webpack-stats-plugin")
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const tailwind = require('tailwindcss')
 const autoprefixer = require('autoprefixer')
@@ -39,7 +39,7 @@ module.exports = {
             options: {
               postcssOptions: {
                 plugins: [
-                  tailwind,
+                  tailwind({ config: path.resolve(__dirname, 'tailwind.config.js') }),
                   autoprefixer,
                   cssnano
                 ]
@@ -66,16 +66,12 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: '[name].[hash].min.css',
     }),
-    {
-      apply: function (compiler) {
-        compiler.hooks.done.tap('SaveHashPlugin', stats => {
-          fs.writeFileSync(
-            path.join(__dirname, './dist', 'stats.json'),
-            JSON.stringify({ hash: stats.hash })
-          )
-        })
+    new StatsWriterPlugin({
+      stats: {
+        all: false,
+        hash: true
       }
-    }
+    })
   ],
   devtool: 'inline-source-map'
 }

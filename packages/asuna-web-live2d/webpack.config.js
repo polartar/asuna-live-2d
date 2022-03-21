@@ -1,5 +1,5 @@
-const fs = require('fs')
 const path = require('path')
+const { StatsWriterPlugin } = require("webpack-stats-plugin")
 
 module.exports = {
   mode: 'production',
@@ -28,16 +28,12 @@ module.exports = {
     minimize: true
   },
   plugins: [
-    {
-      apply: function (compiler) {
-        compiler.hooks.done.tap('SaveHashPlugin', stats => {
-          fs.writeFileSync(
-            path.join(__dirname, './dist', 'stats.json'),
-            JSON.stringify({ hash: stats.hash })
-          )
-        })
+    new StatsWriterPlugin({
+      stats: {
+        all: false,
+        hash: true
       }
-    }
+    })
   ],
   devtool: 'inline-source-map'
 }

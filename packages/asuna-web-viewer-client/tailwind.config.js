@@ -1,8 +1,9 @@
+const path = require('path')
 const v = require('./src/styles/variables.js')
 
 let config = {
   content: [
-    './src/**/*.{tsx,jsx,html}',
+    path.join(__dirname, './src/**/*.{tsx,jsx,html}'),
   ],
   theme: {
     screens: {

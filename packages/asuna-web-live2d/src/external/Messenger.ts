@@ -3,7 +3,7 @@ import { AssetStore } from "../asset/AssetStore"
 import { Live2dModel } from "../asset/Live2dModel"
 import { Payload_SC_SwapTexture } from "./MessagePayload"
 
-const PARENT_ORIGIN = 'http://localhost:8080'
+const PARENT_ORIGIN = window.location.origin
 
 export type MessageId = number
 export type Message<T> = {
