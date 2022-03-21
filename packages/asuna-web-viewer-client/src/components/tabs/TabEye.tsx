@@ -31,7 +31,7 @@ class TabEye extends MithrilTsxComponent<TabEyeAttrs> {
         itemGroup={ItemGroup.EyeColor}
         itemIdx={i}
         active={attrs.activeItem === i}
-        iconSrc={`/assets/icon/eye/${item.name}.png`}
+        iconSrc={`/assets/icon/eye/${item.name.toLowerCase()}.png`}
         modelId='model/000001'
         index={1}
         variant={item.id}
