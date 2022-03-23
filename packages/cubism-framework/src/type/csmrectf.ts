@@ -6,15 +6,15 @@
  */
 
 /**
- * 矩形形状（座標・長さはfloat値）を定義するクラス
+ * A class that defines a rectangular shape (coordinates and length are float values)
  */
 export class csmRect {
   /**
-   * コンストラクタ
-   * @param x 左端X座標
-   * @param y 上端Y座標
-   * @param w 幅
-   * @param h 高さ
+   * Constructor
+   * @param x left X coordinate
+   * @param y upper Y coordinate
+   * @param w width
+   * @param h height
    */
   public constructor(x?: number, y?: number, w?: number, h?: number) {
     this.x = x;
@@ -24,36 +24,36 @@ export class csmRect {
   }
 
   /**
-   * 矩形中央のX座標を取得する
+   * Get the X coordinate of the center of the rectangle
    */
   public getCenterX(): number {
     return this.x + 0.5 * this.width;
   }
 
   /**
-   * 矩形中央のY座標を取得する
+   * Get the Y coordinate of the center of the rectangle
    */
   public getCenterY(): number {
     return this.y + 0.5 * this.height;
   }
 
   /**
-   * 右側のX座標を取得する
+   * Get the right X coordinate
    */
   public getRight(): number {
     return this.x + this.width;
   }
 
   /**
-   * 下端のY座標を取得する
+   * Get the Y coordinate of the bottom edge
    */
   public getBottom(): number {
     return this.y + this.height;
   }
 
   /**
-   * 矩形に値をセットする
-   * @param r 矩形のインスタンス
+   * Set the value to the rectangle
+   * @param r Rectangle instance
    */
   public setRect(r: csmRect): void {
     this.x = r.x;
@@ -63,9 +63,9 @@ export class csmRect {
   }
 
   /**
-   * 矩形中央を軸にして縦横を拡縮する
-   * @param w 幅方向に拡縮する量
-   * @param h 高さ方向に拡縮する量
+   * Scales vertically and horizontally around the center of the rectangle
+   * @param w Amount to scale in the width direction
+   * @param h Amount of scaling in the height direction
    */
   public expand(w: number, h: number) {
     this.x -= w;
@@ -74,10 +74,10 @@ export class csmRect {
     this.height += h * 2.0;
   }
 
-  public x: number; // 左端X座標
-  public y: number; // 上端Y座標
+  public x: number; // left X coordinate
+  public y: number; // upper Y coordinate
   public width: number; // 幅
-  public height: number; // 高さ
+  public height: number; // height
 }
 
 // Namespace definition for compatibility.

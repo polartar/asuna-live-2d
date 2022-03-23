@@ -18,45 +18,45 @@ import {
   CubismTextureColor
 } from './cubismrenderer';
 
-const ColorChannelCount = 4; // 実験時に1チャンネルの場合は1、RGBだけの場合は3、アルファも含める場合は4
+const ColorChannelCount = 4; // 1 for 1 channel in the experiment, 3 for RGB only, 4 for including alpha
 
-const shaderCount = 10; // シェーダーの数 = マスク生成用 + (通常用 + 加算 + 乗算) * (マスク無の乗算済アルファ対応版 + マスク有の乗算済アルファ対応版 + マスク有反転の乗算済アルファ対応版)
+const shaderCount = 10; // number of shaders = for mask generation + (normal + addition + multiplication) * (multiplied alpha compatible version without mask + multiplied alpha compatible version with mask + masked inverted multiplied alpha Corresponding version)
 let s_instance: CubismShader_WebGL;
 let s_viewport: number[];
 let s_fbo: WebGLFramebuffer;
 
 /**
- * クリッピングマスクの処理を実行するクラス
+ * Class that performs clipping mask processing
  */
 export class CubismClippingManager_WebGL {
   /**
-   * カラーチャンネル（RGBA）のフラグを取得する
-   * @param channelNo カラーチャンネル（RGBA）の番号（0:R, 1:G, 2:B, 3:A）
+   * Get the color channel (RGBA) flag
+   * @param channelNo Color channel (RGBA) number (0: R, 1: G, 2: B, 3: A)
    */
   public getChannelFlagAsColor(channelNo: number): CubismTextureColor {
     return this._channelColors.at(channelNo);
   }
 
   /**
-   * テンポラリのレンダーテクスチャのアドレスを取得する
-   * FrameBufferObjectが存在しない場合、新しく生成する
+   * Get the address of the temporary render texture
+   * If FrameBufferObject does not exist, create a new one
    *
-   * @return レンダーテクスチャのアドレス
+   * @return Render texture address
    */
   public getMaskRenderTexture(): WebGLFramebuffer {
     let ret: WebGLFramebuffer = 0;
 
-    // テンポラリのRenderTextureを取得する
+    // Get a temporary RenderTexture
     if (this._maskTexture && this._maskTexture.texture != 0) {
-      // 前回使ったものを返す
+      // return what was used last time
       this._maskTexture.frameNo = this._currentFrameNo;
       ret = this._maskTexture.texture;
     }
 
     if (ret == 0) {
-      // FrameBufferObjectが存在しない場合、新しく生成する
+      // If FrameBufferObject does not exist, create a new one
 
-      // クリッピングバッファサイズを取得
+      // Get the clipping buffer size
       const size: number = this._clippingMaskBufferSize;
 
       this._colorBuffer = this.gl.createTexture();
@@ -115,30 +115,30 @@ export class CubismClippingManager_WebGL {
   }
 
   /**
-   * WebGLレンダリングコンテキストを設定する
-   * @param gl WebGLレンダリングコンテキスト
+   * Set the WebGL rendering context
+   * @param gl WebGL rendering context
    */
   public setGL(gl: WebGLRenderingContext): void {
     this.gl = gl;
   }
 
   /**
-   * マスクされる描画オブジェクト群全体を囲む矩形（モデル座標系）を計算する
-   * @param model モデルのインスタンス
-   * @param clippingContext クリッピングマスクのコンテキスト
+   * Calculate the rectangle (model coordinate system) that surrounds the entire masked drawing object group.
+   * @param model Model instance
+   * @param clippingContext Clipping mask context
    */
   public calcClippedDrawTotalBounds(
     model: CubismModel,
     clippingContext: CubismClippingContext
   ): void {
-    // 被クリッピングマスク（マスクされる描画オブジェクト）の全体の矩形
+    // The entire rectangle of the clipped mask (the drawing object to be masked)
     let clippedDrawTotalMinX: number = Number.MAX_VALUE;
     let clippedDrawTotalMinY: number = Number.MAX_VALUE;
     let clippedDrawTotalMaxX: number = Number.MIN_VALUE;
     let clippedDrawTotalMaxY: number = Number.MIN_VALUE;
 
-    // このマスクが実際に必要か判定する
-    // このクリッピングを利用する「描画オブジェクト」がひとつでも使用可能であればマスクを生成する必要がある
+    // Determine if this mask is really needed
+    // If even one "drawing object" that uses this clipping can be used, it is necessary to generate a mask.
     const clippedDrawCount: number =
       clippingContext._clippedDrawableIndexList.length;
 
@@ -147,7 +147,7 @@ export class CubismClippingManager_WebGL {
       clippedDrawableIndex < clippedDrawCount;
       clippedDrawableIndex++
     ) {
-      // マスクを使用する描画オブジェクトの描画される矩形を求める
+      // Find the drawn rectangle of the drawing object that uses the mask
       const drawableIndex: number =
         clippingContext._clippedDrawableIndexList[clippedDrawableIndex];
 
@@ -186,12 +186,12 @@ export class CubismClippingManager_WebGL {
         }
       }
 
-      // 有効な点が一つも取れなかったのでスキップ
+      // Skip because I didn't get any valid points
       if (minX == Number.MAX_VALUE) {
         continue;
       }
 
-      // 全体の矩形に反映
+      // Reflect on the entire rectangle
       if (minX < clippedDrawTotalMinX) {
         clippedDrawTotalMinX = minX;
       }
@@ -224,7 +224,7 @@ export class CubismClippingManager_WebGL {
   }
 
   /**
-   * コンストラクタ
+   * Constructor
    */
   public constructor() {
     this._maskRenderTexture = null;
@@ -270,7 +270,7 @@ export class CubismClippingManager_WebGL {
   }
 
   /**
-   * デストラクタ相当の処理
+   * Destructor-equivalent processing
    */
   public release(): void {
     for (let i = 0; i < this._clippingContextListForMask.getSize(); i++) {
@@ -282,7 +282,7 @@ export class CubismClippingManager_WebGL {
     }
     this._clippingContextListForMask = null;
 
-    // _clippingContextListForDrawは_clippingContextListForMaskにあるインスタンスを指している。上記の処理により要素ごとのDELETEは不要。
+    // _clippingContextListForDraw points to an instance in _clippingContextListForMask. Due to the above processing, DELETE for each element is unnecessary.
     for (let i = 0; i < this._clippingContextListForDraw.getSize(); i++) {
       this._clippingContextListForDraw.set(i, null);
     }
@@ -299,18 +299,18 @@ export class CubismClippingManager_WebGL {
 
     this._channelColors = null;
 
-    // テクスチャ解放
+    // Texture release
     this.gl.deleteTexture(this._colorBuffer);
     this._colorBuffer = null;
   }
 
   /**
-   * マネージャの初期化処理
-   * クリッピングマスクを使う描画オブジェクトの登録を行う
-   * @param model モデルのインスタンス
-   * @param drawableCount 描画オブジェクトの数
-   * @param drawableMasks 描画オブジェクトをマスクする描画オブジェクトのインデックスのリスト
-   * @param drawableCounts 描画オブジェクトをマスクする描画オブジェクトの数
+   * Manager initialization process
+   * Register a drawing object that uses a clipping mask
+   * @param model Model instance
+   * @param drawableCount Number of draw objects
+   * @param drawableMasks List of indexes of drawing objects that mask drawing objects
+   * @param drawableCounts Number of drawing objects to mask the drawing objects
    */
   public initialize(
     model: CubismModel,
@@ -318,22 +318,22 @@ export class CubismClippingManager_WebGL {
     drawableMasks: Int32Array[],
     drawableMaskCounts: Int32Array
   ): void {
-    // クリッピングマスクを使う描画オブジェクトをすべて登録する
-    // クリッピングマスクは、通常数個程度に限定して使うものとする
+    // Register all drawing objects that use the clipping mask
+    // Clipping masks are usually limited to a few.
     for (let i = 0; i < drawableCount; i++) {
       if (drawableMaskCounts[i] <= 0) {
-        // クリッピングマスクが使用されていないアートメッシュ（多くの場合使用しない）
+        // Art mesh without clipping mask (often not used)
         this._clippingContextListForDraw.pushBack(null);
         continue;
       }
 
-      // 既にあるClipContextと同じかチェックする
+      // Check if it is the same as the existing ClipContext
       let clippingContext: CubismClippingContext = this.findSameClip(
         drawableMasks[i],
         drawableMaskCounts[i]
       );
       if (clippingContext == null) {
-        // 同一のマスクが存在していない場合は生成する
+        // Generate if the same mask does not exist
         clippingContext = new CubismClippingContext(
           this,
           drawableMasks[i],
@@ -349,9 +349,9 @@ export class CubismClippingManager_WebGL {
   }
 
   /**
-   * クリッピングコンテキストを作成する。モデル描画時に実行する。
-   * @param model モデルのインスタンス
-   * @param renderer レンダラのインスタンス
+   * Create a clipping context. Executed when drawing the model.
+   * @param model Model instance
+   * @param renderer Instance of renderer
    */
   public setupClippingContext(
     model: CubismModel,
@@ -359,30 +359,30 @@ export class CubismClippingManager_WebGL {
   ): void {
     this._currentFrameNo++;
 
-    // 全てのクリッピングを用意する
-    // 同じクリップ（複数の場合はまとめて一つのクリップ）を使う場合は1度だけ設定する
+    // Prepare all clipping
+    // Set only once when using the same clip (in the case of multiple clips, one clip at a time)
     let usingClipCount = 0;
     for (
       let clipIndex = 0;
       clipIndex < this._clippingContextListForMask.getSize();
       clipIndex++
     ) {
-      // 1つのクリッピングマスクに関して
+      // Regarding one clipping mask
       const cc: CubismClippingContext = this._clippingContextListForMask.at(
         clipIndex
       );
 
-      // このクリップを利用する描画オブジェクト群全体を囲む矩形を計算
+      // Calculate the rectangle that encloses the entire drawing object group that uses this clip
       this.calcClippedDrawTotalBounds(model, cc);
 
       if (cc._isUsing) {
-        usingClipCount++; // 使用中としてカウント
+        usingClipCount++; // Count as in use
       }
     }
 
-    // マスク作成処理
+    // Mask creation process
     if (usingClipCount > 0) {
-      // 生成したFrameBufferと同じサイズでビューポートを設定
+      // Set the viewport with the same size as the generated FrameBuffer
       this.gl.viewport(
         0,
         0,
@@ -390,62 +390,62 @@ export class CubismClippingManager_WebGL {
         this._clippingMaskBufferSize
       );
 
-      // マスクをactiveにする
+      // Make the mask active
       this._maskRenderTexture = this.getMaskRenderTexture();
 
-      // モデル描画時にDrawMeshNowに渡される変換(モデルtoワールド座標変換)
+      // Transformation passed to DrawMeshNow when drawing the model (model to world coordinate transformation)
       const modelToWorldF: CubismMatrix44 = renderer.getMvpMatrix();
 
-      renderer.preDraw(); // バッファをクリアする
+      renderer.preDraw(); // clear the buffer
 
-      // 各マスクのレイアウトを決定していく
+      // Decide the layout of each mask
       this.setupLayoutBounds(usingClipCount);
 
-      // ---------- マスク描画処理 ----------
-      // マスク用RenderTextureをactiveにセット
+      // ---------- Mask drawing process ----------
+      // Set Render Texture for mask to active
       this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this._maskRenderTexture);
 
-      // マスクをクリアする
-      // (仮仕様) 1が無効（描かれない）領域、0が有効（描かれる）領域。（シェーダーCd*Csで0に近い値をかけてマスクを作る。1をかけると何も起こらない）
+      // Clear the mask
+      // (Tentative specification) 1 is invalid (not drawn) area, 0 is valid (drawn) area. (Use the shader Cd * Cs to make a mask by multiplying it by a value close to 0. When 1 is multiplied, nothing happens)
       this.gl.clearColor(1.0, 1.0, 1.0, 1.0);
       this.gl.clear(this.gl.COLOR_BUFFER_BIT);
 
-      // 実際にマスクを生成する
-      // 全てのマスクをどのようにレイアウトして描くかを決定し、ClipContext, ClippedDrawContextに記憶する
+      // Actually generate a mask
+      // Decide how to lay out and draw all masks and store them in ClipContext and ClippedDrawContext.
       for (
         let clipIndex = 0;
         clipIndex < this._clippingContextListForMask.getSize();
         clipIndex++
       ) {
-        // --- 実際に1つのマスクを描く ---
+        // --- Actually draw one mask ---
         const clipContext: CubismClippingContext = this._clippingContextListForMask.at(
           clipIndex
         );
-        const allClipedDrawRect: csmRect = clipContext._allClippedDrawRect; // このマスクを使う、すべての描画オブジェクトの論理座標上の囲み矩形
-        const layoutBoundsOnTex01: csmRect = clipContext._layoutBounds; // この中にマスクを収める
+        const allClipedDrawRect: csmRect = clipContext._allClippedDrawRect; // Enclosed rectangle on the logical coordinates of all drawing objects using this mask
+        const layoutBoundsOnTex01: csmRect = clipContext._layoutBounds; // Put the mask in this
 
-        // モデル座標上の矩形を、適宜マージンを付けて使う
+        // Use the rectangle on the model coordinates with appropriate margins
         const MARGIN = 0.05;
         this._tmpBoundsOnModel.setRect(allClipedDrawRect);
         this._tmpBoundsOnModel.expand(
           allClipedDrawRect.width * MARGIN,
           allClipedDrawRect.height * MARGIN
         );
-        //########## 本来は割り当てられた領域の全体を使わず必要最低限のサイズがよい
+        // ########## Originally, the minimum required size is good without using the entire allocated area.
 
-        // シェーダ用の計算式を求める。回転を考慮しない場合は以下のとおり
+        // Find the formula for the shader. When rotation is not considered, it is as follows
         // movePeriod' = movePeriod * scaleX + offX		  [[ movePeriod' = (movePeriod - tmpBoundsOnModel.movePeriod)*scale + layoutBoundsOnTex01.movePeriod ]]
         const scaleX: number =
           layoutBoundsOnTex01.width / this._tmpBoundsOnModel.width;
         const scaleY: number =
           layoutBoundsOnTex01.height / this._tmpBoundsOnModel.height;
 
-        // マスク生成時に使う行列を求める
+        // Find the matrix to use when generating the mask
         {
-          // シェーダに渡す行列を求める <<<<<<<<<<<<<<<<<<<<<<<< 要最適化（逆順に計算すればシンプルにできる）
+          // Find the matrix to pass to the shader <<<<<<<<<<<<<<<<<<<<<< Optimization required (calculation in reverse order can be simple)
           this._tmpMatrix.loadIdentity();
           {
-            // layout0..1 を -1..1に変換
+            // Convert layout0..1 to -1..1
             this._tmpMatrix.translateRelative(-1.0, -1.0);
             this._tmpMatrix.scaleRelative(2.0, 2.0);
           }
@@ -462,13 +462,13 @@ export class CubismClippingManager_WebGL {
             );
             // new = [translate][scale][translate]
           }
-          // tmpMatrixForMaskが計算結果
+          // tmpMatrixForMask is the calculation result
           this._tmpMatrixForMask.setMatrix(this._tmpMatrix.getArray());
         }
 
-        //--------- draw時の mask 参照用行列を計算
+        // --------- Calculate the mask reference matrix when drawing
         {
-          // シェーダに渡す行列を求める <<<<<<<<<<<<<<<<<<<<<<<< 要最適化（逆順に計算すればシンプルにできる）
+          // Find the matrix to pass to the shader <<<<<<<<<<<<<<<<<<<<<< Optimization required (calculation in reverse order can be simple)
           this._tmpMatrix.loadIdentity();
           {
             this._tmpMatrix.translateRelative(
@@ -491,7 +491,7 @@ export class CubismClippingManager_WebGL {
         for (let i = 0; i < clipDrawCount; i++) {
           const clipDrawIndex: number = clipContext._clippingIdList[i];
 
-          // 頂点情報が更新されておらず、信頼性がない場合は描画をパスする
+          // If the vertex information has not been updated and is unreliable, pass the drawing
           if (
             !model.getDrawableDynamicFlagVertexPositionsDidChange(clipDrawIndex)
           ) {
@@ -502,8 +502,8 @@ export class CubismClippingManager_WebGL {
             model.getDrawableCulling(clipDrawIndex) != false
           );
 
-          // 今回専用の変換を適用して描く
-          // チャンネルも切り替える必要がある(A,R,G,B)
+          // Draw by applying the special conversion this time
+          // You also need to switch channels (A, R, G, B)
           renderer.setClippingContextBufferForMask(clipContext);
           renderer.drawMesh(
             model.getDrawableTextureIndices(clipDrawIndex),
@@ -513,14 +513,14 @@ export class CubismClippingManager_WebGL {
             model.getDrawableVertices(clipDrawIndex),
             model.getDrawableVertexUvs(clipDrawIndex),
             model.getDrawableOpacity(clipDrawIndex),
-            CubismBlendMode.CubismBlendMode_Normal, // クリッピングは通常描画を強制
-            false // マスク生成時はクリッピングの反転使用は全く関係がない
+            CubismBlendMode.CubismBlendMode_Normal, // Clipping forces normal drawing
+            false // Inversion of clipping is completely irrelevant when generating masks
           );
         }
       }
 
-      // --- 後処理 ---
-      this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, s_fbo); // 描画対象を戻す
+      // --- Post-processing ---
+      this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, s_fbo); // Return the drawing target
       renderer.setClippingContextBufferForMask(null);
 
       this.gl.viewport(
@@ -533,32 +533,32 @@ export class CubismClippingManager_WebGL {
   }
 
   /**
-   * 既にマスクを作っているかを確認
-   * 作っている様であれば該当するクリッピングマスクのインスタンスを返す
-   * 作っていなければNULLを返す
-   * @param drawableMasks 描画オブジェクトをマスクする描画オブジェクトのリスト
-   * @param drawableMaskCounts 描画オブジェクトをマスクする描画オブジェクトの数
-   * @return 該当するクリッピングマスクが存在すればインスタンスを返し、なければNULLを返す
+   * Make sure you have already made a mask
+   * If you are making it, return an instance of the corresponding clipping mask
+   * Returns NULL if not created
+   * @param drawableMasks List of drawing objects that mask drawing objects
+   * @param drawableMaskCounts Number of drawing objects to mask drawing objects
+   * @return Returns an instance if the corresponding clipping mask exists, returns NULL otherwise
    */
   public findSameClip(
     drawableMasks: Int32Array,
     drawableMaskCounts: number
   ): CubismClippingContext {
-    // 作成済みClippingContextと一致するか確認
+    // Check if it matches the created ClippingContext
     for (let i = 0; i < this._clippingContextListForMask.getSize(); i++) {
       const clippingContext: CubismClippingContext = this._clippingContextListForMask.at(
         i
       );
       const count: number = clippingContext._clippingIdCount;
 
-      // 個数が違う場合は別物
+      // If the number is different, it is different
       if (count != drawableMaskCounts) {
         continue;
       }
 
       let sameCount = 0;
 
-      // 同じIDを持つか確認。配列の数が同じなので、一致した個数が同じなら同じ物を持つとする
+      // Check if they have the same ID. Since the number of arrays is the same, if the number of matches is the same, it is assumed that they have the same thing.
       for (let j = 0; j < count; j++) {
         const clipId: number = clippingContext._clippingIdList[j];
 
@@ -575,40 +575,40 @@ export class CubismClippingManager_WebGL {
       }
     }
 
-    return null; // 見つからなかった
+    return null; // not found
   }
 
   /**
-   * クリッピングコンテキストを配置するレイアウト
-   * 一つのレンダーテクスチャを極力いっぱいに使ってマスクをレイアウトする
-   * マスクグループの数が4以下ならRGBA各チャンネルに一つずつマスクを配置し、5以上6以下ならRGBAを2,2,1,1と配置する。
+   * Layout to place the clipping context
+   * Lay out the mask using one render texture as much as possible
+   * If the number of mask groups is 4 or less, place one mask for each RGBA channel, and if it is 5 or more and 6 or less, place RGBA as 2,2,1,1.
    *
-   * @param usingClipCount 配置するクリッピングコンテキストの数
+   * @param usingClipCount Number of clipping contexts to place
    */
   public setupLayoutBounds(usingClipCount: number): void {
-    // ひとつのRenderTextureを極力いっぱいに使ってマスクをレイアウトする
-    // マスクグループの数が4以下ならRGBA各チャンネルに1つずつマスクを配置し、5以上6以下ならRGBAを2,2,1,1と配置する
+    // Lay out the mask using one Render Texture as much as possible
+    // If the number of mask groups is 4 or less, place one mask for each RGBA channel, and if it is 5 or more and 6 or less, place RGBA as 2,2,1,1.
 
-    // RGBAを順番に使っていく
-    let div: number = usingClipCount / ColorChannelCount; // 1チャンネルに配置する基本のマスク
-    let mod: number = usingClipCount % ColorChannelCount; // 余り、この番号のチャンネルまでに一つずつ配分する
+    // Use RGBA in order
+    let div: number = usingClipCount / ColorChannelCount; // Basic mask to place on one channel
+    let mod: number = usingClipCount % ColorChannelCount; // Distribute one by one to the channel with this number.
 
-    // 小数点は切り捨てる
+    // Decimal point is truncated
     div = ~~div;
     mod = ~~mod;
 
-    // RGBAそれぞれのチャンネルを用意していく（0:R, 1:G, 2:B, 3:A）
-    let curClipIndex = 0; // 順番に設定していく
+    // Prepare each RGBA channel (0: R, 1: G, 2: B, 3: A)
+    let curClipIndex = 0; // Set in order
 
     for (let channelNo = 0; channelNo < ColorChannelCount; channelNo++) {
-      // このチャンネルにレイアウトする数
+      // Number to lay out on this channel
       const layoutCount: number = div + (channelNo < mod ? 1 : 0);
 
-      // 分割方法を決定する
+      // Decide how to split
       if (layoutCount == 0) {
-        // 何もしない
+        // do nothing
       } else if (layoutCount == 1) {
-        // 全てをそのまま使う
+        // use everything as it is
         const clipContext: CubismClippingContext = this._clippingContextListForMask.at(
           curClipIndex++
         );
@@ -621,7 +621,7 @@ export class CubismClippingManager_WebGL {
         for (let i = 0; i < layoutCount; i++) {
           let xpos: number = i % 2;
 
-          // 小数点は切り捨てる
+          // Decimal point is truncated
           xpos = ~~xpos;
 
           const cc: CubismClippingContext = this._clippingContextListForMask.at(
@@ -633,15 +633,15 @@ export class CubismClippingManager_WebGL {
           cc._layoutBounds.y = 0.0;
           cc._layoutBounds.width = 0.5;
           cc._layoutBounds.height = 1.0;
-          // UVを2つに分解して使う
+          // Divide UV into two and use
         }
       } else if (layoutCount <= 4) {
-        // 4分割して使う
+        // Divide into 4 and use
         for (let i = 0; i < layoutCount; i++) {
           let xpos: number = i % 2;
           let ypos: number = i / 2;
 
-          // 小数点は切り捨てる
+          // Decimal point is truncated
           xpos = ~~xpos;
           ypos = ~~ypos;
 
@@ -654,12 +654,12 @@ export class CubismClippingManager_WebGL {
           cc._layoutBounds.height = 0.5;
         }
       } else if (layoutCount <= 9) {
-        // 9分割して使う
+        // Divide into 9 and use
         for (let i = 0; i < layoutCount; i++) {
           let xpos = i % 3;
           let ypos = i / 3;
 
-          // 小数点は切り捨てる
+          // Decimal point is truncated
           xpos = ~~xpos;
           ypos = ~~ypos;
 
@@ -680,80 +680,80 @@ export class CubismClippingManager_WebGL {
   }
 
   /**
-   * カラーバッファを取得する
-   * @return カラーバッファ
+   * Get the color buffer
+   * @return color buffer
    */
   public getColorBuffer(): WebGLTexture {
     return this._colorBuffer;
   }
 
   /**
-   * 画面描画に使用するクリッピングマスクのリストを取得する
-   * @return 画面描画に使用するクリッピングマスクのリスト
+   * Get a list of clipping masks used for screen drawing
+   * @return List of clipping masks used for screen drawing
    */
   public getClippingContextListForDraw(): csmVector<CubismClippingContext> {
     return this._clippingContextListForDraw;
   }
 
   /**
-   * クリッピングマスクバッファのサイズを設定する
-   * @param size クリッピングマスクバッファのサイズ
+   * Set the size of the clipping mask buffer
+   * @param size Clipping mask buffer size
    */
   public setClippingMaskBufferSize(size: number): void {
     this._clippingMaskBufferSize = size;
   }
 
   /**
-   * クリッピングマスクバッファのサイズを取得する
-   * @return クリッピングマスクバッファのサイズ
+   * Get the size of the clipping mask buffer
+   * @return Clipping mask buffer size
    */
   public getClippingMaskBufferSize(): number {
     return this._clippingMaskBufferSize;
   }
 
-  public _maskRenderTexture: WebGLFramebuffer; // マスク用レンダーテクスチャのアドレス
-  public _colorBuffer: WebGLTexture; // マスク用カラーバッファーのアドレス
-  public _currentFrameNo: number; // マスクテクスチャに与えるフレーム番号
+  public _maskRenderTexture: WebGLFramebuffer; // Address of the render texture for the mask
+  public _colorBuffer: WebGLTexture; // Address of the color buffer for mask
+  public _currentFrameNo: number; // Frame number given to the mask texture
 
   public _channelColors: csmVector<CubismTextureColor>;
-  public _maskTexture: CubismRenderTextureResource; // マスク用のテクスチャリソースのリスト
-  public _clippingContextListForMask: csmVector<CubismClippingContext>; // マスク用クリッピングコンテキストのリスト
-  public _clippingContextListForDraw: csmVector<CubismClippingContext>; // 描画用クリッピングコンテキストのリスト
-  public _clippingMaskBufferSize: number; // クリッピングマスクのバッファサイズ（初期値:256）
+  public _maskTexture: CubismRenderTextureResource; // List of texture resources for masks
+  public _clippingContextListForMask: csmVector<CubismClippingContext>; // List of clipping contexts for masks
+  public _clippingContextListForDraw: csmVector<CubismClippingContext>; // List of clipping contexts for drawing
+  public _clippingMaskBufferSize: number; // Clipping mask buffer size (default: 256)
 
-  private _tmpMatrix: CubismMatrix44; // マスク計算用の行列
-  private _tmpMatrixForMask: CubismMatrix44; // マスク計算用の行列
-  private _tmpMatrixForDraw: CubismMatrix44; // マスク計算用の行列
-  private _tmpBoundsOnModel: csmRect; // マスク配置計算用の矩形
+  private _tmpMatrix: CubismMatrix44; // Matrix for mask calculation
+  private _tmpMatrixForMask: CubismMatrix44; // Matrix for mask calculation
+  private _tmpMatrixForDraw: CubismMatrix44; // Matrix for mask calculation
+  private _tmpBoundsOnModel: csmRect; // Rectangle for mask placement calculation
 
-  gl: WebGLRenderingContext; // WebGLレンダリングコンテキスト
+  gl: WebGLRenderingContext; // WebGL Rendering Context
 }
 
 /**
- * レンダーテクスチャのリソースを定義する構造体
- * クリッピングマスクで使用する
+ * Structure that defines the resources of the render texture
+ * Used with clipping mask
  */
 export class CubismRenderTextureResource {
   /**
-   * 引数付きコンストラクタ
-   * @param frameNo レンダラーのフレーム番号
-   * @param texture テクスチャのアドレス
+   * Constructor with arguments
+   * @param frameNo Renderer frame number
+   * @param texture Texture address
    */
   public constructor(frameNo: number, texture: WebGLFramebuffer) {
     this.frameNo = frameNo;
     this.texture = texture;
   }
 
-  public frameNo: number; // レンダラのフレーム番号
-  public texture: WebGLFramebuffer; // テクスチャのアドレス
+  public frameNo: number; // Renderer frame number
+  public texture: WebGLFramebuffer; // Texture address
 }
 
 /**
- * クリッピングマスクのコンテキスト
+ * Clipping mask context
  */
 export class CubismClippingContext {
   /**
-   * 引数付きコンストラクタ
+   * Constructor with arguments
    */
   public constructor(
     manager: CubismClippingManager_WebGL,
@@ -762,10 +762,10 @@ export class CubismClippingContext {
   ) {
     this._owner = manager;
 
-    // クリップしている（＝マスク用の）Drawableのインデックスリスト
+    // Index list of the Drawable that is being clipped (= for mask)
     this._clippingIdList = clippingDrawableIndices;
 
-    // マスクの数
+    // Number of masks
     this._clippingIdCount = clipCount;
 
     this._allClippedDrawRect = new csmRect();
@@ -778,7 +778,7 @@ export class CubismClippingContext {
   }
 
   /**
-   * デストラクタ相当の処理
+   * Destructor-equivalent processing
    */
   public release(): void {
     if (this._layoutBounds != null) {
@@ -795,17 +795,17 @@ export class CubismClippingContext {
   }
 
   /**
-   * このマスクにクリップされる描画オブジェクトを追加する
+   * Add a drawing object to be clipped to this mask
    *
-   * @param drawableIndex クリッピング対象に追加する描画オブジェクトのインデックス
+   * @param drawableIndex Index of drawing object to be added to clipping target
    */
   public addClippedDrawable(drawableIndex: number) {
     this._clippedDrawableIndexList.push(drawableIndex);
   }
 
   /**
-   * このマスクを管理するマネージャのインスタンスを取得する
-   * @return クリッピングマネージャのインスタンス
+   * Get an instance of the manager that manages this mask
+   * @return Instance of Clipping Manager
    */
   public getClippingManager(): CubismClippingManager_WebGL {
     return this._owner;
@@ -815,27 +815,27 @@ export class CubismClippingContext {
     this._owner.setGL(gl);
   }
 
-  public _isUsing: boolean; // 現在の描画状態でマスクの準備が必要ならtrue
-  public readonly _clippingIdList: Int32Array; // クリッピングマスクのIDリスト
-  public _clippingIdCount: number; // クリッピングマスクの数
-  public _layoutChannelNo: number; // RGBAのいずれのチャンネルにこのクリップを配置するか（0:R, 1:G, 2:B, 3:A）
-  public _layoutBounds: csmRect; // マスク用チャンネルのどの領域にマスクを入れるか（View座標-1~1, UVは0~1に直す）
-  public _allClippedDrawRect: csmRect; // このクリッピングで、クリッピングされるすべての描画オブジェクトの囲み矩形（毎回更新）
-  public _matrixForMask: CubismMatrix44; // マスクの位置計算結果を保持する行列
-  public _matrixForDraw: CubismMatrix44; // 描画オブジェクトの位置計算結果を保持する行列
-  public _clippedDrawableIndexList: number[]; // このマスクにクリップされる描画オブジェクトのリスト
+  public _isUsing: boolean; // true if mask preparation is required in the current drawing state
+  public readonly _clippingIdList: Int32Array; // Clipping mask ID list
+  public _clippingIdCount: number; // Number of clipping masks
+  public _layoutChannelNo: number; // Which channel of RGBA to place this clip on (0: R, 1: G, 2: B, 3: A)
+  public _layoutBounds: csmRect; // Which area of ​​the mask channel to put the mask in (View coordinates-1 ~ 1, UV should be changed to 0 ~ 1)
+  public _allClippedDrawRect: csmRect; // This clipping encloses a rectangle for all drawn objects that are clipped (updated every time)
+  public _matrixForMask: CubismMatrix44; // Matrix that holds the mask position calculation result
+  public _matrixForDraw: CubismMatrix44; // Matrix that holds the position calculation result of the drawing object
+  public _clippedDrawableIndexList: number[]; // List of drawing objects clipped to this mask
 
-  private _owner: CubismClippingManager_WebGL; // このマスクを管理しているマネージャのインスタンス
+  private _owner: CubismClippingManager_WebGL; // Instance of the manager managing this mask
 }
 
 /**
- * WebGL用のシェーダープログラムを生成・破棄するクラス
- * シングルトンなクラスであり、CubismShader_WebGL.getInstanceからアクセスする。
+ * A class that creates and destroys shader programs for WebGL
+ * It is a singleton class and is accessed from CubismShader_WebGL.getInstance.
  */
 export class CubismShader_WebGL {
   /**
-   * インスタンスを取得する（シングルトン）
-   * @return インスタンス
+   * Get an instance (singleton)
+   * @return instance
    */
   public static getInstance(): CubismShader_WebGL {
     if (s_instance == null) {
@@ -847,7 +847,7 @@ export class CubismShader_WebGL {
   }
 
   /**
-   * インスタンスを開放する（シングルトン）
+   * Release the instance (singleton)
    */
   public static deleteInstance(): void {
     if (s_instance) {
@@ -857,33 +857,33 @@ export class CubismShader_WebGL {
   }
 
   /**
-   * privateなコンストラクタ
+   * private constructor
    */
   private constructor() {
     this._shaderSets = new csmVector<CubismShaderSet>();
   }
 
   /**
-   * デストラクタ相当の処理
+   * Destructor-equivalent processing
    */
   public release(): void {
     this.releaseShaderProgram();
   }
 
   /**
-   * シェーダープログラムの一連のセットアップを実行する
-   * @param renderer レンダラのインスタンス
-   * @param textureId GPUのテクスチャID
-   * @param vertexCount ポリゴンメッシュの頂点数
-   * @param vertexArray ポリゴンメッシュの頂点配列
-   * @param indexArray インデックスバッファの頂点配列
+   * Perform a series of shader program setups
+   * @param renderer Instance of renderer
+   * @param textureId GPU texture ID
+   * @param vertexCount Number of vertices on the polygon mesh
+   * @param vertexArray Polygon mesh vertex array
+   * @param indexArray Vertex array of index buffer
    * @param uvArray uv配列
-   * @param opacity 不透明度
-   * @param colorBlendMode カラーブレンディングのタイプ
-   * @param baseColor ベースカラー
-   * @param isPremultipliedAlpha 乗算済みアルファかどうか
-   * @param matrix4x4 Model-View-Projection行列
-   * @param invertedMask マスクを反転して使用するフラグ
+   * @param opacity opacity
+   * @param colorBlendMode Color blending type
+   * @param baseColor Base color
+   * @param isPremultipliedAlpha Whether it is a multiplied alpha
+   * @param matrix4x4 Model-View-Projection row and column
+   * @param invertedMask Flag to invert the mask
    */
   public setupShaderProgram(
     renderer: CubismRenderer_WebGL,
@@ -919,18 +919,18 @@ export class CubismShader_WebGL {
     let DST_ALPHA: number;
 
     if (renderer.getClippingContextBufferForMask() != null) {
-      // マスク生成時
+      // At the time of mask generation
       const shaderSet: CubismShaderSet = this._shaderSets.at(
         ShaderNames.ShaderNames_SetupMask
       );
       this.gl.useProgram(shaderSet.shaderProgram);
 
-      // テクスチャ設定
+      // Texture settings
       this.gl.activeTexture(this.gl.TEXTURE0);
       this.gl.bindTexture(this.gl.TEXTURE_2D, textureId);
       this.gl.uniform1i(shaderSet.samplerTexture0Location, 0);
 
-      // 頂点配列の設定(VBO)
+      // Vertex array setting (VBO)
       if (bufferData.vertex == null) {
         bufferData.vertex = this.gl.createBuffer();
       }
@@ -950,7 +950,7 @@ export class CubismShader_WebGL {
         0
       );
 
-      // テクスチャ頂点の設定
+      // Texture vertex settings
       if (bufferData.uv == null) {
         bufferData.uv = this.gl.createBuffer();
       }
@@ -966,7 +966,7 @@ export class CubismShader_WebGL {
         0
       );
 
-      // チャンネル
+      // Channel
       const channelNo: number = renderer.getClippingContextBufferForMask()
         ._layoutChannelNo;
       const colorChannel: CubismTextureColor = renderer
@@ -1002,10 +1002,10 @@ export class CubismShader_WebGL {
       DST_COLOR = this.gl.ONE_MINUS_SRC_COLOR;
       SRC_ALPHA = this.gl.ZERO;
       DST_ALPHA = this.gl.ONE_MINUS_SRC_ALPHA;
-    } // マスク生成以外の場合
+    } // For other than mask generation
     else {
       const masked: boolean =
-        renderer.getClippingContextBufferForDraw() != null; // この描画オブジェクトはマスク対象か
+        renderer.getClippingContextBufferForDraw() != null; // Is this drawing object a mask target?
       const offset: number = masked ? (invertedMask ? 2 : 1) : 0;
 
       let shaderSet: CubismShaderSet = new CubismShaderSet();
@@ -1045,7 +1045,7 @@ export class CubismShader_WebGL {
 
       this.gl.useProgram(shaderSet.shaderProgram);
 
-      // 頂点配列の設定
+      // Vertex array settings
       if (bufferData.vertex == null) {
         bufferData.vertex = this.gl.createBuffer();
       }
@@ -1065,7 +1065,7 @@ export class CubismShader_WebGL {
         0
       );
 
-      // テクスチャ頂点の設定
+      // Texture vertex settings
       if (bufferData.uv == null) {
         bufferData.uv = this.gl.createBuffer();
       }
@@ -1090,14 +1090,14 @@ export class CubismShader_WebGL {
         this.gl.bindTexture(this.gl.TEXTURE_2D, tex);
         this.gl.uniform1i(shaderSet.samplerTexture1Location, 1);
 
-        // view座標をClippingContextの座標に変換するための行列を設定
+        // Set a matrix to convert view coordinates to ClippingContext coordinates
         this.gl.uniformMatrix4fv(
           shaderSet.uniformClipMatrixLocation,
           false,
           renderer.getClippingContextBufferForDraw()._matrixForDraw.getArray()
         );
 
-        // 使用するカラーチャンネルを設定
+        // Set the color channel to use
         const channelNo: number = renderer.getClippingContextBufferForDraw()
           ._layoutChannelNo;
         const colorChannel: CubismTextureColor = renderer
@@ -1113,12 +1113,12 @@ export class CubismShader_WebGL {
         );
       }
 
-      // テクスチャ設定
+      // Texture settings
       this.gl.activeTexture(this.gl.TEXTURE0);
       this.gl.bindTexture(this.gl.TEXTURE_2D, textureId);
       this.gl.uniform1i(shaderSet.samplerTexture0Location, 0);
 
-      // 座標変換
+      // Coordinate transformation
       this.gl.uniformMatrix4fv(
         shaderSet.uniformMatrixLocation,
         false,
@@ -1134,7 +1134,7 @@ export class CubismShader_WebGL {
       );
     }
 
-    // IBOを作成し、データを転送
+    // Create an IBO and transfer the data
     if (bufferData.index == null) {
       bufferData.index = this.gl.createBuffer();
     }
@@ -1148,7 +1148,7 @@ export class CubismShader_WebGL {
   }
 
   /**
-   * シェーダープログラムを解放する
+   * Release the shader program
    */
   public releaseShaderProgram(): void {
     for (let i = 0; i < this._shaderSets.getSize(); i++) {
@@ -1160,9 +1160,9 @@ export class CubismShader_WebGL {
   }
 
   /**
-   * シェーダープログラムを初期化する
-   * @param vertShaderSrc 頂点シェーダのソース
-   * @param fragShaderSrc フラグメントシェーダのソース
+   * Initialize the shader program
+   * @param vertShaderSrc Vertex shader source
+   * @param fragShaderSrc Fragment shader source
    */
   public generateShaders(): void {
     for (let i = 0; i < shaderCount; i++) {
@@ -1187,12 +1187,12 @@ export class CubismShader_WebGL {
       fragmentShaderSrcMaskInvertedPremultipliedAlpha
     );
 
-    // 加算も通常と同じシェーダーを利用する
+    // Use the same shader for addition as usual
     this._shaderSets.at(4).shaderProgram = this._shaderSets.at(1).shaderProgram;
     this._shaderSets.at(5).shaderProgram = this._shaderSets.at(2).shaderProgram;
     this._shaderSets.at(6).shaderProgram = this._shaderSets.at(3).shaderProgram;
 
-    // 乗算も通常と同じシェーダーを利用する
+    // Multiply use the same shader as usual
     this._shaderSets.at(7).shaderProgram = this._shaderSets.at(1).shaderProgram;
     this._shaderSets.at(8).shaderProgram = this._shaderSets.at(2).shaderProgram;
     this._shaderSets.at(9).shaderProgram = this._shaderSets.at(3).shaderProgram;
@@ -1233,7 +1233,7 @@ export class CubismShader_WebGL {
       'u_baseColor'
     );
 
-    // 通常（PremultipliedAlpha）
+    // usually (PremultipliedAlpha)
     this._shaderSets.at(
       1
     ).attributePositionLocation = this.gl.getAttribLocation(
@@ -1261,7 +1261,7 @@ export class CubismShader_WebGL {
       'u_baseColor'
     );
 
-    // 通常（クリッピング、PremultipliedAlpha）
+    // Normal (clipping, PremultipliedAlpha)
     this._shaderSets.at(
       2
     ).attributePositionLocation = this.gl.getAttribLocation(
@@ -1305,7 +1305,7 @@ export class CubismShader_WebGL {
       'u_baseColor'
     );
 
-    // 通常（クリッピング・反転, PremultipliedAlpha）
+    // Normal (clipping / inversion, PremultipliedAlpha)
     this._shaderSets.at(
       3
     ).attributePositionLocation = this.gl.getAttribLocation(
@@ -1349,7 +1349,7 @@ export class CubismShader_WebGL {
       'u_baseColor'
     );
 
-    // 加算（PremultipliedAlpha）
+    // Addition (PremultipliedAlpha)
     this._shaderSets.at(
       4
     ).attributePositionLocation = this.gl.getAttribLocation(
@@ -1377,7 +1377,7 @@ export class CubismShader_WebGL {
       'u_baseColor'
     );
 
-    // 加算（クリッピング、PremultipliedAlpha）
+    // Addition (clipping, PremultipliedAlpha)
     this._shaderSets.at(
       5
     ).attributePositionLocation = this.gl.getAttribLocation(
@@ -1421,7 +1421,7 @@ export class CubismShader_WebGL {
       'u_baseColor'
     );
 
-    // 加算（クリッピング・反転、PremultipliedAlpha）
+    // Addition (clipping / inversion, PremultipliedAlpha)
     this._shaderSets.at(
       6
     ).attributePositionLocation = this.gl.getAttribLocation(
@@ -1465,7 +1465,7 @@ export class CubismShader_WebGL {
       'u_baseColor'
     );
 
-    // 乗算（PremultipliedAlpha）
+    // Multiply (PremultipliedAlpha)
     this._shaderSets.at(
       7
     ).attributePositionLocation = this.gl.getAttribLocation(
@@ -1493,7 +1493,7 @@ export class CubismShader_WebGL {
       'u_baseColor'
     );
 
-    // 乗算（クリッピング、PremultipliedAlpha）
+    // Multiplication (clipping, PremultipliedAlpha)
     this._shaderSets.at(
       8
     ).attributePositionLocation = this.gl.getAttribLocation(
@@ -1537,7 +1537,7 @@ export class CubismShader_WebGL {
       'u_baseColor'
     );
 
-    // 乗算（クリッピング・反転、PremultipliedAlpha）
+    // Multiplication (clipping / inversion, PremultipliedAlpha)
     this._shaderSets.at(
       9
     ).attributePositionLocation = this.gl.getAttribLocation(
@@ -1583,10 +1583,10 @@ export class CubismShader_WebGL {
   }
 
   /**
-   * シェーダプログラムをロードしてアドレスを返す
-   * @param vertexShaderSource    頂点シェーダのソース
-   * @param fragmentShaderSource  フラグメントシェーダのソース
-   * @return シェーダプログラムのアドレス
+   * Load the shader program and return the address
+   * @param vertexShaderSource Vertex shader source
+   * @param fragmentShaderSource Fragment shader source
+   * @return Shader program address
    */
   public loadShaderProgram(
     vertexShaderSource: string,
@@ -1627,7 +1627,7 @@ export class CubismShader_WebGL {
       this.gl.LINK_STATUS
     );
 
-    // リンクに失敗したらシェーダーを削除
+    // Remove shader if link fails
     if (!linkStatus) {
       CubismLogError('Failed to link program: {0}', shaderProgram);
 
@@ -1653,11 +1653,11 @@ export class CubismShader_WebGL {
   }
 
   /**
-   * シェーダープログラムをコンパイルする
-   * @param shaderType シェーダタイプ(Vertex/Fragment)
-   * @param shaderSource シェーダソースコード
+   * Compile the shader program
+   * @param shaderType Shader type (Vertex / Fragment)
+   * @param shaderSource Shader source code
    *
-   * @return コンパイルされたシェーダープログラム
+   * @return Compiled shader program
    */
   public compileShaderSource(
     shaderType: GLenum,
@@ -1690,23 +1690,23 @@ export class CubismShader_WebGL {
     this.gl = gl;
   }
 
-  _shaderSets: csmVector<CubismShaderSet>; // ロードしたシェーダープログラムを保持する変数
-  gl: WebGLRenderingContext; // webglコンテキスト
+  _shaderSets: csmVector<CubismShaderSet>; // Variable that holds the loaded shader program
+  gl: WebGLRenderingContext; // webgl context
 }
 
 /**
- * CubismShader_WebGLのインナークラス
+ * CubismShader_WebGL inner class
  */
 export class CubismShaderSet {
-  shaderProgram: WebGLProgram; // シェーダープログラムのアドレス
-  attributePositionLocation: GLuint; // シェーダープログラムに渡す変数のアドレス（Position）
-  attributeTexCoordLocation: GLuint; // シェーダープログラムに渡す変数のアドレス（TexCoord）
-  uniformMatrixLocation: WebGLUniformLocation; // シェーダープログラムに渡す変数のアドレス（Matrix）
-  uniformClipMatrixLocation: WebGLUniformLocation; // シェーダープログラムに渡す変数のアドレス（ClipMatrix）
-  samplerTexture0Location: WebGLUniformLocation; // シェーダープログラムに渡す変数のアドレス（Texture0）
-  samplerTexture1Location: WebGLUniformLocation; // シェーダープログラムに渡す変数のアドレス（Texture1）
-  uniformBaseColorLocation: WebGLUniformLocation; // シェーダープログラムに渡す変数のアドレス（BaseColor）
-  uniformChannelFlagLocation: WebGLUniformLocation; // シェーダープログラムに渡す変数のアドレス（ChannelFlag）
+  shaderProgram: WebGLProgram; // Address of shader program
+  attributePositionLocation: GLuint; // Variable address (Position) to be passed to the shader program
+  attributeTexCoordLocation: GLuint; // Variable address to pass to the shader program (TexCoord)
+  uniformMatrixLocation: WebGLUniformLocation; // Variable address (Matrix) to pass to the shader program
+  uniformClipMatrixLocation: WebGLUniformLocation; // Variable address to pass to the shader program (ClipMatrix)
+  samplerTexture0Location: WebGLUniformLocation; // Variable address to pass to the shader program (Texture0)
+  samplerTexture1Location: WebGLUniformLocation; // Variable address to pass to the shader program (Texture1)
+  uniformBaseColorLocation: WebGLUniformLocation; // Variable address (BaseColor) to pass to the shader program
+  uniformChannelFlagLocation: WebGLUniformLocation; // Variable address (ChannelFlag) to pass to the shader program
 }
 
 export enum ShaderNames {
@@ -1723,7 +1723,7 @@ export enum ShaderNames {
   ShaderNames_AddMaskedPremultipliedAlpha,
   ShaderNames_AddMaskedPremultipliedAlphaInverted,
 
-  // Mult
+  // A lot
   ShaderNames_MultPremultipliedAlpha,
   ShaderNames_MultMaskedPremultipliedAlpha,
   ShaderNames_MultMaskedPremultipliedAlphaInverted
@@ -1740,7 +1740,7 @@ export const vertexShaderSrcSetupMask =
   '   gl_Position = u_clipMatrix * a_position;' +
   '   v_myPos = u_clipMatrix * a_position;' +
   '   v_texCoord = a_texCoord;' +
-  '   v_texCoord.y = 1.0 - v_texCoord.y;' +
+  ' v_texCoord.y = 1.0 - v_texCoord.y;' +
   '}';
 export const fragmentShaderSrcsetupMask =
   'precision mediump float;' +
@@ -1751,7 +1751,7 @@ export const fragmentShaderSrcsetupMask =
   'uniform sampler2D  s_texture0;' +
   'void main()' +
   '{' +
-  '   float isInside = ' +
+  'float isInside =' +
   '       step(u_baseColor.x, v_myPos.x/v_myPos.w)' +
   '       * step(u_baseColor.y, v_myPos.y/v_myPos.w)' +
   '       * step(v_myPos.x/v_myPos.w, u_baseColor.z)' +
@@ -1759,7 +1759,7 @@ export const fragmentShaderSrcsetupMask =
   '   gl_FragColor = u_channelFlag * texture2D(s_texture0, v_texCoord).a * isInside;' +
   '}';
 
-//----- バーテックスシェーダプログラム -----
+// ----- Vertex shader program -----
 // Normal & Add & Mult 共通
 export const vertexShaderSrc =
   'attribute vec4     a_position;' + //v.vertex
@@ -1770,10 +1770,10 @@ export const vertexShaderSrc =
   '{' +
   '   gl_Position = u_matrix * a_position;' +
   '   v_texCoord = a_texCoord;' +
-  '   v_texCoord.y = 1.0 - v_texCoord.y;' +
+  ' v_texCoord.y = 1.0 - v_texCoord.y;' +
   '}';
 
-// Normal & Add & Mult 共通（クリッピングされたものの描画用）
+// Normal & Add & Mult common (for drawing clipped things)
 export const vertexShaderSrcMasked =
   'attribute vec4     a_position;' +
   'attribute vec2     a_texCoord;' +
@@ -1786,10 +1786,10 @@ export const vertexShaderSrcMasked =
   '   gl_Position = u_matrix * a_position;' +
   '   v_clipPos = u_clipMatrix * a_position;' +
   '   v_texCoord = a_texCoord;' +
-  '   v_texCoord.y = 1.0 - v_texCoord.y;' +
+  ' v_texCoord.y = 1.0 - v_texCoord.y;' +
   '}';
 
-//----- フラグメントシェーダプログラム -----
+// ----- Fragment shader program -----
 // Normal & Add & Mult 共通 （PremultipliedAlpha）
 export const fragmentShaderSrcPremultipliedAlpha =
   'precision mediump float;' +
@@ -1801,7 +1801,7 @@ export const fragmentShaderSrcPremultipliedAlpha =
   '   gl_FragColor = texture2D(s_texture0 , v_texCoord) * u_baseColor;' +
   '}';
 
-// Normal （クリッピングされたものの描画用、PremultipliedAlpha兼用）
+// Normal (for drawing clipped things, also used as Premultiplied Alpha)
 export const fragmentShaderSrcMaskPremultipliedAlpha =
   'precision mediump float;' +
   'varying vec2       v_texCoord;' +
@@ -1815,11 +1815,11 @@ export const fragmentShaderSrcMaskPremultipliedAlpha =
   '   vec4 col_formask = texture2D(s_texture0 , v_texCoord) * u_baseColor;' +
   '   vec4 clipMask = (1.0 - texture2D(s_texture1, v_clipPos.xy / v_clipPos.w)) * u_channelFlag;' +
   '   float maskVal = clipMask.r + clipMask.g + clipMask.b + clipMask.a;' +
-  '   col_formask = col_formask * maskVal;' +
+  'col_formask = col_formask * maskVal;' +
   '   gl_FragColor = col_formask;' +
   '}';
 
-// Normal & Add & Mult 共通（クリッピングされて反転使用の描画用、PremultipliedAlphaの場合）
+// Normal & Add & Mult common (for drawing with clipping and inversion, for Premultiplied Alpha)
 export const fragmentShaderSrcMaskInvertedPremultipliedAlpha =
   'precision mediump float;' +
   'varying vec2 v_texCoord;' +
@@ -1838,18 +1838,18 @@ export const fragmentShaderSrcMaskInvertedPremultipliedAlpha =
   '}';
 
 /**
- * WebGL用の描画命令を実装したクラス
+ * A class that implements drawing instructions for WebGL
  */
 export class CubismRenderer_WebGL extends CubismRenderer {
   /**
-   * レンダラの初期化処理を実行する
-   * 引数に渡したモデルからレンダラの初期化処理に必要な情報を取り出すことができる
+   * Execute the renderer initialization process
+   * Information required for renderer initialization can be extracted from the model passed as an argument.
    *
-   * @param model モデルのインスタンス
+   * @param model Model instance
    */
   public initialize(model: CubismModel): void {
     if (model.isUsingMasking()) {
-      this._clippingManager = new CubismClippingManager_WebGL(); // クリッピングマスク・バッファ前処理方式を初期化
+      this._clippingManager = new CubismClippingManager_WebGL(); // Initialize clipping mask buffer preprocessing method
       this._clippingManager.initialize(
         model,
         model.getDrawableCount(),
@@ -1860,34 +1860,34 @@ export class CubismRenderer_WebGL extends CubismRenderer {
 
     this._sortedDrawableIndexList.resize(model.getDrawableCount(), 0);
 
-    super.initialize(model); // 親クラスの処理を呼ぶ
+    super.initialize(model); // call the process of the parent class
   }
 
   /**
-   * WebGLテクスチャのバインド処理
-   * CubismRendererにテクスチャを設定し、CubismRenderer内でその画像を参照するためのIndex値を戻り値とする
-   * @param modelTextureNo セットするモデルテクスチャの番号
-   * @param glTextureNo WebGLテクスチャの番号
+   * WebGL texture binding process
+   * Set a texture in CubismRenderer and use the Index value for referencing the image in CubismRenderer as the return value.
+   * @param modelTextureNo Model texture number to set
+   * @param glTextureNo WebGL texture number
    */
   public bindTexture(modelTextureNo: number, glTexture: WebGLTexture): void {
     this._textures.setValue(modelTextureNo, glTexture);
   }
 
   /**
-   * WebGLにバインドされたテクスチャのリストを取得する
-   * @return テクスチャのリスト
+   * Get a list of textures bound to WebGL
+   * @return List of textures
    */
   public getBindedTextures(): csmMap<number, WebGLTexture> {
     return this._textures;
   }
 
   /**
-   * クリッピングマスクバッファのサイズを設定する
-   * マスク用のFrameBufferを破棄、再作成する為処理コストは高い
-   * @param size クリッピングマスクバッファのサイズ
+   * Set the size of the clipping mask buffer
+   * Processing cost is high because FrameBuffer for mask is discarded and recreated.
+   * @param size Clipping mask buffer size
    */
   public setClippingMaskBufferSize(size: number) {
-    // FrameBufferのサイズを変更するためにインスタンスを破棄・再作成する
+    // Destroy / recreate the instance to resize the FrameBuffer
     this._clippingManager.release();
     this._clippingManager = void 0;
     this._clippingManager = null;
@@ -1905,15 +1905,15 @@ export class CubismRenderer_WebGL extends CubismRenderer {
   }
 
   /**
-   * クリッピングマスクバッファのサイズを取得する
-   * @return クリッピングマスクバッファのサイズ
+   * Get the size of the clipping mask buffer
+   * @return Clipping mask buffer size
    */
   public getClippingMaskBufferSize(): number {
     return this._clippingManager.getClippingMaskBufferSize();
   }
 
   /**
-   * コンストラクタ
+   * Constructor
    */
   public constructor() {
     super();
@@ -1929,12 +1929,12 @@ export class CubismRenderer_WebGL extends CubismRenderer {
       index: WebGLBuffer = null
     };
 
-    // テクスチャ対応マップの容量を確保しておく
+    // Reserve the capacity of the texture compatible map
     this._textures.prepareCapacity(32, true);
   }
 
   /**
-   * デストラクタ相当の処理
+   * Destructor-equivalent processing
    */
   public release(): void {
     this._clippingManager.release();
@@ -1953,37 +1953,37 @@ export class CubismRenderer_WebGL extends CubismRenderer {
   }
 
   /**
-   * モデルを描画する実際の処理
+   * The actual process of drawing the model
    */
   public doDrawModel(): void {
-    //------------ クリッピングマスク・バッファ前処理方式の場合 ------------
+    // ------------ For clipping mask / buffer preprocessing method ------------
     if (this._clippingManager != null) {
       this.preDraw();
       this._clippingManager.setupClippingContext(this.getModel(), this);
     }
 
-    // 上記クリッピング処理内でも一度PreDrawを呼ぶので注意!!
+    // Note that PreDraw is called once even in the above clipping process !!
     this.preDraw();
 
     const drawableCount: number = this.getModel().getDrawableCount();
     const renderOrder: Int32Array = this.getModel().getDrawableRenderOrders();
 
-    // インデックスを描画順でソート
+    // Sort indexes by drawing order
     for (let i = 0; i < drawableCount; ++i) {
       const order: number = renderOrder[i];
       this._sortedDrawableIndexList.set(order, i);
     }
 
-    // 描画
+    // Drawing
     for (let i = 0; i < drawableCount; ++i) {
       const drawableIndex: number = this._sortedDrawableIndexList.at(i);
 
-      // Drawableが表示状態でなければ処理をパスする
+      // Pass the process if Drawable is not displayed
       if (!this.getModel().getDrawableDynamicFlagIsVisible(drawableIndex)) {
         continue;
       }
 
-      // クリッピングマスクをセットする
+      // Set the clipping mask
       this.setClippingContextBufferForDraw(
         this._clippingManager != null
           ? this._clippingManager
@@ -2009,18 +2009,18 @@ export class CubismRenderer_WebGL extends CubismRenderer {
   }
 
   /**
-   * [オーバーライド]
-   * 描画オブジェクト（アートメッシュ）を描画する。
-   * ポリゴンメッシュとテクスチャ番号をセットで渡す。
-   * @param textureNo 描画するテクスチャ番号
-   * @param indexCount 描画オブジェクトのインデックス値
-   * @param vertexCount ポリゴンメッシュの頂点数
-   * @param indexArray ポリゴンメッシュのインデックス配列
-   * @param vertexArray ポリゴンメッシュの頂点配列
+   * [Override]
+   * Draw a drawing object (art mesh).
+   * Pass the polygon mesh and texture number as a set.
+   * @param textureNo Texture number to draw
+   * @param indexCount Index value of the drawing object
+   * @param vertexCount Number of vertices on the polygon mesh
+   * @param indexArray Index array of polygon mesh
+   * @param vertexArray Polygon mesh vertex array
    * @param uvArray uv配列
-   * @param opacity 不透明度
-   * @param colorBlendMode カラー合成タイプ
-   * @param invertedMask マスク使用時のマスクの反転使用
+   * @param opacity opacity
+   * @param colorBlendMode Color composition type
+   * @param invertedMask Using mask inversion when using mask
    */
   public drawMesh(
     textureNo: number,
@@ -2033,19 +2033,19 @@ export class CubismRenderer_WebGL extends CubismRenderer {
     colorBlendMode: CubismBlendMode,
     invertedMask: boolean
   ): void {
-    // 裏面描画の有効・無効
+    // Enable / disable backside drawing
     if (this.isCulling()) {
       this.gl.enable(this.gl.CULL_FACE);
     } else {
       this.gl.disable(this.gl.CULL_FACE);
     }
 
-    this.gl.frontFace(this.gl.CCW); // Cubism SDK OpenGLはマスク・アートメッシュ共にCCWが表面
+    this.gl.frontFace(this.gl.CCW); // Cubism SDK OpenGL has CCW on the surface for both mask and art mesh.
 
     const modelColorRGBA: CubismTextureColor = this.getModelColor();
 
     if (this.getClippingContextBufferForMask() == null) {
-      // マスク生成時以外
+      // Other than when mask is generated
       modelColorRGBA.A *= opacity;
       if (this.isPremultipliedAlpha()) {
         modelColorRGBA.R *= modelColorRGBA.A;
@@ -2054,10 +2054,10 @@ export class CubismRenderer_WebGL extends CubismRenderer {
       }
     }
 
-    let drawtexture: WebGLTexture; // シェーダに渡すテクスチャ
+    let drawtexture: WebGLTexture; // Texture to pass to the shader
 
-    // テクスチャマップからバインド済みテクスチャＩＤを取得
-    // バインドされていなければダミーのテクスチャIDをセットする
+    // Get the bound texture ID from the texture map
+    // Set a dummy texture ID if not bound
     if (this._textures.getValue(textureNo) != null) {
       drawtexture = this._textures.getValue(textureNo);
     } else {
@@ -2080,7 +2080,7 @@ export class CubismRenderer_WebGL extends CubismRenderer {
       invertedMask
     );
 
-    // ポリゴンメッシュを描画する
+    // Draw a polygon mesh
     this.gl.drawElements(
       this.gl.TRIANGLES,
       indexCount,
@@ -2088,24 +2088,24 @@ export class CubismRenderer_WebGL extends CubismRenderer {
       0
     );
 
-    // 後処理
+    // Post-processing
     this.gl.useProgram(null);
     this.setClippingContextBufferForDraw(null);
     this.setClippingContextBufferForMask(null);
   }
 
   /**
-   * レンダラが保持する静的なリソースを解放する
-   * WebGLの静的なシェーダープログラムを解放する
+   * Free the static resources held by the renderer
+   * Release WebGL static shader programs
    */
   public static doStaticRelease(): void {
     CubismShader_WebGL.deleteInstance();
   }
 
   /**
-   * レンダーステートを設定する
-   * @param fbo アプリケーション側で指定しているフレームバッファ
-   * @param viewport ビューポート
+   * Set the render state
+   * @param fbo Frame buffer specified on the application side
+   * @param viewport viewport
    */
   public setRenderState(fbo: WebGLFramebuffer, viewport: number[]): void {
     s_fbo = fbo;
@@ -2113,14 +2113,14 @@ export class CubismRenderer_WebGL extends CubismRenderer {
   }
 
   /**
-   * 描画開始時の追加処理
-   * モデルを描画する前にクリッピングマスクに必要な処理を実装している
+   * Additional processing at the start of drawing
+   * Implements the necessary processing for clipping mask before drawing the model
    */
   public preDraw(): void {
     if (this.firstDraw) {
       this.firstDraw = false;
 
-      // 拡張機能を有効にする
+      // Enable extensions
       this._anisortopy =
         this.gl.getExtension('EXT_texture_filter_anisotropic') ||
         this.gl.getExtension('WEBKIT_EXT_texture_filter_anisotropic') ||
@@ -2131,48 +2131,48 @@ export class CubismRenderer_WebGL extends CubismRenderer {
     this.gl.disable(this.gl.STENCIL_TEST);
     this.gl.disable(this.gl.DEPTH_TEST);
 
-    // カリング（1.0beta3）
+    // Culling (1.0beta3)
     this.gl.frontFace(this.gl.CW);
 
     this.gl.enable(this.gl.BLEND);
     this.gl.colorMask(true, true, true, true);
 
-    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, null); // 前にバッファがバインドされていたら破棄する必要がある
+    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, null); // If the buffer was previously bound, it should be destroyed
     this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, null);
   }
 
   /**
-   * マスクテクスチャに描画するクリッピングコンテキストをセットする
+   * Set the clipping context to draw on the mask texture
    */
   public setClippingContextBufferForMask(clip: CubismClippingContext) {
     this._clippingContextBufferForMask = clip;
   }
 
   /**
-   * マスクテクスチャに描画するクリッピングコンテキストを取得する
-   * @return マスクテクスチャに描画するクリッピングコンテキスト
+   * Get the clipping context to draw on the mask texture
+   * @return Clipping context to draw on the mask texture
    */
   public getClippingContextBufferForMask(): CubismClippingContext {
     return this._clippingContextBufferForMask;
   }
 
   /**
-   * 画面上に描画するクリッピングコンテキストをセットする
+   * Set the clipping context to draw on the screen
    */
   public setClippingContextBufferForDraw(clip: CubismClippingContext): void {
     this._clippingContextBufferForDraw = clip;
   }
 
   /**
-   * 画面上に描画するクリッピングコンテキストを取得する
-   * @return 画面上に描画するクリッピングコンテキスト
+   * Get the clipping context to draw on the screen
+   * @return Clipping context to draw on the screen
    */
   public getClippingContextBufferForDraw(): CubismClippingContext {
     return this._clippingContextBufferForDraw;
   }
 
   /**
-   * glの設定
+   * gl setting
    */
   public startUp(gl: WebGLRenderingContext): void {
     this.gl = gl;
@@ -2180,22 +2180,22 @@ export class CubismRenderer_WebGL extends CubismRenderer {
     CubismShader_WebGL.getInstance().setGl(gl);
   }
 
-  _textures: csmMap<number, WebGLTexture>; // モデルが参照するテクスチャとレンダラでバインドしているテクスチャとのマップ
-  _sortedDrawableIndexList: csmVector<number>; // 描画オブジェクトのインデックスを描画順に並べたリスト
-  _clippingManager: CubismClippingManager_WebGL; // クリッピングマスク管理オブジェクト
-  _clippingContextBufferForMask: CubismClippingContext; // マスクテクスチャに描画するためのクリッピングコンテキスト
-  _clippingContextBufferForDraw: CubismClippingContext; // 画面上描画するためのクリッピングコンテキスト
+  _textures: csmMap<number, WebGLTexture>; // Map between the texture referenced by the model and the texture bound by the renderer
+  _sortedDrawableIndexList: csmVector<number>; // List of drawing object indexes arranged in drawing order
+  _clippingManager: CubismClippingManager_WebGL; // Clipping mask management object
+  _clippingContextBufferForMask: CubismClippingContext; // Clipping context for drawing on the mask texture
+  _clippingContextBufferForDraw: CubismClippingContext; // Clipping context for drawing on the screen
   firstDraw: boolean;
   _bufferData: {
     vertex: WebGLBuffer;
     uv: WebGLBuffer;
     index: WebGLBuffer;
-  }; // 頂点バッファデータ
-  gl: WebGLRenderingContext; // webglコンテキスト
+  }; // Vertex buffer data
+  gl: WebGLRenderingContext; // webgl context
 }
 
 /**
- * レンダラが保持する静的なリソースを開放する
+ * Release static resources held by the renderer
  */
 CubismRenderer.staticRelease = (): void => {
   CubismRenderer_WebGL.doStaticRelease();

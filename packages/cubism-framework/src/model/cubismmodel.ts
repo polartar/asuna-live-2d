@@ -13,13 +13,13 @@ import { csmVector } from '../type/csmvector';
 import { CSM_ASSERT } from '../utils/cubismdebug';
 
 /**
- * モデル
+ * model
  *
- * Mocデータから生成されるモデルのクラス。
+ * A class of models generated from Moc data.
  */
 export class CubismModel {
   /**
-   * モデルのパラメータの更新
+   * Update model parameters
    */
   public update(): void {
     // Update model
@@ -29,7 +29,7 @@ export class CubismModel {
   }
 
   /**
-   * キャンバスの幅を取得する
+   * Get the width of the canvas
    */
   public getCanvasWidth(): number {
     if (this._model == null) {
@@ -42,7 +42,7 @@ export class CubismModel {
   }
 
   /**
-   * キャンバスの高さを取得する
+   * Get the height of the canvas
    */
   public getCanvasHeight(): number {
     if (this._model == null) {
@@ -55,7 +55,7 @@ export class CubismModel {
   }
 
   /**
-   * パラメータを保存する
+   * Save parameters
    */
   public saveParameters(): void {
     const parameterCount: number = this._model.parameters.count;
@@ -71,16 +71,16 @@ export class CubismModel {
   }
 
   /**
-   * モデルを取得
+   * Get the model
    */
   public getModel(): Live2DCubismCore.Model {
     return this._model;
   }
 
   /**
-   * パーツのインデックスを取得
-   * @param partId パーツのID
-   * @return パーツのインデックス
+   * Get index of parts
+   * @param partId Part ID
+   * @return Parts index
    */
   public getPartIndex(partId: CubismIdHandle): number {
     let partIndex: number;
@@ -92,12 +92,12 @@ export class CubismModel {
       }
     }
 
-    // モデルに存在していない場合、非存在パーツIDリスト内にあるかを検索し、そのインデックスを返す
+    // If it does not exist in the model, it searches for it in the non-existent part ID list and returns its index.
     if (this._notExistPartId.isExist(partId)) {
       return this._notExistPartId.getValue(partId);
     }
 
-    // 非存在パーツIDリストにない場合、新しく要素を追加する
+    // Add a new element if it is not in the non-existent part ID list
     partIndex = partCount + this._notExistPartId.getSize();
     this._notExistPartId.setValue(partId, partIndex);
     this._notExistPartOpacities.appendKey(partIndex);
@@ -106,8 +106,8 @@ export class CubismModel {
   }
 
   /**
-   * パーツの個数の取得
-   * @return パーツの個数
+   * Get the number of parts
+   * @return Number of parts
    */
   public getPartCount(): number {
     const partCount: number = this._model.parts.count;
@@ -115,9 +115,9 @@ export class CubismModel {
   }
 
   /**
-   * パーツの不透明度の設定(Index)
-   * @param partIndex パーツのインデックス
-   * @param opacity 不透明度
+   * Part opacity setting (Index)
+   * @param partIndex Part index
+   * @param opacity opacity
    */
   public setPartOpacityByIndex(partIndex: number, opacity: number): void {
     if (this._notExistPartOpacities.isExist(partIndex)) {
@@ -125,65 +125,65 @@ export class CubismModel {
       return;
     }
 
-    // インデックスの範囲内検知
+    // Index range detection
     CSM_ASSERT(0 <= partIndex && partIndex < this.getPartCount());
 
     this._partOpacities[partIndex] = opacity;
   }
 
   /**
-   * パーツの不透明度の設定(Id)
-   * @param partId パーツのID
-   * @param opacity パーツの不透明度
+   * Setting the opacity of the part (Id)
+   * @param partId Part ID
+   * @param opacity Part opacity
    */
   public setPartOpacityById(partId: CubismIdHandle, opacity: number): void {
-    // 高速化のためにPartIndexを取得できる機構になっているが、外部からの設定の時は呼び出し頻度が低いため不要
+    // It is a mechanism that can acquire PartIndex for speeding up, but it is unnecessary when setting from the outside because the call frequency is low
     const index: number = this.getPartIndex(partId);
 
     if (index < 0) {
-      return; // パーツがないのでスキップ
+      return; // Skip because there are no parts
     }
 
     this.setPartOpacityByIndex(index, opacity);
   }
 
   /**
-   * パーツの不透明度の取得(index)
-   * @param partIndex パーツのインデックス
-   * @return パーツの不透明度
+   * Get part opacity (index)
+   * @param partIndex Part index
+   * @return Part opacity
    */
   public getPartOpacityByIndex(partIndex: number): number {
     if (this._notExistPartOpacities.isExist(partIndex)) {
-      // モデルに存在しないパーツIDの場合、非存在パーツリストから不透明度を返す。
+      // If the part ID does not exist in the model, opacity is returned from the non-existent parts list.
       return this._notExistPartOpacities.getValue(partIndex);
     }
 
-    // インデックスの範囲内検知
+    // Index range detection
     CSM_ASSERT(0 <= partIndex && partIndex < this.getPartCount());
 
     return this._partOpacities[partIndex];
   }
 
   /**
-   * パーツの不透明度の取得(id)
-   * @param partId パーツのＩｄ
-   * @return パーツの不透明度
+   * Get part opacity (id)
+   * @param partId Part Id
+   * @return Part opacity
    */
   public getPartOpacityById(partId: CubismIdHandle): number {
-    // 高速化のためにPartIndexを取得できる機構になっているが、外部からの設定の時は呼び出し頻度が低いため不要
+    // It is a mechanism that can acquire PartIndex for speeding up, but it is unnecessary when setting from the outside because the call frequency is low
     const index: number = this.getPartIndex(partId);
 
     if (index < 0) {
-      return 0; // パーツが無いのでスキップ
+      return 0; // Skip because there are no parts
     }
 
     return this.getPartOpacityByIndex(index);
   }
 
   /**
-   * パラメータのインデックスの取得
-   * @param パラメータID
-   * @return パラメータのインデックス
+   * Get index of parameters
+   * @param Parameter ID
+   * @return Parameter index
    */
   public getParameterIndex(parameterId: CubismIdHandle): number {
     let parameterIndex: number;
@@ -197,12 +197,12 @@ export class CubismModel {
       return parameterIndex;
     }
 
-    // モデルに存在していない場合、非存在パラメータIDリスト内を検索し、そのインデックスを返す
+    // If it does not exist in the model, it searches in the non-existent parameter ID list and returns its index.
     if (this._notExistParameterId.isExist(parameterId)) {
       return this._notExistParameterId.getValue(parameterId);
     }
 
-    // 非存在パラメータIDリストにない場合新しく要素を追加する
+    // Add a new element if it is not in the non-existent parameter ID list
     parameterIndex =
       this._model.parameters.count + this._notExistParameterId.getSize();
 
@@ -213,51 +213,51 @@ export class CubismModel {
   }
 
   /**
-   * パラメータの個数の取得
-   * @return パラメータの個数
+   * Get the number of parameters
+   * Number of @return parameters
    */
   public getParameterCount(): number {
     return this._model.parameters.count;
   }
 
   /**
-   * パラメータの最大値の取得
-   * @param parameterIndex パラメータのインデックス
-   * @return パラメータの最大値
+   * Get the maximum value of the parameter
+   * @param parameterIndex Parameter index
+   * Maximum value of @return parameter
    */
   public getParameterMaximumValue(parameterIndex: number): number {
     return this._model.parameters.maximumValues[parameterIndex];
   }
 
   /**
-   * パラメータの最小値の取得
-   * @param parameterIndex パラメータのインデックス
-   * @return パラメータの最小値
+   * Get the minimum value of the parameter
+   * @param parameterIndex Parameter index
+   * Minimum value of @return parameter
    */
   public getParameterMinimumValue(parameterIndex: number): number {
     return this._model.parameters.minimumValues[parameterIndex];
   }
 
   /**
-   * パラメータのデフォルト値の取得
-   * @param parameterIndex パラメータのインデックス
-   * @return パラメータのデフォルト値
+   * Get default values ​​for parameters
+   * @param parameterIndex Parameter index
+   * Default value for the @return parameter
    */
   public getParameterDefaultValue(parameterIndex: number): number {
     return this._model.parameters.defaultValues[parameterIndex];
   }
 
   /**
-   * パラメータの値の取得
-   * @param parameterIndex    パラメータのインデックス
-   * @return パラメータの値
+   * Get parameter values
+   * @param parameterIndex Parameter index
+   * Value of the @return parameter
    */
   public getParameterValueByIndex(parameterIndex: number): number {
     if (this._notExistParameterValues.isExist(parameterIndex)) {
       return this._notExistParameterValues.getValue(parameterIndex);
     }
 
-    // インデックスの範囲内検知
+    // Index range detection
     CSM_ASSERT(
       0 <= parameterIndex && parameterIndex < this.getParameterCount()
     );
@@ -266,21 +266,21 @@ export class CubismModel {
   }
 
   /**
-   * パラメータの値の取得
-   * @param parameterId    パラメータのID
-   * @return パラメータの値
+   * Get parameter values
+   * @param parameterId Parameter ID
+   * Value of the @return parameter
    */
   public getParameterValueById(parameterId: CubismIdHandle): number {
-    // 高速化のためにparameterIndexを取得できる機構になっているが、外部からの設定の時は呼び出し頻度が低いため不要
+    // It is a mechanism that can acquire parameterIndex for speeding up, but it is unnecessary when setting from the outside because the call frequency is low
     const parameterIndex: number = this.getParameterIndex(parameterId);
     return this.getParameterValueByIndex(parameterIndex);
   }
 
   /**
-   * パラメータの値の設定
-   * @param parameterIndex パラメータのインデックス
-   * @param value パラメータの値
-   * @param weight 重み
+   * Setting parameter values
+   * @param parameterIndex Parameter index
+   * @param value The value of the parameter
+   * @param weight weight
    */
   public setParameterValueByIndex(
     parameterIndex: number,
@@ -293,14 +293,14 @@ export class CubismModel {
         weight == 1
           ? value
           : this._notExistParameterValues.getValue(parameterIndex) *
-              (1 - weight) +
-              value * weight
+          (1 - weight) +
+          value * weight
       );
 
       return;
     }
 
-    // インデックスの範囲内検知
+    // Index range detection
     CSM_ASSERT(
       0 <= parameterIndex && parameterIndex < this.getParameterCount()
     );
@@ -316,15 +316,15 @@ export class CubismModel {
       weight == 1
         ? value
         : (this._parameterValues[parameterIndex] =
-            this._parameterValues[parameterIndex] * (1 - weight) +
-            value * weight);
+          this._parameterValues[parameterIndex] * (1 - weight) +
+          value * weight);
   }
 
   /**
-   * パラメータの値の設定
-   * @param parameterId パラメータのID
-   * @param value パラメータの値
-   * @param weight 重み
+   * Setting parameter values
+   * @param parameterId Parameter ID
+   * @param value The value of the parameter
+   * @param weight weight
    */
   public setParameterValueById(
     parameterId: CubismIdHandle,
@@ -336,10 +336,10 @@ export class CubismModel {
   }
 
   /**
-   * パラメータの値の加算(index)
-   * @param parameterIndex パラメータインデックス
-   * @param value 加算する値
-   * @param weight 重み
+   * Addition of parameter values ​​(index)
+   * @param parameterIndex Parameter index
+   * @param value Value to add
+   * @param weight weight
    */
   public addParameterValueByIndex(
     parameterIndex: number,
@@ -353,10 +353,10 @@ export class CubismModel {
   }
 
   /**
-   * パラメータの値の加算(id)
-   * @param parameterId パラメータＩＤ
-   * @param value 加算する値
-   * @param weight 重み
+   * Addition of parameter values ​​(id)
+   * @param parameterId Parameter ID
+   * @param value Value to add
+   * @param weight weight
    */
   public addParameterValueById(
     parameterId: any,
@@ -368,10 +368,10 @@ export class CubismModel {
   }
 
   /**
-   * パラメータの値の乗算
-   * @param parameterId パラメータのID
-   * @param value 乗算する値
-   * @param weight 重み
+   * Multiply parameter values
+   * @param parameterId Parameter ID
+   * @param value Value to multiply
+   * @param weight weight
    */
   public multiplyParameterValueById(
     parameterId: CubismIdHandle,
@@ -383,10 +383,10 @@ export class CubismModel {
   }
 
   /**
-   * パラメータの値の乗算
-   * @param parameterIndex パラメータのインデックス
-   * @param value 乗算する値
-   * @param weight 重み
+   * Multiply parameter values
+   * @param parameterIndex Parameter index
+   * @param value Value to multiply
+   * @param weight weight
    */
   public multiplyParameterValueByIndex(
     parameterIndex: number,
@@ -396,14 +396,14 @@ export class CubismModel {
     this.setParameterValueByIndex(
       parameterIndex,
       this.getParameterValueByIndex(parameterIndex) *
-        (1.0 + (value - 1.0) * weight)
+      (1.0 + (value - 1.0) * weight)
     );
   }
 
   /**
-   * Drawableのインデックスの取得
+   * Get Drawable index
    * @param drawableId DrawableのID
-   * @return Drawableのインデックス
+   * @return Drawable index
    */
   public getDrawableIndex(drawableId: CubismIdHandle): number {
     const drawableCount = this._model.drawables.count;
@@ -422,8 +422,8 @@ export class CubismModel {
   }
 
   /**
-   * Drawableの個数の取得
-   * @return drawableの個数
+   * Get the number of Drawables
+   * Number of @return drawables
    */
   public getDrawableCount(): number {
     const drawableCount = this._model.drawables.count;
@@ -431,8 +431,8 @@ export class CubismModel {
   }
 
   /**
-   * DrawableのIDを取得する
-   * @param drawableIndex Drawableのインデックス
+   * Get the Drawable ID
+   * @param drawableIndex Drawable index
    * @return drawableのID
    */
   public getDrawableId(drawableIndex: number): CubismIdHandle {
@@ -441,8 +441,8 @@ export class CubismModel {
   }
 
   /**
-   * Drawableの描画順リストの取得
-   * @return Drawableの描画順リスト
+   * Get the drawing order list of Drawable
+   * @return Drawable drawing order list
    */
   public getDrawableRenderOrders(): Int32Array {
     const renderOrders: Int32Array = this._model.drawables.renderOrders;
@@ -450,9 +450,9 @@ export class CubismModel {
   }
 
   /**
-   * Drawableのテクスチャインデックスリストの取得
-   * @param drawableIndex Drawableのインデックス
-   * @return drawableのテクスチャインデックスリスト
+   * Get the texture index list of Drawable
+   * @param drawableIndex Drawable index
+   * @return drawable texture index list
    */
   public getDrawableTextureIndices(drawableIndex: number): number {
     const textureIndices: Int32Array = this._model.drawables.textureIndices;
@@ -460,13 +460,13 @@ export class CubismModel {
   }
 
   /**
-   * DrawableのVertexPositionsの変化情報の取得
+   * Acquisition of change information of Vertex Positions of Drawable
    *
-   * 直近のCubismModel.update関数でDrawableの頂点情報が変化したかを取得する。
+   * Get whether the vertex information of Drawable has changed with the latest CubismModel.update function.
    *
-   * @param   drawableIndex   Drawableのインデックス
-   * @retval  true    Drawableの頂点情報が直近のCubismModel.update関数で変化した
-   * @retval  false   Drawableの頂点情報が直近のCubismModel.update関数で変化していない
+   * @param drawableIndex Drawable index
+   * @retval true Drawable vertex information changed in the latest CubismModel.update function
+   * @retval false Drawable vertex information has not changed in the latest CubismModel.update function
    */
   public getDrawableDynamicFlagVertexPositionsDidChange(
     drawableIndex: number
@@ -478,9 +478,9 @@ export class CubismModel {
   }
 
   /**
-   * Drawableの頂点インデックスの個数の取得
-   * @param drawableIndex Drawableのインデックス
-   * @return drawableの頂点インデックスの個数
+   * Get the number of Drawable vertex indexes
+   * @param drawableIndex Drawable index
+   * Number of vertex indexes of @return drawable
    */
   public getDrawableVertexIndexCount(drawableIndex: number): number {
     const indexCounts: Int32Array = this._model.drawables.indexCounts;
@@ -488,9 +488,9 @@ export class CubismModel {
   }
 
   /**
-   * Drawableの頂点の個数の取得
-   * @param drawableIndex Drawableのインデックス
-   * @return drawableの頂点の個数
+   * Get the number of Drawable vertices
+   * @param drawableIndex Drawable index
+   * Number of vertices of @return drawable
    */
   public getDrawableVertexCount(drawableIndex: number): number {
     const vertexCounts = this._model.drawables.vertexCounts;
@@ -498,18 +498,18 @@ export class CubismModel {
   }
 
   /**
-   * Drawableの頂点リストの取得
-   * @param drawableIndex drawableのインデックス
-   * @return drawableの頂点リスト
+   * Get the list of Drawable vertices
+   * @param drawableIndex index of drawable
+   * @return drawable vertex list
    */
   public getDrawableVertices(drawableIndex: number): Float32Array {
     return this.getDrawableVertexPositions(drawableIndex);
   }
 
   /**
-   * Drawableの頂点インデックスリストの取得
-   * @param drarableIndex Drawableのインデックス
-   * @return drawableの頂点インデックスリスト
+   * Get Drawable vertex index list
+   * @param drarableIndex Drawable index
+   * @return drawable vertex index list
    */
   public getDrawableVertexIndices(drawableIndex: number): Uint16Array {
     const indicesArray: Uint16Array[] = this._model.drawables.indices;
@@ -517,9 +517,9 @@ export class CubismModel {
   }
 
   /**
-   * Drawableの頂点リストの取得
-   * @param drawableIndex Drawableのインデックス
-   * @return drawableの頂点リスト
+   * Get the list of Drawable vertices
+   * @param drawableIndex Drawable index
+   * @return drawable vertex list
    */
   public getDrawableVertexPositions(drawableIndex: number): Float32Array {
     const verticesArray: Float32Array[] = this._model.drawables.vertexPositions;
@@ -527,9 +527,9 @@ export class CubismModel {
   }
 
   /**
-   * Drawableの頂点のUVリストの取得
-   * @param drawableIndex Drawableのインデックス
-   * @return drawableの頂点UVリスト
+   * Get UV list of Drawable vertices
+   * @param drawableIndex Drawable index
+   * @return drawable vertex UV list
    */
   public getDrawableVertexUvs(drawableIndex: number): Float32Array {
     const uvsArray: Float32Array[] = this._model.drawables.vertexUvs;
@@ -537,9 +537,9 @@ export class CubismModel {
   }
 
   /**
-   * Drawableの不透明度の取得
-   * @param drawableIndex Drawableのインデックス
-   * @return drawableの不透明度
+   * Get Drawable opacity
+   * @param drawableIndex Drawable index
+   * @return drawable opacity
    */
   public getDrawableOpacity(drawableIndex: number): number {
     const opacities: Float32Array = this._model.drawables.opacities;
@@ -547,9 +547,9 @@ export class CubismModel {
   }
 
   /**
-   * Drawableのカリング情報の取得
-   * @param drawableIndex Drawableのインデックス
-   * @return drawableのカリング情報
+   * Get Drawable culling information
+   * @param drawableIndex Drawable index
+   * @return drawable culling information
    */
   public getDrawableCulling(drawableIndex: number): boolean {
     const constantFlags = this._model.drawables.constantFlags;
@@ -560,9 +560,9 @@ export class CubismModel {
   }
 
   /**
-   * Drawableのブレンドモードを取得
-   * @param drawableIndex Drawableのインデックス
-   * @return drawableのブレンドモード
+   * Get Drawable blend mode
+   * @param drawableIndex Drawable index
+   * @return drawable blend mode
    */
   public getDrawableBlendMode(drawableIndex: number): CubismBlendMode {
     const constantFlags = this._model.drawables.constantFlags;
@@ -572,20 +572,20 @@ export class CubismModel {
     )
       ? CubismBlendMode.CubismBlendMode_Additive
       : Live2DCubismCore.Utils.hasBlendMultiplicativeBit(
-          constantFlags[drawableIndex]
-        )
-      ? CubismBlendMode.CubismBlendMode_Multiplicative
-      : CubismBlendMode.CubismBlendMode_Normal;
+        constantFlags[drawableIndex]
+      )
+        ? CubismBlendMode.CubismBlendMode_Multiplicative
+        : CubismBlendMode.CubismBlendMode_Normal;
   }
 
   /**
-   * Drawableのマスクの反転使用の取得
+   * Get Drawable's mask inversion use
    *
-   * Drawableのマスク使用時の反転設定を取得する。
-   * マスクを使用しない場合は無視される。
+   * Get the inversion setting when using Drawable mask.
+   * Ignored if no mask is used.
    *
-   * @param drawableIndex Drawableのインデックス
-   * @return Drawableの反転設定
+   * @param drawableIndex Drawable index
+   * @return Drawable inversion setting
    */
   public getDrawableInvertedMaskBit(drawableIndex: number): boolean {
     const constantFlags: Uint8Array = this._model.drawables.constantFlags;
@@ -596,8 +596,8 @@ export class CubismModel {
   }
 
   /**
-   * Drawableのクリッピングマスクリストの取得
-   * @return Drawableのクリッピングマスクリスト
+   * Get Drawable clipping mask list
+   * @return Drawable clipping mask list
    */
   public getDrawableMasks(): Int32Array[] {
     const masks: Int32Array[] = this._model.drawables.masks;
@@ -605,8 +605,8 @@ export class CubismModel {
   }
 
   /**
-   * Drawableのクリッピングマスクの個数リストの取得
-   * @return Drawableのクリッピングマスクの個数リスト
+   * Get a list of the number of clipping masks in Drawable
+   * List of number of clipping masks for @return Drawable
    */
   public getDrawableMaskCounts(): Int32Array {
     const maskCounts: Int32Array = this._model.drawables.maskCounts;
@@ -614,10 +614,10 @@ export class CubismModel {
   }
 
   /**
-   * クリッピングマスクの使用状態
+   * Usage of clipping mask
    *
-   * @return true クリッピングマスクを使用している
-   * @return false クリッピングマスクを使用していない
+   * @return true You are using a clipping mask
+   * @return false No clipping mask used
    */
   public isUsingMasking(): boolean {
     for (let d = 0; d < this._model.drawables.count; ++d) {
@@ -630,11 +630,11 @@ export class CubismModel {
   }
 
   /**
-   * Drawableの表示情報を取得する
+   * Get the display information of Drawable
    *
-   * @param drawableIndex Drawableのインデックス
-   * @return true Drawableが表示
-   * @return false Drawableが非表示
+   * @param drawableIndex Drawable index
+   * @return true Drawable is displayed
+   * @return false Drawable is hidden
    */
   public getDrawableDynamicFlagIsVisible(drawableIndex: number): boolean {
     const dynamicFlags: Uint8Array = this._model.drawables.dynamicFlags;
@@ -642,13 +642,13 @@ export class CubismModel {
   }
 
   /**
-   * DrawableのDrawOrderの変化情報の取得
+   * Get change information of Drawable DrawOrder
    *
-   * 直近のCubismModel.update関数でdrawableのdrawOrderが変化したかを取得する。
-   * drawOrderはartMesh上で指定する0から1000の情報
-   * @param drawableIndex drawableのインデックス
-   * @return true drawableの不透明度が直近のCubismModel.update関数で変化した
-   * @return false drawableの不透明度が直近のCubismModel.update関数で変化している
+   * Get if the drawOrder of drawable has changed with the latest CubismModel.update function.
+   * drawOrder is 0 to 1000 information specified on artMesh
+   * @param drawableIndex index of drawable
+   * @return true The opacity of drawable changed in the latest CubismModel.update function
+   * @return false The opacity of drawable has changed in the latest CubismModel.update function
    */
   public getDrawableDynamicFlagVisibilityDidChange(
     drawableIndex: number
@@ -660,13 +660,13 @@ export class CubismModel {
   }
 
   /**
-   * Drawableの不透明度の変化情報の取得
+   * Get Drawable opacity change information
    *
-   * 直近のCubismModel.update関数でdrawableの不透明度が変化したかを取得する。
+   * Get if the opacity of drawable has changed with the latest CubismModel.update function.
    *
-   * @param drawableIndex drawableのインデックス
-   * @return true Drawableの不透明度が直近のCubismModel.update関数で変化した
-   * @return false Drawableの不透明度が直近のCubismModel.update関数で変化してない
+   * @param drawableIndex index of drawable
+   * @return true Drawable opacity changed in the latest CubismModel.update function
+   * @return false Drawable opacity has not changed in the latest CubismModel.update function
    */
   public getDrawableDynamicFlagOpacityDidChange(
     drawableIndex: number
@@ -678,13 +678,13 @@ export class CubismModel {
   }
 
   /**
-   * Drawableの描画順序の変化情報の取得
+   * Acquisition of change information of drawing order of Drawable
    *
-   * 直近のCubismModel.update関数でDrawableの描画の順序が変化したかを取得する。
+   * Get if the drawing order of Drawable has changed with the latest CubismModel.update function.
    *
-   * @param drawableIndex Drawableのインデックス
-   * @return true Drawableの描画の順序が直近のCubismModel.update関数で変化した
-   * @return false Drawableの描画の順序が直近のCubismModel.update関数で変化してない
+   * @param drawableIndex Drawable index
+   * @return true The drawing order of Drawable has changed in the latest CubismModel.update function.
+   * @return false The drawing order of Drawable has not changed in the latest CubismModel.update function.
    */
   public getDrawableDynamicFlagRenderOrderDidChange(
     drawableIndex: number
@@ -696,7 +696,7 @@ export class CubismModel {
   }
 
   /**
-   * 保存されたパラメータの読み込み
+   * Loading saved parameters
    */
   public loadParameters(): void {
     let parameterCount: number = this._model.parameters.count;
@@ -712,7 +712,7 @@ export class CubismModel {
   }
 
   /**
-   * 初期化する
+   * initialize
    */
   public initialize(): void {
     CSM_ASSERT(this._model);
@@ -760,8 +760,8 @@ export class CubismModel {
   }
 
   /**
-   * コンストラクタ
-   * @param model モデル
+   * Constructor
+   * @param model model
    */
   public constructor(model: Live2DCubismCore.Model) {
     this._model = model;
@@ -781,28 +781,28 @@ export class CubismModel {
   }
 
   /**
-   * デストラクタ相当の処理
+   * Destructor-equivalent processing
    */
   public release(): void {
     this._model.release();
     this._model = null;
   }
 
-  private _notExistPartOpacities: csmMap<number, number>; // 存在していないパーツの不透明度のリスト
-  private _notExistPartId: csmMap<CubismIdHandle, number>; // 存在していないパーツIDのリスト
+  private _notExistPartOpacities: csmMap<number, number>; // List of opacity of non-existent parts
+  private _notExistPartId: csmMap<CubismIdHandle, number>; // List of non-existent part IDs
 
-  private _notExistParameterValues: csmMap<number, number>; // 存在していないパラメータの値のリスト
-  private _notExistParameterId: csmMap<CubismIdHandle, number>; // 存在していないパラメータIDのリスト
+  private _notExistParameterValues: csmMap<number, number>; // List of non-existent parameter values
+  private _notExistParameterId: csmMap<CubismIdHandle, number>; // List of non-existent parameter IDs
 
-  private _savedParameters: csmVector<number>; // 保存されたパラメータ
+  private _savedParameters: csmVector<number>; // Saved parameters
 
-  private _model: Live2DCubismCore.Model; // モデル
+  private _model: Live2DCubismCore.Model; // Model
 
-  private _parameterValues: Float32Array; // パラメータの値のリスト
-  private _parameterMaximumValues: Float32Array; // パラメータの最大値のリスト
-  private _parameterMinimumValues: Float32Array; // パラメータの最小値のリスト
+  private _parameterValues: Float32Array; // List of parameter values
+  private _parameterMaximumValues: Float32Array; // List of maximum parameter values
+  private _parameterMinimumValues: Float32Array; // List of minimum parameter values
 
-  private _partOpacities: Float32Array; // パーツの不透明度のリスト
+  private _partOpacities: Float32Array; // List of part opacity
 
   private _parameterIds: csmVector<CubismIdHandle>;
   private _partIds: csmVector<CubismIdHandle>;

@@ -9,16 +9,16 @@ import { csmMap, iterator } from '../type/csmmap';
 import { CubismMatrix44 } from './cubismmatrix44';
 
 /**
- * モデル座標設定用の4x4行列
+ * 4x4 matrix for setting model coordinates
  *
- * モデル座標設定用の4x4行列クラス
+ * 4x4 matrix class for setting model coordinates
  */
 export class CubismModelMatrix extends CubismMatrix44 {
   /**
-   * コンストラクタ
+   * Constructor
    *
-   * @param w 横幅
-   * @param h 縦幅
+   * @param w banner
+   * @param h width
    */
   constructor(w?: number, h?: number) {
     super();
@@ -30,9 +30,9 @@ export class CubismModelMatrix extends CubismMatrix44 {
   }
 
   /**
-   * 横幅を設定
+   * Set width
    *
-   * @param w 横幅
+   * @param w banner
    */
   public setWidth(w: number): void {
     const scaleX: number = w / this._width;
@@ -41,8 +41,8 @@ export class CubismModelMatrix extends CubismMatrix44 {
   }
 
   /**
-   * 縦幅を設定
-   * @param h 縦幅
+   * Set vertical width
+   * @param h width
    */
   public setHeight(h: number): void {
     const scaleX: number = h / this._height;
@@ -51,22 +51,22 @@ export class CubismModelMatrix extends CubismMatrix44 {
   }
 
   /**
-   * 位置を設定
+   * Set position
    *
-   * @param x X軸の位置
-   * @param y Y軸の位置
+   * @param x X-axis position
+   * @param y Y-axis position
    */
   public setPosition(x: number, y: number): void {
     this.translate(x, y);
   }
 
   /**
-   * 中心位置を設定
+   * Set center position
    *
-   * @param x X軸の中心位置
-   * @param y Y軸の中心位置
+   * @param x center position of X axis
+   * @param y Center position of Y axis
    *
-   * @note widthかheightを設定したあとでないと、拡大率が正しく取得できないためずれる。
+   * Only after setting @note width or height, the enlargement ratio cannot be obtained correctly, so it will shift.
    */
   public setCenterPosition(x: number, y: number) {
     this.centerX(x);
@@ -74,18 +74,18 @@ export class CubismModelMatrix extends CubismMatrix44 {
   }
 
   /**
-   * 上辺の位置を設定する
+   * Set the position of the upper side
    *
-   * @param y 上辺のY軸位置
+   * @param y Y-axis position on the top side
    */
   public top(y: number): void {
     this.setY(y);
   }
 
   /**
-   * 下辺の位置を設定する
+   * Set the position of the bottom side
    *
-   * @param y 下辺のY軸位置
+   * @param y Y-axis position at the bottom
    */
   public bottom(y: number) {
     const h: number = this._height * this.getScaleY();
@@ -94,18 +94,18 @@ export class CubismModelMatrix extends CubismMatrix44 {
   }
 
   /**
-   * 左辺の位置を設定
+   * Set the position of the left side
    *
-   * @param x 左辺のX軸位置
+   * @param x X-axis position on the left side
    */
   public left(x: number): void {
     this.setX(x);
   }
 
   /**
-   * 右辺の位置を設定
+   * Set the position of the right side
    *
-   * @param x 右辺のX軸位置
+   * @param x X-axis position on the right side
    */
   public right(x: number): void {
     const w = this._width * this.getScaleX();
@@ -114,9 +114,9 @@ export class CubismModelMatrix extends CubismMatrix44 {
   }
 
   /**
-   * X軸の中心位置を設定
+   * Set the center position of the X-axis
    *
-   * @param x X軸の中心位置
+   * @param x center position of X axis
    */
   public centerX(x: number): void {
     const w = this._width * this.getScaleX();
@@ -125,18 +125,18 @@ export class CubismModelMatrix extends CubismMatrix44 {
   }
 
   /**
-   * X軸の位置を設定
+   * Set X-axis position
    *
-   * @param x X軸の位置
+   * @param x X-axis position
    */
   public setX(x: number): void {
     this.translateX(x);
   }
 
   /**
-   * Y軸の中心位置を設定
+   * Set the center position of the Y axis
    *
-   * @param y Y軸の中心位置
+   * @param y Center position of Y axis
    */
   public centerY(y: number): void {
     const h: number = this._height * this.getScaleY();
@@ -145,18 +145,18 @@ export class CubismModelMatrix extends CubismMatrix44 {
   }
 
   /**
-   * Y軸の位置を設定する
+   * Set the position of the Y axis
    *
-   * @param y Y軸の位置
+   * @param y Y-axis position
    */
   public setY(y: number): void {
     this.translateY(y);
   }
 
   /**
-   * レイアウト情報から位置を設定
+   * Set the position from the layout information
    *
-   * @param layout レイアウト情報
+   * @param layout Layout information
    */
   public setupFromLayout(layout: csmMap<string, number>): void {
     const keyWidth = 'width';
@@ -213,7 +213,7 @@ export class CubismModelMatrix extends CubismMatrix44 {
     }
   }
 
-  private _width: number; // 横幅
+  private _width: number; // banner
   private _height: number; // 縦幅
 }
 

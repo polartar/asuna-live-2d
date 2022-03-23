@@ -36,7 +36,7 @@ const TargetNameParameter = 'Parameter';
 const TargetNamePartOpacity = 'PartOpacity';
 
 /**
- * Cubism SDK R2 以前のモーションを再現させるなら true 、アニメータのモーションを正しく再現するなら false 。
+ * True to reproduce the motion of Cubism SDK R2 or earlier, false to reproduce the motion of the animator correctly.
  */
 const UseOldBeziersCurveMotion = false;
 
@@ -210,7 +210,7 @@ function evaluateCurve(
     pointPosition =
       motionData.segments.at(i).basePointIndex +
       (motionData.segments.at(i).segmentType ==
-      CubismMotionSegmentType.CubismMotionSegmentType_Bezier
+        CubismMotionSegmentType.CubismMotionSegmentType_Bezier
         ? 3
         : 1);
 
@@ -231,18 +231,18 @@ function evaluateCurve(
 }
 
 /**
- * モーションクラス
+ * Motion class
  *
- * モーションのクラス。
+ * Motion class.
  */
 export class CubismMotion extends ACubismMotion {
   /**
-   * インスタンスを作成する
+   * Create an instance
    *
-   * @param buffer motion3.jsonが読み込まれているバッファ
-   * @param size バッファのサイズ
-   * @param onFinishedMotionHandler モーション再生終了時に呼び出されるコールバック関数
-   * @return 作成されたインスタンス
+   * @param buffer The buffer in which motion3.json is loaded
+   * @param size Buffer size
+   * @param onFinishedMotionHandler Callback function called at the end of motion playback
+   * @return Created instance
    */
   public static create(
     buffer: ArrayBuffer,
@@ -256,17 +256,17 @@ export class CubismMotion extends ACubismMotion {
     ret._loopDurationSeconds = ret._motionData.duration;
     ret._onFinishedMotion = onFinishedMotionHandler;
 
-    // NOTE: Editorではループありのモーション書き出しは非対応
+    // NOTE: Editor does not support motion export with loops
     // ret->_loop = (ret->_motionData->Loop > 0);
     return ret;
   }
 
   /**
-   * モデルのパラメータの更新の実行
-   * @param model             対象のモデル
-   * @param userTimeSeconds   現在の時刻[秒]
-   * @param fadeWeight        モーションの重み
-   * @param motionQueueEntry  CubismMotionQueueManagerで管理されているモーション
+   * Perform model parameter updates
+   * @param model Target model
+   * @param userTimeSeconds Current time [seconds]
+   * @param fadeWeight Motion weight
+   * @param motionQueueEntry Motion managed by CubismMotionQueueManager
    */
   public doUpdateParameters(
     model: CubismModel,
@@ -290,18 +290,18 @@ export class CubismMotion extends ACubismMotion {
       userTimeSeconds - motionQueueEntry.getStartTime();
 
     if (timeOffsetSeconds < 0.0) {
-      timeOffsetSeconds = 0.0; // エラー回避
+      timeOffsetSeconds = 0.0; // Error avoidance
     }
 
     let lipSyncValue: number = Number.MAX_VALUE;
     let eyeBlinkValue: number = Number.MAX_VALUE;
 
-    //まばたき、リップシンクのうちモーションの適用を検出するためのビット（maxFlagCount個まで
+    // Bits for detecting the application of motion in blinking and lip sync (up to maxFlagCount)
     const MaxTargetSize = 64;
     let lipSyncFlags = 0;
     let eyeBlinkFlags = 0;
 
-    //瞬き、リップシンクのターゲット数が上限を超えている場合
+    // Blink, when the number of lip sync targets exceeds the upper limit
     if (this._eyeBlinkParameterIds.getSize() > MaxTargetSize) {
       CubismLogDebug(
         'too many eye blink targets : {0}',
@@ -319,17 +319,17 @@ export class CubismMotion extends ACubismMotion {
       this._fadeInSeconds <= 0.0
         ? 1.0
         : CubismMath.getEasingSine(
-            (userTimeSeconds - motionQueueEntry.getFadeInStartTime()) /
-              this._fadeInSeconds
-          );
+          (userTimeSeconds - motionQueueEntry.getFadeInStartTime()) /
+          this._fadeInSeconds
+        );
 
     const tmpFadeOut: number =
       this._fadeOutSeconds <= 0.0 || motionQueueEntry.getEndTime() < 0.0
         ? 1.0
         : CubismMath.getEasingSine(
-            (motionQueueEntry.getEndTime() - userTimeSeconds) /
-              this._fadeOutSeconds
-          );
+          (motionQueueEntry.getEndTime() - userTimeSeconds) /
+          this._fadeOutSeconds
+        );
     let value: number;
     let c: number, parameterIndex: number;
 
@@ -349,7 +349,7 @@ export class CubismMotion extends ACubismMotion {
       c = 0;
       c < this._motionData.curveCount &&
       curves.at(c).type ==
-        CubismMotionCurveTarget.CubismMotionCurveTarget_Model;
+      CubismMotionCurveTarget.CubismMotionCurveTarget_Model;
       ++c
     ) {
       // Evaluate curve and call handler.
@@ -368,7 +368,7 @@ export class CubismMotion extends ACubismMotion {
       ;
       c < this._motionData.curveCount &&
       curves.at(c).type ==
-        CubismMotionCurveTarget.CubismMotionCurveTarget_Parameter;
+      CubismMotionCurveTarget.CubismMotionCurveTarget_Parameter;
       ++c
     ) {
       parameterMotionCurveCount++;
@@ -418,12 +418,12 @@ export class CubismMotion extends ACubismMotion {
 
       let v: number;
 
-      // パラメータごとのフェード
+      // Fade by parameter
       if (curves.at(c).fadeInTime < 0.0 && curves.at(c).fadeOutTime < 0.0) {
-        // モーションのフェードを適用
+        // Apply motion fades
         v = sourceValue + (value - sourceValue) * fadeWeight;
       } else {
-        // パラメータに対してフェードインかフェードアウトが設定してある場合はそちらを適用
+        // Apply if fade-in or fade-out is set for the parameter
         let fin: number;
         let fout: number;
 
@@ -434,9 +434,9 @@ export class CubismMotion extends ACubismMotion {
             curves.at(c).fadeInTime == 0.0
               ? 1.0
               : CubismMath.getEasingSine(
-                  (userTimeSeconds - motionQueueEntry.getFadeInStartTime()) /
-                    curves.at(c).fadeInTime
-                );
+                (userTimeSeconds - motionQueueEntry.getFadeInStartTime()) /
+                curves.at(c).fadeInTime
+              );
         }
 
         if (curves.at(c).fadeOutTime < 0.0) {
@@ -444,17 +444,17 @@ export class CubismMotion extends ACubismMotion {
         } else {
           fout =
             curves.at(c).fadeOutTime == 0.0 ||
-            motionQueueEntry.getEndTime() < 0.0
+              motionQueueEntry.getEndTime() < 0.0
               ? 1.0
               : CubismMath.getEasingSine(
-                  (motionQueueEntry.getEndTime() - userTimeSeconds) /
-                    curves.at(c).fadeOutTime
-                );
+                (motionQueueEntry.getEndTime() - userTimeSeconds) /
+                curves.at(c).fadeOutTime
+              );
         }
 
         const paramWeight: number = this._weight * fin * fout;
 
-        // パラメータごとのフェードを適用
+        // Apply fades for each parameter
         v = sourceValue + (value - sourceValue) * paramWeight;
       }
 
@@ -472,7 +472,7 @@ export class CubismMotion extends ACubismMotion {
             this._eyeBlinkParameterIds.at(i)
           );
 
-          // モーションでの上書きがあった時にはまばたきは適用しない
+          // Blinking is not applied when there is an overwrite with motion
           if ((eyeBlinkFlags >> i) & 0x01) {
             continue;
           }
@@ -494,7 +494,7 @@ export class CubismMotion extends ACubismMotion {
             this._lipSyncParameterIds.at(i)
           );
 
-          // モーションでの上書きがあった時にはリップシンクは適用しない
+          // Lip sync is not applied when there is an overwrite with motion
           if ((lipSyncFlags >> i) & 0x01) {
             continue;
           }
@@ -511,7 +511,7 @@ export class CubismMotion extends ACubismMotion {
       ;
       c < this._motionData.curveCount &&
       curves.at(c).type ==
-        CubismMotionCurveTarget.CubismMotionCurveTarget_PartOpacity;
+      CubismMotionCurveTarget.CubismMotionCurveTarget_PartOpacity;
       ++c
     ) {
       // Find parameter index.
@@ -530,9 +530,9 @@ export class CubismMotion extends ACubismMotion {
 
     if (timeOffsetSeconds >= this._motionData.duration) {
       if (this._isLoop) {
-        motionQueueEntry.setStartTime(userTimeSeconds); // 最初の状態へ
+        motionQueueEntry.setStartTime(userTimeSeconds); // To the initial state
         if (this._isLoopFadeIn) {
-          // ループ内でループ用フェードインが有効の時は、フェードイン設定し直し
+          // If the loop fade-in is enabled in the loop, reset the fade-in setting.
           motionQueueEntry.setFadeInStartTime(userTimeSeconds);
         }
       } else {
@@ -547,63 +547,63 @@ export class CubismMotion extends ACubismMotion {
   }
 
   /**
-   * ループ情報の設定
-   * @param loop ループ情報
+   * Loop information setting
+   * @param loop Loop information
    */
   public setIsLoop(loop: boolean): void {
     this._isLoop = loop;
   }
 
   /**
-   * ループ情報の取得
-   * @return true ループする
-   * @return false ループしない
+   * Get loop information
+   * @return true to loop
+   * @return false Do not loop
    */
   public isLoop(): boolean {
     return this._isLoop;
   }
 
   /**
-   * ループ時のフェードイン情報の設定
-   * @param loopFadeIn  ループ時のフェードイン情報
+   * Fade-in information setting during loop
+   * @param loopFadeIn Fade-in information during loop
    */
   public setIsLoopFadeIn(loopFadeIn: boolean): void {
     this._isLoopFadeIn = loopFadeIn;
   }
 
   /**
-   * ループ時のフェードイン情報の取得
+   * Acquisition of fade-in information during loop
    *
-   * @return  true    する
-   * @return  false   しない
+   * @return true
+   * @return false Do not
    */
   public isLoopFadeIn(): boolean {
     return this._isLoopFadeIn;
   }
 
   /**
-   * モーションの長さを取得する。
+   * Get the length of the motion.
    *
-   * @return  モーションの長さ[秒]
+   * @return Motion length [seconds]
    */
   public getDuration(): number {
     return this._isLoop ? -1.0 : this._loopDurationSeconds;
   }
 
   /**
-   * モーションのループ時の長さを取得する。
+   * Get the loop length of the motion.
    *
-   * @return  モーションのループ時の長さ[秒]
+   * @return Motion loop length [seconds]
    */
   public getLoopDuration(): number {
     return this._loopDurationSeconds;
   }
 
   /**
-   * パラメータに対するフェードインの時間を設定する。
+   * Set the fade-in time for the parameter.
    *
-   * @param parameterId     パラメータID
-   * @param value           フェードインにかかる時間[秒]
+   * @param parameterId Parameter ID
+   * @param value Time to fade in [seconds]
    */
   public setParameterFadeInTime(
     parameterId: CubismIdHandle,
@@ -620,9 +620,9 @@ export class CubismMotion extends ACubismMotion {
   }
 
   /**
-   * パラメータに対するフェードアウトの時間の設定
-   * @param parameterId     パラメータID
-   * @param value           フェードアウトにかかる時間[秒]
+   * Set fade-out time for parameters
+   * @param parameterId Parameter ID
+   * @param value Time to fade out [seconds]
    */
   public setParameterFadeOutTime(
     parameterId: CubismIdHandle,
@@ -639,9 +639,9 @@ export class CubismMotion extends ACubismMotion {
   }
 
   /**
-   * パラメータに対するフェードインの時間の取得
-   * @param    parameterId     パラメータID
-   * @return   フェードインにかかる時間[秒]
+   * Get fade-in time for parameters
+   * @param parameterId Parameter ID
+   * @return Time to fade in [seconds]
    */
   public getParameterFadeInTime(parameterId: CubismIdHandle): number {
     const curves: csmVector<CubismMotionCurve> = this._motionData.curves;
@@ -656,10 +656,10 @@ export class CubismMotion extends ACubismMotion {
   }
 
   /**
-   * パラメータに対するフェードアウトの時間を取得
+   * Get the fade-out time for the parameter
    *
-   * @param   parameterId     パラメータID
-   * @return   フェードアウトにかかる時間[秒]
+   * @param parameterId Parameter ID
+   * @return Time to fade out [seconds]
    */
   public getParameterFadeOutTime(parameterId: CubismIdHandle): number {
     const curves: csmVector<CubismMotionCurve> = this._motionData.curves;
@@ -674,9 +674,9 @@ export class CubismMotion extends ACubismMotion {
   }
 
   /**
-   * 自動エフェクトがかかっているパラメータIDリストの設定
-   * @param eyeBlinkParameterIds    自動まばたきがかかっているパラメータIDのリスト
-   * @param lipSyncParameterIds     リップシンクがかかっているパラメータIDのリスト
+   * Setting the parameter ID list to which the automatic effect is applied
+   * @param eyeBlinkParameterIds List of parameter IDs with automatic blinking
+   * @param lipSyncParameterIds List of parameter IDs that are lip-synced
    */
   public setEffectIds(
     eyeBlinkParameterIds: csmVector<CubismIdHandle>,
@@ -687,14 +687,14 @@ export class CubismMotion extends ACubismMotion {
   }
 
   /**
-   * コンストラクタ
+   * Constructor
    */
   public constructor() {
     super();
     this._sourceFrameRate = 30.0;
     this._loopDurationSeconds = -1.0;
-    this._isLoop = false; // trueから false へデフォルトを変更
-    this._isLoopFadeIn = true; // ループ時にフェードインが有効かどうかのフラグ
+    this._isLoop = false; // Change default from true to false
+    this._isLoopFadeIn = true; // Flag for whether fade-in is enabled when looping
     this._lastWeight = 0.0;
     this._motionData = null;
     this._modelCurveIdEyeBlink = null;
@@ -704,7 +704,7 @@ export class CubismMotion extends ACubismMotion {
   }
 
   /**
-   * デストラクタ相当の処理
+   * Destructor-equivalent processing
    */
   public release(): void {
     this._motionData = void 0;
@@ -712,10 +712,10 @@ export class CubismMotion extends ACubismMotion {
   }
 
   /**
-   * motion3.jsonをパースする。
+   * Parse motion3.json.
    *
-   * @param motionJson  motion3.jsonが読み込まれているバッファ
-   * @param size        バッファのサイズ
+   * @param motionJson The buffer in which motion3.json is loaded
+   * @param size Buffer size
    */
   public parse(motionJson: ArrayBuffer, size: number): void {
     this._motionData = new CubismMotionData();
@@ -804,13 +804,13 @@ export class CubismMotion extends ACubismMotion {
       this._motionData.curves.at(
         curveCount
       ).fadeInTime = json.isExistMotionCurveFadeInTime(curveCount)
-        ? json.getMotionCurveFadeInTime(curveCount)
-        : -1.0;
+          ? json.getMotionCurveFadeInTime(curveCount)
+          : -1.0;
       this._motionData.curves.at(
         curveCount
       ).fadeOutTime = json.isExistMotionCurveFadeOutTime(curveCount)
-        ? json.getMotionCurveFadeOutTime(curveCount)
-        : -1.0;
+          ? json.getMotionCurveFadeOutTime(curveCount)
+          : -1.0;
 
       // Segments
       for (
@@ -1007,13 +1007,13 @@ export class CubismMotion extends ACubismMotion {
   }
 
   /**
-   * モデルのパラメータ更新
+   * Model parameter updates
    *
-   * イベント発火のチェック。
-   * 入力する時間は呼ばれるモーションタイミングを０とした秒数で行う。
+   * Check for event ignition.
+   * Input time is the number of seconds with the called motion timing as 0.
    *
-   * @param beforeCheckTimeSeconds   前回のイベントチェック時間[秒]
-   * @param motionTimeSeconds        今回の再生時間[秒]
+   * @param beforeCheckTimeSeconds Last event check time [seconds]
+   * @param motionTimeSeconds This playback time [seconds]
    */
   public getFiredEvent(
     beforeCheckTimeSeconds: number,
@@ -1021,7 +1021,7 @@ export class CubismMotion extends ACubismMotion {
   ): csmVector<csmString> {
     this._firedEventValues.updateSize(0);
 
-    // イベントの発火チェック
+    // Event ignition check
     for (let u = 0; u < this._motionData.eventCount; ++u) {
       if (
         this._motionData.events.at(u).fireTime > beforeCheckTimeSeconds &&
@@ -1036,19 +1036,19 @@ export class CubismMotion extends ACubismMotion {
     return this._firedEventValues;
   }
 
-  public _sourceFrameRate: number; // ロードしたファイルのFPS。記述が無ければデフォルト値15fpsとなる
-  public _loopDurationSeconds: number; // mtnファイルで定義される一連のモーションの長さ
-  public _isLoop: boolean; // ループするか?
-  public _isLoopFadeIn: boolean; // ループ時にフェードインが有効かどうかのフラグ。初期値では有効。
-  public _lastWeight: number; // 最後に設定された重み
+  public _sourceFrameRate: number; // FPS of the loaded file. If there is no description, the default value is 15 fps.
+  public _loopDurationSeconds: number; // Length of series of motions defined in mtn file
+  public _isLoop: boolean; // Do you want to loop?
+  public _isLoopFadeIn: boolean; // Flag for whether fade-in is enabled when looping. Valid by default.
+  public _lastWeight: number; // Last set weight
 
-  public _motionData: CubismMotionData; // 実際のモーションデータ本体
+  public _motionData: CubismMotionData; // Actual motion data body
 
-  public _eyeBlinkParameterIds: csmVector<CubismIdHandle>; // 自動まばたきを適用するパラメータIDハンドルのリスト。  モデル（モデルセッティング）とパラメータを対応付ける。
-  public _lipSyncParameterIds: csmVector<CubismIdHandle>; // リップシンクを適用するパラメータIDハンドルのリスト。  モデル（モデルセッティング）とパラメータを対応付ける。
+  public _eyeBlinkParameterIds: csmVector<CubismIdHandle>; // List of parameter ID handles to which automatic blinking is applied. Associate the model (model setting) with the parameters.
+  public _lipSyncParameterIds: csmVector<CubismIdHandle>; // List of parameter ID handles to which lip sync applies. Associate the model (model setting) with the parameters.
 
-  public _modelCurveIdEyeBlink: CubismIdHandle; // モデルが持つ自動まばたき用パラメータIDのハンドル。  モデルとモーションを対応付ける。
-  public _modelCurveIdLipSync: CubismIdHandle; // モデルが持つリップシンク用パラメータIDのハンドル。  モデルとモーションを対応付ける。
+  public _modelCurveIdEyeBlink: CubismIdHandle; // Handle of the parameter ID for automatic blinking of the model. Associate the model with the motion.
+  public _modelCurveIdLipSync: CubismIdHandle; // Handle of the parameter ID for lip sync of the model. Associate the model with the motion.
 }
 
 // Namespace definition for compatibility.

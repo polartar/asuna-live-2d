@@ -8,20 +8,20 @@
 import { csmString } from '../type/csmstring';
 
 /**
- * パラメータ名・パーツ名・Drawable名を保持
+ * Holds parameter name, part name, and Drawable name
  *
- * パラメータ名・パーツ名・Drawable名を保持するクラス。
+ * A class that holds parameter names, part names, and Drawable names.
  */
 export class CubismId {
   /**
-   * ID名を取得する
+   * Get ID name
    */
   public getString(): csmString {
     return this._id;
   }
 
   /**
-   * コンストラクタ
+   * Constructor
    */
   public constructor(id: string | csmString) {
     if (typeof id === 'string') {
@@ -33,9 +33,9 @@ export class CubismId {
   }
 
   /**
-   * idを比較
-   * @param c 比較するid
-   * @return 同じならばtrue,異なっていればfalseを返す
+   * Compare id
+   * @param c id to compare
+   * @return Returns true if they are the same, false if they are different
    */
   public isEqual(c: string | csmString | CubismId): boolean {
     if (typeof c === 'string') {
@@ -49,9 +49,9 @@ export class CubismId {
   }
 
   /**
-   * idを比較
-   * @param c 比較するid
-   * @return 同じならばtrue,異なっていればfalseを返す
+   * Compare id
+   * @param c id to compare
+   * @return Returns true if they are the same, false if they are different
    */
   public isNotEqual(c: string | csmString | CubismId): boolean {
     if (typeof c == 'string') {

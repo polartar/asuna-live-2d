@@ -9,13 +9,13 @@ import { CSM_ASSERT } from '../utils/cubismdebug';
 import { CubismModel } from './cubismmodel';
 
 /**
- * Mocデータの管理
+ * Moc data management
  *
- * Mocデータの管理を行うクラス。
+ * Moc A class that manages data.
  */
 export class CubismMoc {
   /**
-   * Mocデータの作成
+   * Creating Moc data
    */
   public static create(mocBytes: ArrayBuffer): CubismMoc {
     let cubismMoc: CubismMoc = null;
@@ -31,9 +31,9 @@ export class CubismMoc {
   }
 
   /**
-   * Mocデータを削除
+   * Delete Moc data
    *
-   * Mocデータを削除する
+   * Delete Moc data
    */
   public static delete(moc: CubismMoc): void {
     moc._moc._release();
@@ -42,9 +42,9 @@ export class CubismMoc {
   }
 
   /**
-   * モデルを作成する
+   * Create a model
    *
-   * @return Mocデータから作成されたモデル
+   * @return Model created from Moc data
    */
   createModel(): CubismModel {
     let cubismModel: CubismModel = null;
@@ -64,7 +64,7 @@ export class CubismMoc {
   }
 
   /**
-   * モデルを削除する
+   * Delete the model
    */
   deleteModel(model: CubismModel): void {
     if (model != null) {
@@ -75,7 +75,7 @@ export class CubismMoc {
   }
 
   /**
-   * コンストラクタ
+   * Constructor
    */
   private constructor(moc: Live2DCubismCore.Moc) {
     this._moc = moc;
@@ -83,7 +83,7 @@ export class CubismMoc {
   }
 
   /**
-   * デストラクタ相当の処理
+   * Destructor-equivalent processing
    */
   public release(): void {
     CSM_ASSERT(this._modelCount == 0);
@@ -92,8 +92,8 @@ export class CubismMoc {
     this._moc = null;
   }
 
-  _moc: Live2DCubismCore.Moc; // Mocデータ
-  _modelCount: number; // Mocデータから作られたモデルの個数
+  _moc: Live2DCubismCore.Moc; // Moc デ ー タ
+  _modelCount: number; // Number of models created from Moc data
 }
 
 // Namespace definition for compatibility.

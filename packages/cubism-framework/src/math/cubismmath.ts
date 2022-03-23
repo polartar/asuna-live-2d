@@ -8,18 +8,18 @@
 import { CubismVector2 } from './cubismvector2';
 
 /**
- * 数値計算などに使用するユーティリティクラス
+ * Utility class used for numerical calculation etc.
  */
 export class CubismMath {
   static readonly Epsilon: number = 0.00001;
 
   /**
-   * 第一引数の値を最小値と最大値の範囲に収めた値を返す
+   * Returns a value that contains the value of the first argument within the range of the minimum and maximum values.
    *
-   * @param value 収められる値
-   * @param min   範囲の最小値
-   * @param max   範囲の最大値
-   * @return 最小値と最大値の範囲に収めた値
+   * @param value Value to be stored
+   * @param min Minimum value in range
+   * @param max Maximum value in range
+   * @return Value within the range of minimum and maximum values
    */
   static range(value: number, min: number, max: number): number {
     if (value < min) {
@@ -32,48 +32,48 @@ export class CubismMath {
   }
 
   /**
-   * サイン関数の値を求める
+   * Find the value of the sine function
    *
-   * @param x 角度値（ラジアン）
-   * @return サイン関数sin(x)の値
+   * @param x angle value (radians)
+   * @return The value of the sine function sin (x)
    */
   static sin(x: number): number {
     return Math.sin(x);
   }
 
   /**
-   * コサイン関数の値を求める
+   * Find the value of the cosine function
    *
-   * @param x 角度値(ラジアン)
-   * @return コサイン関数cos(x)の値
+   * @param x angle value (radians)
+   * @return The value of the cosine function cos (x)
    */
   static cos(x: number): number {
     return Math.cos(x);
   }
 
   /**
-   * 値の絶対値を求める
+   * Find the absolute value of the value
    *
-   * @param x 絶対値を求める値
-   * @return 値の絶対値
+   * @param x Value for which the absolute value is calculated
+   * Absolute value of @return value
    */
   static abs(x: number): number {
     return Math.abs(x);
   }
 
   /**
-   * 平方根(ルート)を求める
-   * @param x -> 平方根を求める値
-   * @return 値の平方根
+   * Find the square root (root)
+   * @param x-> Value to find the square root
+   * @return Square root of value
    */
   static sqrt(x: number): number {
     return Math.sqrt(x);
   }
 
   /**
-   * 立方根を求める
-   * @param x -> 立方根を求める値
-   * @return 値の立方根
+   * Seek the cube root
+   * @param x-> Value to find the cube root
+   * @return Cube root of value
    */
   static cbrt(x: number): number {
     if (x === 0) {
@@ -98,11 +98,11 @@ export class CubismMath {
   }
 
   /**
-   * イージング処理されたサインを求める
-   * フェードイン・アウト時のイージングに利用できる
+   * Ask for an easing processed sign
+   * Can be used for easing during fade-in / out
    *
-   * @param value イージングを行う値
-   * @return イージング処理されたサイン値
+   * @param value Value for easing
+   * @return Eased sign value
    */
   static getEasingSine(value: number): number {
     if (value < 0.0) {
@@ -115,53 +115,53 @@ export class CubismMath {
   }
 
   /**
-   * 大きい方の値を返す
+   * Returns the larger value
    *
-   * @param left 左辺の値
-   * @param right 右辺の値
-   * @return 大きい方の値
+   * @param left Left side value
+   * @param right Right-hand side value
+   * @return Larger value
    */
   static max(left: number, right: number): number {
     return left > right ? left : right;
   }
 
   /**
-   * 小さい方の値を返す
+   * Returns the smaller value
    *
-   * @param left  左辺の値
-   * @param right 右辺の値
-   * @return 小さい方の値
+   * @param left Left side value
+   * @param right Right-hand side value
+   * @return Smaller value
    */
   static min(left: number, right: number): number {
     return left > right ? right : left;
   }
 
   /**
-   * 角度値をラジアン値に変換する
+   * Convert angle values ​​to radians
    *
-   * @param degrees   角度値
-   * @return 角度値から変換したラジアン値
+   * @param degrees angle value
+   * @return Radian value converted from angle value
    */
   static degreesToRadian(degrees: number): number {
     return (degrees / 180.0) * Math.PI;
   }
 
   /**
-   * ラジアン値を角度値に変換する
+   * Convert radian values ​​to angle values
    *
-   * @param radian    ラジアン値
-   * @return ラジアン値から変換した角度値
+   * @param radian radian value
+   * @return Angle value converted from radian value
    */
   static radianToDegrees(radian: number): number {
     return (radian * 180.0) / Math.PI;
   }
 
   /**
-   * ２つのベクトルからラジアン値を求める
+   * Find the radian value from two vectors
    *
-   * @param from  始点ベクトル
-   * @param to    終点ベクトル
-   * @return ラジアン値から求めた方向ベクトル
+   * @param from start point vector
+   * @param to endpoint vector
+   * @return Direction vector obtained from radian value
    */
   static directionToRadian(from: CubismVector2, to: CubismVector2): number {
     const q1: number = Math.atan2(to.y, to.x);
@@ -181,11 +181,11 @@ export class CubismMath {
   }
 
   /**
-   * ２つのベクトルから角度値を求める
+   * Find the angle value from two vectors
    *
-   * @param from  始点ベクトル
-   * @param to    終点ベクトル
-   * @return 角度値から求めた方向ベクトル
+   * @param from start point vector
+   * @param to endpoint vector
+   * @return Direction vector obtained from the angle value
    */
   static directionToDegrees(from: CubismVector2, to: CubismVector2): number {
     const radian: number = this.directionToRadian(from, to);
@@ -199,10 +199,10 @@ export class CubismMath {
   }
 
   /**
-   * ラジアン値を方向ベクトルに変換する。
+   * Convert radian values ​​to direction vectors.
    *
-   * @param totalAngle    ラジアン値
-   * @return ラジアン値から変換した方向ベクトル
+   * @param totalAngle Radian value
+   * @return Direction vector converted from radian value
    */
 
   static radianToDirection(totalAngle: number): CubismVector2 {
@@ -215,13 +215,13 @@ export class CubismMath {
   }
 
   /**
-   * 三次方程式の三次項の係数が0になったときに補欠的に二次方程式の解をもとめる。
+   * Find the solution of the quadratic equation as a substitute when the coefficient of the cubic term of the cubic equation becomes 0.
    * a * x^2 + b * x + c = 0
    *
-   * @param   a -> 二次項の係数値
-   * @param   b -> 一次項の係数値
-   * @param   c -> 定数項の値
-   * @return  二次方程式の解
+   * @param a-> Coefficient value of quadratic term
+   * @param b-> Primary term coefficient value
+   * @param c-> Constant term value
+   * @return Solving quadratic equations
    */
   static quadraticEquation(a: number, b: number, c: number): number {
     if (this.abs(a) < CubismMath.Epsilon) {
@@ -235,16 +235,16 @@ export class CubismMath {
   }
 
   /**
-   * カルダノの公式によってベジェのt値に該当する３次方程式の解を求める。
-   * 重解になったときには0.0～1.0の値になる解を返す。
+   * Find the solution of the cubic equation corresponding to the Bezier t-value by Cardano's formula.
+   * Returns a solution with a value between 0.0 and 1.0 when it becomes a multiple solution.
    *
    * a * x^3 + b * x^2 + c * x + d = 0
    *
-   * @param   a -> 三次項の係数値
-   * @param   b -> 二次項の係数値
-   * @param   c -> 一次項の係数値
-   * @param   d -> 定数項の値
-   * @return  0.0～1.0の間にある解
+   * @param a-> Defect value of cubic term
+   * @param b-> Coefficient value of quadratic term
+   * @param c-> Primary term coefficient value
+   * @param d-> Constant term value
+   * @return Solutions between 0.0 and 1.0
    */
   static cardanoAlgorithmForBezier(
     a: number,
@@ -320,9 +320,9 @@ export class CubismMath {
   }
 
   /**
-   * コンストラクタ
+   * Constructor
    */
-  private constructor() {}
+  private constructor() { }
 }
 
 // Namespace definition for compatibility.

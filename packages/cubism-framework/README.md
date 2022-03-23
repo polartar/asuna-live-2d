@@ -1,19 +1,19 @@
 # Cubism Web Framework
 
-Live2D Cubism 4 Editor で出力したモデルをアプリケーションで利用するためのフレームワークです。
+It is a framework for using the model output by Live2D Cubism 4 Editor in the application.
 
-モデルを表示、操作するための各種機能を提供します。
-モデルをロードするには Live2D Cubism Core ライブラリと組み合わせて使用します。
+It provides various functions for displaying and operating the model.
+Use in combination with the Live2D Cubism Core library to load the model.
 
-ビルドを行うことで、ブラウザで利用可能な JavaScript ライブラリとして利用することができます。
-
-
-## ライセンス
-
-本 SDK を使用する前に、[ライセンス](LICENSE.md)をご確認ください。
+By building, you can use it as a JavaScript library that can be used in the browser.
 
 
-## 開発環境
+## License
+
+Please check [License] (LICENSE.md) before using this SDK.
+
+
+## Development environment
 
 ### Node.js
 
@@ -27,117 +27,117 @@ Live2D Cubism 4 Editor で出力したモデルをアプリケーションで利
 4.5.2
 
 
-## 開発環境構築
+## Development environment construction
 
-1. [Node.js] と [Visual Studio Code] をインストールします
-1. Visual Studio Code で本プロジェクトを開き、推奨拡張機能をインストールします
-    * 拡張機能タブから `@recommended` と入力することで確認できます
-1. コマンドパレット（*View > Command Palette...*）で `>Tasks: Run Task` を入力してタスク一覧を表示します
-1. `npm: install` を選択して依存パッケージのダウンロードを行います
+1. Install [Node.js] and [Visual Studio Code]
+1. Open this project in Visual Studio Code and install the recommended extension
+    * You can check by typing `@recommended` from the Extensions tab
+1. In the command palette (* View> Command Palette ... *), enter `> Tasks: Run Task` to display the task list.
+1. Select `npm: install` to download dependent packages
 
-コマンドパレットのタスク一覧から各種コマンドを実行することができます。
+You can execute various commands from the task list on the command palette.
 
-NOTE: デバック用の設定は、`.vscode/tasks.json` に記述しています。
+NOTE: The settings for debugging are described in `.vscode/tasks.json`.
 
-## タスク一覧
+## Task list
 
 ### `npm: build`
 
-ソースファイルのビルドを行い、`dist` ディレクトリに出力します。
+Build the source files and output to the `dist` directory.
 
-`tsconfig.json` を編集することで設定内容を変更できます。
+You can change the settings by editing `tsconfig.json`.
 
 ### `npm: test`
 
-TypeScript の型チェックテストを行います。
+Perform a TypeScript type check test.
 
-`tsconfig.json` を編集することで設定内容を変更できます。
+You can change the settings by editing `tsconfig.json`.
 
 ### `npm: lint`
 
-`src` ディレクトリ内の TypeScript ファイルの静的解析を行います。
+Performs static analysis of TypeScript files in the `src` directory.
 
-`.eslintrc.yml` を編集することで設定内容を変更できます。
+You can change the settings by editing `.eslintrc.yml`.
 
 ### `npm: lint:fix`
 
-`src` ディレクトリ内の TypeScript ファイルの静的解析及び自動修正を行います。
+Performs static analysis and automatic modification of TypeScript files in the `src` directory.
 
-`.eslintrc.yml` を編集することで設定内容を変更できます。
+You can change the settings by editing `.eslintrc.yml`.
 
 ### `npm: clean`
 
-ビルド成果物ディレクトリ（`dist`）を削除します。
+Delete the build artifact directory (`dist`).
 
 
-## コンポーネント
+## Component
 
 ### effect
 
-自動まばたきやリップシンクなど、モデルに対してモーション情報をエフェクト的に付加する機能を提供します。
+It provides functions such as automatic blinking and lip sync to add motion information to the model as an effect.
 
 ### id
 
-モデルに設定されたパラメータ名・パーツ名・Drawable名を独自の型で管理する機能を提供します。
+It provides a function to manage the parameter name, part name, and Drawable name set in the model with a unique type.
 
 ### math
 
-行列計算やベクトル計算など、モデルの操作や描画に必要な算術演算の機能を提供します。
+It provides the functions of arithmetic operations required for model operation and drawing, such as matrix calculation and vector calculation.
 
 ### model
 
-モデルを取り扱うための各種機能（生成、更新、破棄）を提供します。
+It provides various functions (generate, update, destroy) for handling models.
 
 ### motion
 
-モデルにモーションデータを適用するための各種機能（モーション再生、パラメータブレンド）を提供します。
+It provides various functions (motion playback, parameter blending) for applying motion data to the model.
 
 ### physics
 
-モデルに物理演算による変形操作を適用するための機能を提供します。
+Provides functionality for applying physics transformation operations to a model.
 
 ### rendering
 
-モデルを描画するためのグラフィックス命令を実装したレンダラを提供します。
+Provides a renderer that implements graphics instructions for drawing the model.
 
 ### type
 
-フレームワーク内で使用する型定義を提供します。
+Provides a type definition for use within the framework.
 
 ### utils
 
-JSONパーサーやログ出力などのユーティリティ機能を提供します。
+It provides utility functions such as JSON parser and log output.
 
 
 ## Live2D Cubism Core for Web
 
-当リポジトリには Cubism Core for Web は同梱されていません。
+Cubism Core for Web is not included in this repository.
 
-[Cubism SDK for Web] からダウンロードしてください。
+Download it from the [Cubism SDK for Web].
 
 [Cubism SDK for Web]: https://www.live2d.com/download/cubism-sdk/download-web/
 
 
-## サンプル
+## sample
 
-標準的なアプリケーションの実装例は [CubismWebSamples] を参照ください。
+See [CubismWebSamples] for an example implementation of a standard application.
 
 [CubismWebSamples]: https://github.com/Live2D/CubismWebSamples
 
 
-## マニュアル
+## Manual
 
 [Cubism SDK Manual](https://docs.live2d.com/cubism-sdk-manual/top/)
 
 
-## 変更履歴
+## change history
 
-当リポジトリの変更履歴については [CHANGELOG.md](CHANGELOG.md) を参照ください。
+Please refer to [CHANGELOG.md] (CHANGELOG.md) for the change history of this repository.
 
 
-## コミュニティ
+## community
 
-ユーザー同士でCubism SDKの活用方法の提案や質問をしたい場合は、是非コミュニティをご活用ください。
+If you want to suggest or ask questions about how to use the Cubism SDK between users, please use the community.
 
-- [Live2D 公式コミュニティ](https://creatorsforum.live2d.com/)
+-[Live2D Official Community] (https://creatorsforum.live2d.com/)
 - [Live2D community(English)](http://community.live2d.com/)

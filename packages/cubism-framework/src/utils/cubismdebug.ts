@@ -96,20 +96,20 @@ if (CSM_LOG_LEVEL <= CSM_LOG_LEVEL_VERBOSE) {
 }
 
 /**
- * デバッグ用のユーティリティクラス。
- * ログの出力、バイトのダンプなど
+ * Utility class for debugging.
+ * Log output, byte dump, etc.
  */
 export class CubismDebug {
   /**
-   * ログを出力する。第一引数にログレベルを設定する。
-   * CubismFramework.initialize()時にオプションで設定されたログ出力レベルを下回る場合はログに出さない。
+   * Output the log. Set the log level in the first argument.
+   * If the log output level is lower than the option set at the time of CubismFramework.initialize (), it will not be logged.
    *
-   * @param logLevel ログレベルの設定
-   * @param format 書式付き文字列
-   * @param args 可変長引数
+   * @param logLevel Setting the log level
+   * @param format Formatted string
+   * @param args Variadic arguments
    */
   public static print(logLevel: LogLevel, format: string, args?: any[]): void {
-    // オプションで設定されたログ出力レベルを下回る場合はログに出さない
+    // Do not log if it is below the log output level set in the option
     if (logLevel < CubismFramework.getLoggingLevel()) {
       return;
     }
@@ -126,12 +126,12 @@ export class CubismDebug {
   }
 
   /**
-   * データから指定した長さだけダンプ出力する。
-   * CubismFramework.initialize()時にオプションで設定されたログ出力レベルを下回る場合はログに出さない。
+   * Dump output only the specified length from the data.
+   * If the log output level is lower than the option set at the time of CubismFramework.initialize (), it will not be logged.
    *
-   * @param logLevel ログレベルの設定
-   * @param data ダンプするデータ
-   * @param length ダンプする長さ
+   * @param logLevel Setting the log level
+   * @param data Dump data
+   * @param length The length to dump
    */
   public static dumpBytes(
     logLevel: LogLevel,
@@ -148,9 +148,9 @@ export class CubismDebug {
   }
 
   /**
-   * private コンストラクタ
+   * private constructor
    */
-  private constructor() {}
+  private constructor() { }
 }
 
 // Namespace definition for compatibility.

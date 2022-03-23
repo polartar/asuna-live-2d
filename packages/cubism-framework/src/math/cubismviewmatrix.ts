@@ -8,13 +8,13 @@
 import { CubismMatrix44 } from './cubismmatrix44';
 
 /**
- * カメラの位置変更に使うと便利な4x4行列
+ * 4x4 matrix useful for repositioning the camera
  *
- * カメラの位置変更に使うと便利な4x4行列のクラス。
+ * A 4x4 matrix class that is useful for repositioning the camera.
  */
 export class CubismViewMatrix extends CubismMatrix44 {
   /**
-   * コンストラクタ
+   * Constructor
    */
   public constructor() {
     super();
@@ -31,10 +31,10 @@ export class CubismViewMatrix extends CubismMatrix44 {
   }
 
   /**
-   * 移動を調整
+   * Adjust movement
    *
-   * @param x X軸の移動量
-   * @param y Y軸の移動量
+   * @param x X-axis movement
+   * @param y Y-axis movement
    */
   public adjustTranslate(x: number, y: number): void {
     if (this._tr[0] * this._maxLeft + (this._tr[12] + x) > this._screenLeft) {
@@ -79,11 +79,11 @@ export class CubismViewMatrix extends CubismMatrix44 {
   }
 
   /**
-   * 拡大率を調整
+   * Adjust the magnification
    *
-   * @param cx 拡大を行うX軸の中心位置
-   * @param cy 拡大を行うY軸の中心位置
-   * @param scale 拡大率
+   * @param cx Center position of X-axis to expand
+   * @param cy Center position of Y-axis to expand
+   * @param scale Scale ratio
    */
   public adjustScale(cx: number, cy: number, scale: number): void {
     const maxScale: number = this.getMaxScale();
@@ -164,12 +164,12 @@ export class CubismViewMatrix extends CubismMatrix44 {
   }
 
   /**
-   * デバイスに対応する論理座養生の範囲の設定
+   * Setting the range of logical cure for the device
    *
-   * @param left      左辺のX軸の位置
-   * @param right     右辺のX軸の位置
-   * @param bottom    下辺のY軸の位置
-   * @param top       上辺のY軸の位置
+   * @param left X-axis position on the left side
+   * @param right X-axis position on the right side
+   * @param bottom Y-axis position at the bottom
+   * @param top Y-axis position on the top side
    */
   public setScreenRect(
     left: number,
@@ -184,11 +184,11 @@ export class CubismViewMatrix extends CubismMatrix44 {
   }
 
   /**
-   * デバイスに対応する論理座標上の移動可能範囲の設定
-   * @param left      左辺のX軸の位置
-   * @param right     右辺のX軸の位置
-   * @param bottom    下辺のY軸の位置
-   * @param top       上辺のY軸の位置
+   * Setting the range of movement on the logical coordinates corresponding to the device
+   * @param left X-axis position on the left side
+   * @param right X-axis position on the right side
+   * @param bottom Y-axis position at the bottom
+   * @param top Y-axis position on the top side
    */
   public setMaxScreenRect(
     left: number,
@@ -203,131 +203,131 @@ export class CubismViewMatrix extends CubismMatrix44 {
   }
 
   /**
-   * 最大拡大率の設定
-   * @param maxScale 最大拡大率
+   * Maximum magnification setting
+   * @param maxScale maximum scaling ratio
    */
   public setMaxScale(maxScale: number): void {
     this._maxScale = maxScale;
   }
 
   /**
-   * 最小拡大率の設定
-   * @param minScale 最小拡大率
+   * Minimum magnification setting
+   * @param minScale Minimum scaling ratio
    */
   public setMinScale(minScale: number): void {
     this._minScale = minScale;
   }
 
   /**
-   * 最大拡大率の取得
-   * @return 最大拡大率
+   * Get maximum magnification
+   * @return maximum sizing rate
    */
   public getMaxScale(): number {
     return this._maxScale;
   }
 
   /**
-   * 最小拡大率の取得
-   * @return 最小拡大率
+   * Get the minimum magnification
+   * @return Minimum magnification
    */
   public getMinScale(): number {
     return this._minScale;
   }
 
   /**
-   * 拡大率が最大になっているかを確認する
+   * Check if the magnification is maximized
    *
-   * @return true 拡大率は最大
-   * @return false 拡大率は最大ではない
+   * @return true Maximum magnification
+   * @return false Magnification is not maximum
    */
   public isMaxScale(): boolean {
     return this.getScaleX() >= this._maxScale;
   }
 
   /**
-   * 拡大率が最小になっているかを確認する
+   * Check if the magnification is minimized
    *
-   * @return true 拡大率は最小
-   * @return false 拡大率は最小ではない
+   * @return true The magnification is the minimum
+   * @return false The magnification is not the minimum
    */
   public isMinScale(): boolean {
     return this.getScaleX() <= this._minScale;
   }
 
   /**
-   * デバイスに対応する論理座標の左辺のＸ軸位置を取得する
-   * @return デバイスに対応する論理座標の左辺のX軸位置
+   * Get the X-axis position of the left side of the logical coordinates corresponding to the device
+   * @return X-axis position on the left side of the logical coordinates corresponding to the device
    */
   public getScreenLeft(): number {
     return this._screenLeft;
   }
 
   /**
-   * デバイスに対応する論理座標の右辺のＸ軸位置を取得する
-   * @return デバイスに対応する論理座標の右辺のX軸位置
+   * Get the X-axis position on the right side of the logical coordinates corresponding to the device
+   * @return X-axis position on the right side of the logical coordinates corresponding to the device
    */
   public getScreenRight(): number {
     return this._screenRight;
   }
 
   /**
-   * デバイスに対応する論理座標の下辺のY軸位置を取得する
-   * @return デバイスに対応する論理座標の下辺のY軸位置
+   * Get the Y-axis position of the bottom of the logical coordinates corresponding to the device
+   * @return Y-axis position at the bottom of the logical coordinates corresponding to the device
    */
   public getScreenBottom(): number {
     return this._screenBottom;
   }
 
   /**
-   * デバイスに対応する論理座標の上辺のY軸位置を取得する
-   * @return デバイスに対応する論理座標の上辺のY軸位置
+   * Get the Y-axis position of the upper side of the logical coordinates corresponding to the device
+   * @return Y-axis position of the upper side of the logical coordinates corresponding to the device
    */
   public getScreenTop(): number {
     return this._screenTop;
   }
 
   /**
-   * 左辺のX軸位置の最大値の取得
-   * @return 左辺のX軸位置の最大値
+   * Get the maximum value of the X-axis position on the left side
+   * @return Maximum value of X-axis position on the left side
    */
   public getMaxLeft(): number {
     return this._maxLeft;
   }
 
   /**
-   * 右辺のX軸位置の最大値の取得
-   * @return 右辺のX軸位置の最大値
+   * Get the maximum value of the X-axis position on the right side
+   * @return Maximum value of X-axis position on the right side
    */
   public getMaxRight(): number {
     return this._maxRight;
   }
 
   /**
-   * 下辺のY軸位置の最大値の取得
-   * @return 下辺のY軸位置の最大値
+   * Get the maximum value of the lower Y-axis position
+   * @return Maximum value of Y-axis position on the lower side
    */
   public getMaxBottom(): number {
     return this._maxBottom;
   }
 
   /**
-   * 上辺のY軸位置の最大値の取得
-   * @return 上辺のY軸位置の最大値
+   * Get the maximum value of the Y-axis position on the upper side
+   * @return Maximum value of Y-axis position on the upper side
    */
   public getMaxTop(): number {
     return this._maxTop;
   }
 
-  private _screenLeft: number; // デバイスに対応する論理座標上の範囲（左辺X軸位置）
-  private _screenRight: number; // デバイスに対応する論理座標上の範囲（右辺X軸位置）
-  private _screenTop: number; // デバイスに対応する論理座標上の範囲（上辺Y軸位置）
-  private _screenBottom: number; // デバイスに対応する論理座標上の範囲（下辺Y軸位置）
-  private _maxLeft: number; // 論理座標上の移動可能範囲（左辺X軸位置）
-  private _maxRight: number; // 論理座標上の移動可能範囲（右辺X軸位置）
-  private _maxTop: number; // 論理座標上の移動可能範囲（上辺Y軸位置）
-  private _maxBottom: number; // 論理座標上の移動可能範囲（下辺Y軸位置）
-  private _maxScale: number; // 拡大率の最大値
-  private _minScale: number; // 拡大率の最小値
+  private _screenLeft: number; // Range on the logical coordinates corresponding to the device (X-axis position on the left side)
+  private _screenRight: number; // Range on logical coordinates corresponding to the device (right side X-axis position)
+  private _screenTop: number; // Range on logical coordinates corresponding to the device (upper side Y-axis position)
+  private _screenBottom: number; // Range on logical coordinates corresponding to the device (bottom Y-axis position)
+  private _maxLeft: number; // Movable range on logical coordinates (left side X-axis position)
+  private _maxRight: number; // Movable range on logical coordinates (right side X-axis position)
+  private _maxTop: number; // Movable range on logical coordinates (upper side Y-axis position)
+  private _maxBottom: number; // Movable range on logical coordinates (bottom Y-axis position)
+  private _maxScale: number; // Maximum magnification
+  private _minScale: number; // Minimum magnification
 }
 
 // Namespace definition for compatibility.

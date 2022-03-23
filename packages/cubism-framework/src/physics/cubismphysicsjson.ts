@@ -55,28 +55,28 @@ const Radius = 'Radius';
 const Acceleration = 'Acceleration';
 
 /**
- * physics3.jsonのコンテナ。
+ * physics3.json container.
  */
 export class CubismPhysicsJson {
   /**
-   * コンストラクタ
-   * @param buffer physics3.jsonが読み込まれているバッファ
-   * @param size バッファのサイズ
+   * Constructor
+   * @param buffer The buffer in which physics3.json is loaded
+   * @param size Buffer size
    */
   public constructor(buffer: ArrayBuffer, size: number) {
     this._json = CubismJson.create(buffer, size);
   }
 
   /**
-   * デストラクタ相当の処理
+   * Destructor-equivalent processing
    */
   public release(): void {
     CubismJson.delete(this._json);
   }
 
   /**
-   * 重力の取得
-   * @return 重力
+   * Gravity acquisition
+   * @return gravity
    */
   public getGravity(): CubismVector2 {
     const ret: CubismVector2 = new CubismVector2(0, 0);
@@ -98,8 +98,8 @@ export class CubismPhysicsJson {
   }
 
   /**
-   * 風の取得
-   * @return 風
+   * Get the wind
+   * @return wind
    */
   public getWind(): CubismVector2 {
     const ret: CubismVector2 = new CubismVector2(0, 0);
@@ -121,8 +121,8 @@ export class CubismPhysicsJson {
   }
 
   /**
-   * 物理店の管理の個数の取得
-   * @return 物理店の管理の個数
+   * Obtaining the number of physical store management
+   * @return Number of physical store management
    */
   public getSubRigCount(): number {
     return this._json
@@ -133,8 +133,8 @@ export class CubismPhysicsJson {
   }
 
   /**
-   * 入力の総合計の取得
-   * @return 入力の総合計
+   * Get total input
+   * @return Total input
    */
   public getTotalInputCount(): number {
     return this._json
@@ -145,8 +145,8 @@ export class CubismPhysicsJson {
   }
 
   /**
-   * 出力の総合計の取得
-   * @return 出力の総合計
+   * Get total output
+   * @return Total output
    */
   public getTotalOutputCount(): number {
     return this._json
@@ -157,8 +157,8 @@ export class CubismPhysicsJson {
   }
 
   /**
-   * 物理点の個数の取得
-   * @return 物理点の個数
+   * Get the number of physical points
+   * @return Number of physical points
    */
   public getVertexCount(): number {
     return this._json
@@ -169,9 +169,9 @@ export class CubismPhysicsJson {
   }
 
   /**
-   * 正規化された位置の最小値の取得
-   * @param physicsSettingIndex 物理演算の設定のインデックス
-   * @return 正規化された位置の最小値
+   * Get the minimum value of the normalized position
+   * @param physicsSettingIndex Index of physics settings
+   * @return Minimum value of normalized position
    */
   public getNormalizationPositionMinimumValue(
     physicsSettingIndex: number
@@ -187,9 +187,9 @@ export class CubismPhysicsJson {
   }
 
   /**
-   * 正規化された位置の最大値の取得
-   * @param physicsSettingIndex 物理演算の設定のインデックス
-   * @return 正規化された位置の最大値
+   * Get the maximum value of the normalized position
+   * @param physicsSettingIndex Index of physics settings
+   * @return Maximum value of normalized position
    */
   public getNormalizationPositionMaximumValue(
     physicsSettingIndex: number
@@ -205,9 +205,9 @@ export class CubismPhysicsJson {
   }
 
   /**
-   * 正規化された位置のデフォルト値の取得
-   * @param physicsSettingIndex 物理演算の設定のインデックス
-   * @return 正規化された位置のデフォルト値
+   * Get the default value for the normalized position
+   * @param physicsSettingIndex Index of physics settings
+   * @return Default value for normalized position
    */
   public getNormalizationPositionDefaultValue(
     physicsSettingIndex: number
@@ -223,9 +223,9 @@ export class CubismPhysicsJson {
   }
 
   /**
-   * 正規化された角度の最小値の取得
-   * @param physicsSettingIndex 物理演算の設定のインデックス
-   * @return 正規化された角度の最小値
+   * Get the minimum normalized angle
+   * @param physicsSettingIndex Index of physics settings
+   * @return Minimum normalized angle
    */
   public getNormalizationAngleMinimumValue(
     physicsSettingIndex: number
@@ -241,9 +241,9 @@ export class CubismPhysicsJson {
   }
 
   /**
-   * 正規化された角度の最大値の取得
+   * Get the maximum value of the normalized angle
    * @param physicsSettingIndex
-   * @return 正規化された角度の最大値
+   * @return Maximum normalized angle
    */
   public getNormalizationAngleMaximumValue(
     physicsSettingIndex: number
@@ -259,9 +259,9 @@ export class CubismPhysicsJson {
   }
 
   /**
-   * 正規化された角度のデフォルト値の取得
-   * @param physicsSettingIndex 物理演算の設定のインデックス
-   * @return 正規化された角度のデフォルト値
+   * Get the default value for the normalized angle
+   * @param physicsSettingIndex Index of physics settings
+   * @return Default value for normalized angles
    */
   public getNormalizationAngleDefaultValue(
     physicsSettingIndex: number
@@ -277,9 +277,9 @@ export class CubismPhysicsJson {
   }
 
   /**
-   * 入力の個数の取得
-   * @param physicsSettingIndex 物理演算の設定のインデックス
-   * @return 入力の個数
+   * Get the number of inputs
+   * @param physicsSettingIndex Index of physics settings
+   * @return Number of inputs
    */
   public getInputCount(physicsSettingIndex: number): number {
     return this._json
@@ -292,10 +292,10 @@ export class CubismPhysicsJson {
   }
 
   /**
-   * 入力の重みの取得
-   * @param physicsSettingIndex 物理演算の設定のインデックス
-   * @param inputIndex 入力のインデックス
-   * @return 入力の重み
+   * Get input weights
+   * @param physicsSettingIndex Index of physics settings
+   * @param inputIndex Input index
+   * @return Input weight
    */
   public getInputWeight(
     physicsSettingIndex: number,
@@ -312,10 +312,10 @@ export class CubismPhysicsJson {
   }
 
   /**
-   * 入力の反転の取得
-   * @param physicsSettingIndex 物理演算の設定のインデックス
-   * @param inputIndex 入力のインデックス
-   * @return 入力の反転
+   * Get input inversion
+   * @param physicsSettingIndex Index of physics settings
+   * @param inputIndex Input index
+   * @return Input inversion
    */
   public getInputReflect(
     physicsSettingIndex: number,
@@ -332,10 +332,10 @@ export class CubismPhysicsJson {
   }
 
   /**
-   * 入力の種類の取得
-   * @param physicsSettingIndex 物理演算の設定のインデックス
-   * @param inputIndex 入力のインデックス
-   * @return 入力の種類
+   * Get input type
+   * @param physicsSettingIndex Index of physics settings
+   * @param inputIndex Input index
+   * @return Input type
    */
   public getInputType(physicsSettingIndex: number, inputIndex: number): string {
     return this._json
@@ -349,10 +349,10 @@ export class CubismPhysicsJson {
   }
 
   /**
-   * 入力元のIDの取得
-   * @param physicsSettingIndex 物理演算の設定のインデックス
-   * @param inputIndex 入力のインデックス
-   * @return 入力元のID
+   * Get the ID of the input source
+   * @param physicsSettingIndex Index of physics settings
+   * @param inputIndex Input index
+   * @return Input source ID
    */
   public getInputSourceId(
     physicsSettingIndex: number,
@@ -372,9 +372,9 @@ export class CubismPhysicsJson {
   }
 
   /**
-   * 出力の個数の取得
-   * @param physicsSettingIndex 物理演算の設定のインデックス
-   * @return 出力の個数
+   * Get the number of outputs
+   * @param physicsSettingIndex Index of physics settings
+   * @return Number of outputs
    */
   public getOutputCount(physicsSettingIndex: number): number {
     return this._json
@@ -387,10 +387,10 @@ export class CubismPhysicsJson {
   }
 
   /**
-   * 出力の物理点のインデックスの取得
-   * @param physicsSettingIndex 物理演算の設定のインデックス
-   * @param outputIndex 出力のインデックス
-   * @return 出力の物理点のインデックス
+   * Get index of physical points of output
+   * @param physicsSettingIndex Index of physics settings
+   * @param outputIndex Output index
+   * @return Index of physical points in output
    */
   public getOutputVertexIndex(
     physicsSettingIndex: number,
@@ -407,10 +407,10 @@ export class CubismPhysicsJson {
   }
 
   /**
-   * 出力の角度のスケールを取得する
-   * @param physicsSettingIndex 物理演算の設定のインデックス
-   * @param outputIndex 出力のインデックス
-   * @return 出力の角度のスケール
+   * Get the scale of the output angle
+   * @param physicsSettingIndex Index of physics settings
+   * @param outputIndex Output index
+   * @return Output angle scale
    */
   public getOutputAngleScale(
     physicsSettingIndex: number,
@@ -427,10 +427,10 @@ export class CubismPhysicsJson {
   }
 
   /**
-   * 出力の重みの取得
-   * @param physicsSettingIndex 物理演算の設定のインデックス
-   * @param outputIndex 出力のインデックス
-   * @return 出力の重み
+   * Get output weights
+   * @param physicsSettingIndex Index of physics settings
+   * @param outputIndex Output index
+   * @return Output weight
    */
   public getOutputWeight(
     physicsSettingIndex: number,
@@ -447,10 +447,10 @@ export class CubismPhysicsJson {
   }
 
   /**
-   * 出力先のIDの取得
-   * @param physicsSettingIndex 物理演算の設定のインデックス
-   * @param outputIndex 出力のインデックス
-   * @return 出力先のID
+   * Get the output destination ID
+   * @param physicsSettingIndex Index of physics settings
+   * @param outputIndex Output index
+   * @return Output destination ID
    */
   public getOutputDestinationId(
     physicsSettingIndex: number,
@@ -470,10 +470,10 @@ export class CubismPhysicsJson {
   }
 
   /**
-   * 出力の種類の取得
-   * @param physicsSettingIndex 物理演算の設定のインデックス
-   * @param outputIndex 出力のインデックス
-   * @return 出力の種類
+   * Get output type
+   * @param physicsSettingIndex Index of physics settings
+   * @param outputIndex Output index
+   * @return Output type
    */
   public getOutputType(
     physicsSettingIndex: number,
@@ -490,10 +490,10 @@ export class CubismPhysicsJson {
   }
 
   /**
-   * 出力の反転の取得
-   * @param physicsSettingIndex 物理演算のインデックス
-   * @param outputIndex 出力のインデックス
-   * @return 出力の反転
+   * Get output inversion
+   * @param physicsSettingIndex Physics index
+   * @param outputIndex Output index
+   * @return Inversion of output
    */
   public getOutputReflect(
     physicsSettingIndex: number,
@@ -510,9 +510,9 @@ export class CubismPhysicsJson {
   }
 
   /**
-   * 物理点の個数の取得
-   * @param physicsSettingIndex 物理演算男設定のインデックス
-   * @return 物理点の個数
+   * Get the number of physical points
+   * @param physicsSettingIndex Index of physics man setting
+   * @return Number of physical points
    */
   public getParticleCount(physicsSettingIndex: number): number {
     return this._json
@@ -525,10 +525,10 @@ export class CubismPhysicsJson {
   }
 
   /**
-   * 物理点の動きやすさの取得
-   * @param physicsSettingIndex 物理演算の設定のインデックス
-   * @param vertexIndex 物理点のインデックス
-   * @return 物理点の動きやすさ
+   * Acquisition of ease of movement of physical points
+   * @param physicsSettingIndex Index of physics settings
+   * @param vertexIndex Physical point index
+   * @return Ease of movement of physical points
    */
   public getParticleMobility(
     physicsSettingIndex: number,
@@ -545,10 +545,10 @@ export class CubismPhysicsJson {
   }
 
   /**
-   * 物理点の遅れの取得
-   * @param physicsSettingIndex 物理演算の設定のインデックス
-   * @param vertexIndex 物理点のインデックス
-   * @return 物理点の遅れ
+   * Get the delay of the physical point
+   * @param physicsSettingIndex Index of physics settings
+   * @param vertexIndex Physical point index
+   * @return Physical point delay
    */
   public getParticleDelay(
     physicsSettingIndex: number,
@@ -565,10 +565,10 @@ export class CubismPhysicsJson {
   }
 
   /**
-   * 物理点の加速度の取得
-   * @param physicsSettingIndex 物理演算の設定
-   * @param vertexIndex 物理点のインデックス
-   * @return 物理点の加速度
+   * Get the acceleration of the physical point
+   * @param physicsSettingIndex Physics settings
+   * @param vertexIndex Physical point index
+   * @return Acceleration of physical points
    */
   public getParticleAcceleration(
     physicsSettingIndex: number,
@@ -585,10 +585,10 @@ export class CubismPhysicsJson {
   }
 
   /**
-   * 物理点の距離の取得
-   * @param physicsSettingIndex 物理演算の設定のインデックス
-   * @param vertexIndex 物理点のインデックス
-   * @return 物理点の距離
+   * Obtaining the distance of physical points
+   * @param physicsSettingIndex Index of physics settings
+   * @param vertexIndex Physical point index
+   * @return Physical point distance
    */
   public getParticleRadius(
     physicsSettingIndex: number,
@@ -605,10 +605,10 @@ export class CubismPhysicsJson {
   }
 
   /**
-   * 物理点の位置の取得
-   * @param physicsSettingIndex 物理演算の設定のインデックス
-   * @param vertexInde 物理点のインデックス
-   * @return 物理点の位置
+   * Get the position of the physical point
+   * @param physicsSettingIndex Index of physics settings
+   * @param vertexInde Physical point index
+   * @return Position of physical point
    */
   public getParticlePosition(
     physicsSettingIndex: number,

@@ -10,54 +10,54 @@ import { CubismVector2 } from '../math/cubismvector2';
 import { csmVector } from '../type/csmvector';
 
 /**
- * 物理演算の適用先の種類
+ * Type of application of physics calculation
  */
 export enum CubismPhysicsTargetType {
-  CubismPhysicsTargetType_Parameter // パラメータに対して適用
+  CubismPhysicsTargetType_Parameter // Apply to parameter
 }
 
 /**
- * 物理演算の入力の種類
+ * Types of physics input
  */
 export enum CubismPhysicsSource {
-  CubismPhysicsSource_X, // X軸の位置から
-  CubismPhysicsSource_Y, // Y軸の位置から
-  CubismPhysicsSource_Angle // 角度から
+  CubismPhysicsSource_X, // From the position of the X axis
+  CubismPhysicsSource_Y, // From the position of the Y axis
+  CubismPhysicsSource_Angle // From an angle
 }
 
 /**
- * @brief 物理演算で使用する外部の力
+ * @brief External forces used in physics
  *
- * 物理演算で使用する外部の力。
+ * External force used in physics.
  */
 export class PhysicsJsonEffectiveForces {
   constructor() {
     this.gravity = new CubismVector2(0, 0);
     this.wind = new CubismVector2(0, 0);
   }
-  gravity: CubismVector2; // 重力
-  wind: CubismVector2; // 風
+  gravity: CubismVector2; // gravity
+  wind: CubismVector2; // wind
 }
 
 /**
- * 物理演算のパラメータ情報
+ * Physics parameter information
  */
 export class CubismPhysicsParameter {
-  id: CubismIdHandle; // パラメータ
-  targetType: CubismPhysicsTargetType; // 適用先の種類
+  id: CubismIdHandle; // Parameters
+  targetType: CubismPhysicsTargetType; // Type of application
 }
 
 /**
- * 物理演算の正規化情報
+ * Physics normalization information
  */
 export class CubismPhysicsNormalization {
-  minimum: number; // 最大値
-  maximum: number; // 最小値
-  defalut: number; // デフォルト値
+  minimum: number; // maximum value
+  maximum: number; // minimum value
+  defalut: number; // default value
 }
 
 /**
- * 物理演算の演算委使用する物理点の情報
+ * Physics Commission Information on the physical points used
  */
 export class CubismPhysicsParticle {
   constructor() {
@@ -69,48 +69,48 @@ export class CubismPhysicsParticle {
     this.velocity = new CubismVector2(0, 0);
   }
 
-  initialPosition: CubismVector2; // 初期位置
-  mobility: number; // 動きやすさ
-  delay: number; // 遅れ
-  acceleration: number; // 加速度
-  radius: number; // 距離
-  position: CubismVector2; // 現在の位置
-  lastPosition: CubismVector2; // 最後の位置
-  lastGravity: CubismVector2; // 最後の重力
-  force: CubismVector2; // 現在かかっている力
-  velocity: CubismVector2; // 現在の速度
+  initialPosition: CubismVector2; // initial position
+  mobility: number; // Ease of movement
+  delay: number; // Delay
+  acceleration: number; // acceleration
+  radius: number; // distance
+  position: CubismVector2; // current position
+  lastPosition: CubismVector2; // Last position
+  lastGravity: CubismVector2; // Last gravity
+  force: CubismVector2; // The force currently applied
+  velocity: CubismVector2; // Current velocity
 }
 
 /**
- * 物理演算の物理点の管理
+ * Management of physical points in physics operations
  */
 export class CubismPhysicsSubRig {
   constructor() {
     this.normalizationPosition = new CubismPhysicsNormalization();
     this.normalizationAngle = new CubismPhysicsNormalization();
   }
-  inputCount: number; // 入力の個数
-  outputCount: number; // 出力の個数
-  particleCount: number; // 物理点の個数
-  baseInputIndex: number; // 入力の最初のインデックス
-  baseOutputIndex: number; // 出力の最初のインデックス
-  baseParticleIndex: number; // 物理点の最初のインデックス
-  normalizationPosition: CubismPhysicsNormalization; // 正規化された位置
-  normalizationAngle: CubismPhysicsNormalization; // 正規化された角度
+  inputCount: number; // Number of inputs
+  outputCount: number; // Number of outputs
+  particleCount: number; // Number of physical points
+  baseInputIndex: number; // First index of input
+  baseOutputIndex: number; // First index of output
+  baseParticleIndex: number; // First index of physical point
+  normalizationPosition: CubismPhysicsNormalization; // Normalized position
+  normalizationAngle: CubismPhysicsNormalization; // Normalized angle
 }
 
 /**
- * 正規化されたパラメータの取得関数の宣言
- * @param targetTranslation     // 演算結果の移動値
- * @param targetAngle           // 演算結果の角度
- * @param value                 // パラメータの値
- * @param parameterMinimunValue // パラメータの最小値
- * @param parameterMaximumValue // パラメータの最大値
- * @param parameterDefaultValue // パラメータのデフォルト値
- * @param normalizationPosition // 正規化された位置
- * @param normalizationAngle    // 正規化された角度
- * @param isInverted            // 値が反転されているか？
- * @param weight                // 重み
+ * Declaration of function to get normalized parameters
+ * @param targetTranslation // Movement value of operation result
+ * @param targetAngle // Angle of operation result
+ * @param value // Parameter value
+ * @param parameterMinimunValue // Minimum parameter value
+ * @param parameterMaximumValue // Maximum parameter value
+ * @param parameterDefaultValue // Default value of the parameter
+ * @param normalizationPosition // Normalized position
+ * @param normalizationAngle // Normalized angle
+ * @param isInverted // Is the value inverted?
+ * @param weight // Weight
  */
 export interface normalizedPhysicsParameterValueGetter {
   (
@@ -128,12 +128,12 @@ export interface normalizedPhysicsParameterValueGetter {
 }
 
 /**
- * 物理演算の値の取得関数の宣言
- * @param translation 移動値
- * @param particles 物理点のリスト
- * @param isInverted 値が反映されているか
- * @param parentGravity 重力
- * @return 値
+ * Declaration of function to get physics value
+ * @param translation Move value
+ * @param particles List of physical points
+ * @param isInverted Does the value reflect?
+ * @param parentGravity Gravity
+ * @return value
  */
 export interface physicsValueGetter {
   (
@@ -146,34 +146,34 @@ export interface physicsValueGetter {
 }
 
 /**
- * 物理演算のスケールの取得関数の宣言
- * @param translationScale 移動値のスケール
- * @param angleScale    角度のスケール
- * @return スケール値
+ * Declaration of physics scale acquisition function
+ * @param translationScale Scale of movement value
+ * @param angleScale Angle scale
+ * @return Scale value
  */
 export interface physicsScaleGetter {
   (translationScale: CubismVector2, angleScale: number): number;
 }
 
 /**
- * 物理演算の入力情報
+ * Input information for physics calculation
  */
 export class CubismPhysicsInput {
   constructor() {
     this.source = new CubismPhysicsParameter();
   }
-  source: CubismPhysicsParameter; // 入力元のパラメータ
-  sourceParameterIndex: number; // 入力元のパラメータのインデックス
-  weight: number; // 重み
-  type: number; // 入力の種類
-  reflect: boolean; // 値が反転されているかどうか
-  getNormalizedParameterValue: normalizedPhysicsParameterValueGetter; // 正規化されたパラメータ値の取得関数
+  source: CubismPhysicsParameter; // Input source parameter
+  sourceParameterIndex: number; // Index of the input source parameter
+  weight: number; // Weight
+  type: number; // Input type
+  reflect: boolean; // Whether the value is inverted
+  getNormalizedParameterValue: normalizedPhysicsParameterValueGetter; // Function to get normalized parameter value
 }
 
 /**
- * @brief 物理演算の出力情報
+ * @brief Output information of physics calculation
  *
- * 物理演算の出力情報。
+ * Output information of physics calculation.
  */
 export class CubismPhysicsOutput {
   constructor() {
@@ -181,24 +181,24 @@ export class CubismPhysicsOutput {
     this.translationScale = new CubismVector2(0, 0);
   }
 
-  destination: CubismPhysicsParameter; // 出力先のパラメータ
-  destinationParameterIndex: number; // 出力先のパラメータのインデックス
-  vertexIndex: number; // 振り子のインデックス
-  translationScale: CubismVector2; // 移動値のスケール
-  angleScale: number; // 角度のスケール
-  weight: number; // 重み
-  type: CubismPhysicsSource; // 出力の種類
-  reflect: boolean; // 値が反転されているかどうか
-  valueBelowMinimum: number; // 最小値を下回った時の値
-  valueExceededMaximum: number; // 最大値をこえた時の値
-  getValue: physicsValueGetter; // 物理演算の値の取得関数
-  getScale: physicsScaleGetter; // 物理演算のスケール値の取得関数
+  destination: CubismPhysicsParameter; // Output destination parameter
+  destinationParameterIndex: number; // Index of output destination parameters
+  vertexIndex: number; // Pendulum index
+  translationScale: CubismVector2; // Scale of movement value
+  angleScale: number; // Angle scale: number; //
+  weight: number; // Weight
+  type: CubismPhysicsSource; // Output type
+  reflect: boolean; // Whether the value is inverted
+  valueBelowMinimum: number; // Value below the minimum value
+  valueExceededMaximum: number; // Value when the maximum value is exceeded
+  getValue: physicsValueGetter; // Function to get the value of physics
+  getScale: physicsScaleGetter; // Function to get the scale value of physics
 }
 
 /**
- * @brief 物理演算のデータ
+ * @brief Physics data
  *
- * 物理演算のデータ。
+ * Physics data.
  */
 export class CubismPhysicsRig {
   constructor() {
@@ -210,13 +210,13 @@ export class CubismPhysicsRig {
     this.wind = new CubismVector2(0, 0);
   }
 
-  subRigCount: number; // 物理演算の物理点の個数
-  settings: csmVector<CubismPhysicsSubRig>; // 物理演算の物理点の管理のリスト
-  inputs: csmVector<CubismPhysicsInput>; // 物理演算の入力のリスト
-  outputs: csmVector<CubismPhysicsOutput>; // 物理演算の出力のリスト
-  particles: csmVector<CubismPhysicsParticle>; // 物理演算の物理点のリスト
-  gravity: CubismVector2; // 重力
-  wind: CubismVector2; // 風
+  subRigCount: number; // Number of physics points in physics
+  settings: csmVector<CubismPhysicsSubRig>; // List of physics point management
+  inputs: csmVector<CubismPhysicsInput>; // List of physics inputs
+  outputs: csmVector<CubismPhysicsOutput>; // List of physics output
+  particles: csmVector<CubismPhysicsParticle>; // List of physics points for physics
+  gravity: CubismVector2; // gravity
+  wind: CubismVector2; // wind
 }
 
 // Namespace definition for compatibility.

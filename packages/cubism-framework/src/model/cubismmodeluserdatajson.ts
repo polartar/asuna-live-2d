@@ -19,24 +19,24 @@ const Value = 'Value';
 
 export class CubismModelUserDataJson {
   /**
-   * コンストラクタ
-   * @param buffer    userdata3.jsonが読み込まれているバッファ
-   * @param size      バッファのサイズ
+   * Constructor
+   * @param buffer The buffer in which userdata3.json is loaded
+   * @param size Buffer size
    */
   public constructor(buffer: ArrayBuffer, size: number) {
     this._json = CubismJson.create(buffer, size);
   }
 
   /**
-   * デストラクタ相当の処理
+   * Destructor-equivalent processing
    */
   public release(): void {
     CubismJson.delete(this._json);
   }
 
   /**
-   * ユーザーデータ個数の取得
-   * @return ユーザーデータの個数
+   * Get the number of user data
+   * @return Number of user data
    */
   public getUserDataCount(): number {
     return this._json
@@ -47,9 +47,9 @@ export class CubismModelUserDataJson {
   }
 
   /**
-   * ユーザーデータ総文字列数の取得
+   * Get the total number of user data strings
    *
-   * @return ユーザーデータ総文字列数
+   * @return Total number of user data strings
    */
   public getTotalUserDataSize(): number {
     return this._json
@@ -60,9 +60,9 @@ export class CubismModelUserDataJson {
   }
 
   /**
-   * ユーザーデータのタイプの取得
+   * Get user data type
    *
-   * @return ユーザーデータのタイプ
+   * @return User data type
    */
   public getUserDataTargetType(i: number): string {
     return this._json
@@ -74,10 +74,10 @@ export class CubismModelUserDataJson {
   }
 
   /**
-   * ユーザーデータのターゲットIDの取得
+   * Get the target ID of user data
    *
-   * @param i インデックス
-   * @return ユーザーデータターゲットID
+   * @param i index
+   * @return User data target ID
    */
   public getUserDataId(i: number): CubismIdHandle {
     return CubismFramework.getIdManager().getId(
@@ -91,10 +91,10 @@ export class CubismModelUserDataJson {
   }
 
   /**
-   * ユーザーデータの文字列の取得
+   * Get user data string
    *
-   * @param i インデックス
-   * @return ユーザーデータ
+   * @param i index
+   * @return User data
    */
   public getUserDataValue(i: number): string {
     return this._json

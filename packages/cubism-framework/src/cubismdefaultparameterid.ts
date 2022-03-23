@@ -6,12 +6,12 @@
  */
 
 /**
- * @brief パラメータIDのデフォルト値を保持する定数<br>
- *         デフォルト値の仕様は以下のマニュアルに基づく<br>
+ * @brief A constant that holds the default value of the parameter ID <br>
+ * Default value specifications are based on the following manual <br>
  *         https://docs.live2d.com/cubism-editor-manual/standard-parametor-list/
  */
 export const CubismDefaultParameterId = Object.freeze<Record<string, string>>({
-  // パーツID
+  // Part ID
   HitAreaPrefix: 'HitArea',
   HitAreaHead: 'Head',
   HitAreaBody: 'Body',
@@ -19,7 +19,7 @@ export const CubismDefaultParameterId = Object.freeze<Record<string, string>>({
   PartsArmPrefix: 'Parts01Arm_',
   PartsArmLPrefix: 'Parts01ArmL_',
   PartsArmRPrefix: 'Parts01ArmR_',
-  // パラメータID
+  // Parameter ID
   ParamAngleX: 'PARAM_ANGLE_X',
   ParamAngleY: 'PARAM_ANGLE_Y',
   ParamAngleZ: 'PARAM_ANGLE_Z',

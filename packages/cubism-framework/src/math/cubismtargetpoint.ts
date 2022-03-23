@@ -11,13 +11,13 @@ const FrameRate = 30;
 const Epsilon = 0.01;
 
 /**
- * 顔の向きの制御機能
+ * Face orientation control function
  *
- * 顔の向きの制御機能を提供するクラス。
+ * A class that provides face orientation control.
  */
 export class CubismTargetPoint {
   /**
-   * コンストラクタ
+   * Constructor
    */
   public constructor() {
     this._faceTargetX = 0.0;
@@ -31,16 +31,16 @@ export class CubismTargetPoint {
   }
 
   /**
-   * 更新処理
+   * Update process
    */
   public update(deltaTimeSeconds: number): void {
-    // デルタ時間を加算する
+    // Add delta time
     this._userTimeSeconds += deltaTimeSeconds;
 
-    // 首を中央から左右に振るときの平均的な速さは 秒速度。加速・減速を考慮して、その２倍を最高速度とする
-    // 顔の振り具合を、中央（0.0）から、左右は（+-1.0）とする
-    const faceParamMaxV: number = 40.0 / 10.0; // 7.5秒間に40分移動(5.3/sc)
-    const maxV: number = (faceParamMaxV * 1.0) / FrameRate; // 1frameあたりに変化できる速度の上限
+    // The average speed when shaking the head from the center to the left and right is the second speed. Considering acceleration and deceleration, double that speed is the maximum speed.
+    // Set the face swing from the center (0.0) to the left and right (+ -1.0).
+    const faceParamMaxV: number = 40.0 / 10.0; // Move 40 minutes in 7.5 seconds (5.3 / sc)
+    const maxV: number = (faceParamMaxV * 1.0) / FrameRate; // Upper limit of speed that can be changed per frame
 
     if (this._lastTimeSeconds == 0.0) {
       this._lastTimeSeconds = this._userTimeSeconds;
@@ -51,56 +51,56 @@ export class CubismTargetPoint {
       (this._userTimeSeconds - this._lastTimeSeconds) * FrameRate;
     this._lastTimeSeconds = this._userTimeSeconds;
 
-    // 最高速度になるまでの時間を
+    // Time to reach maximum speed
     const timeToMaxSpeed = 0.15;
     const frameToMaxSpeed: number = timeToMaxSpeed * FrameRate; // sec * frame/sec
-    const maxA: number = (deltaTimeWeight * maxV) / frameToMaxSpeed; // 1frameあたりの加速度
+    const maxA: number = (deltaTimeWeight * maxV) / frameToMaxSpeed; // Acceleration per frame
 
-    // 目指す向きは、（dx, dy）方向のベクトルとなる
+    // The target direction is a vector in the (dx, dy) direction.
     const dx: number = this._faceTargetX - this._faceX;
     const dy: number = this._faceTargetY - this._faceY;
 
     if (CubismMath.abs(dx) <= Epsilon && CubismMath.abs(dy) <= Epsilon) {
-      return; // 変化なし
+      return; // No change
     }
 
-    // 速度の最大よりも大きい場合は、速度を落とす
+    // If it is greater than the maximum speed, slow it down
     const d: number = CubismMath.sqrt(dx * dx + dy * dy);
 
-    // 進行方向の最大速度ベクトル
+    // Maximum velocity vector in the direction of travel
     const vx: number = (maxV * dx) / d;
     const vy: number = (maxV * dy) / d;
 
-    // 現在の速度から、新規速度への変化（加速度）を求める
+    // Find the change (acceleration) from the current speed to the new speed
     let ax: number = vx - this._faceVX;
     let ay: number = vy - this._faceVY;
 
     const a: number = CubismMath.sqrt(ax * ax + ay * ay);
 
-    // 加速のとき
+    // When accelerating
     if (a < -maxA || a > maxA) {
       ax *= maxA / a;
       ay *= maxA / a;
     }
 
-    // 加速度を元の速度に足して、新速度とする
+    // Add the acceleration to the original speed to get the new speed
     this._faceVX += ax;
     this._faceVY += ay;
 
-    // 目的の方向に近づいたとき、滑らかに減速するための処理
-    // 設定された加速度で止まる事の出来る距離と速度の関係から
-    // 現在とりうる最高速度を計算し、それ以上の時は速度を落とす
-    // ※本来、人間は筋力で力（加速度）を調整できるため、より自由度が高いが、簡単な処理で済ませている
+    // Processing to decelerate smoothly when approaching the desired direction
+    // From the relationship between the distance and speed that can be stopped at the set acceleration
+    // Calculate the maximum speed that can be taken now, and slow down if it is higher than that
+    // * Originally, humans can adjust the force (acceleration) with muscle strength, so it has a higher degree of freedom, but it is a simple process.
     {
-      // 加速度、速度、距離の関係式。
+      // Relational expression of acceleration, velocity and distance.
       //            2  6           2               3
       //      sqrt(a  t  + 16 a h t  - 8 a h) - a t
       // v = --------------------------------------
       //                    2
       //                 4 t  - 2
       // (t=1)
-      // 	時刻tは、あらかじめ加速度、速度を1/60(フレームレート、単位なし)で
-      // 	考えているので、t＝１として消してよい（※未検証）
+      // At time t, the acceleration and velocity are set to 1/60 (frame rate, no unit) in advance.
+      // I'm thinking, so you can erase it with t = 1 (* unverified)
 
       const maxV: number =
         0.5 *
@@ -111,7 +111,7 @@ export class CubismTargetPoint {
       );
 
       if (curV > maxV) {
-        // 現在の速度 > 最高速度のとき、最高速度まで減速
+        // Current speed> Decelerate to maximum speed at maximum speed
         this._faceVX *= maxV / curV;
         this._faceVY *= maxV / curV;
       }
@@ -122,42 +122,42 @@ export class CubismTargetPoint {
   }
 
   /**
-   * X軸の顔の向きの値を取得
+   * Get the X-axis face orientation value
    *
-   * @return X軸の顔の向きの値（-1.0 ~ 1.0）
+   * @return X-axis face orientation value (-1.0 ~ 1.0)
    */
   public getX(): number {
     return this._faceX;
   }
 
   /**
-   * Y軸の顔の向きの値を取得
+   * Get the value of Y-axis face orientation
    *
-   * @return Y軸の顔の向きの値（-1.0 ~ 1.0）
+   * @return Y-axis face orientation value (-1.0 ~ 1.0)
    */
   public getY(): number {
     return this._faceY;
   }
 
   /**
-   * 顔の向きの目標値を設定
+   * Set a target value for face orientation
    *
-   * @param x X軸の顔の向きの値（-1.0 ~ 1.0）
-   * @param y Y軸の顔の向きの値（-1.0 ~ 1.0）
+   * @param x X-axis face orientation value (-1.0 ~ 1.0)
+   * @param y Y-axis face orientation value (-1.0 ~ 1.0)
    */
   public set(x: number, y: number): void {
     this._faceTargetX = x;
     this._faceTargetY = y;
   }
 
-  private _faceTargetX: number; // 顔の向きのX目標値（この値に近づいていく）
-  private _faceTargetY: number; // 顔の向きのY目標値（この値に近づいていく）
-  private _faceX: number; // 顔の向きX（-1.0 ~ 1.0）
-  private _faceY: number; // 顔の向きY（-1.0 ~ 1.0）
-  private _faceVX: number; // 顔の向きの変化速度X
-  private _faceVY: number; // 顔の向きの変化速度Y
-  private _lastTimeSeconds: number; // 最後の実行時間[秒]
-  private _userTimeSeconds: number; // デルタ時間の積算値[秒]
+  private _faceTargetX: number; // X target value for face orientation (approaching this value)
+  private _faceTargetY: number; // Y target value for face orientation (approaching this value)
+  private _faceX: number; // Face orientation X (-1.0 ~ 1.0)
+  private _faceY: number; // Face orientation Y (-1.0 ~ 1.0)
+  private _faceVX: number; // Change rate of face orientation X
+  private _faceVY: number; // Change rate of face orientation Y
+  private _lastTimeSeconds: number; // Last run time [seconds]
+  private _userTimeSeconds: number; // Cumulative delta time [seconds]
 }
 
 // Namespace definition for compatibility.

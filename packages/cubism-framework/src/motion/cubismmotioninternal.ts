@@ -10,58 +10,58 @@ import { csmString } from '../type/csmstring';
 import { csmVector } from '../type/csmvector';
 
 /**
- * @brief モーションカーブの種類
+ * @brief Motion curve type
  *
- * モーションカーブの種類。
+ * Motion curve type.
  */
 export enum CubismMotionCurveTarget {
-  CubismMotionCurveTarget_Model, // モデルに対して
-  CubismMotionCurveTarget_Parameter, // パラメータに対して
-  CubismMotionCurveTarget_PartOpacity // パーツの不透明度に対して
+  CubismMotionCurveTarget_Model, // For the model
+  CubismMotionCurveTarget_Parameter, // For parameters
+  CubismMotionCurveTarget_PartOpacity // For part opacity
 }
 
 /**
- * @brief モーションカーブのセグメントの種類
+ * @brief Motion curve segment types
  *
- * モーションカーブのセグメントの種類。
+ * Motion curve segment type.
  */
 export enum CubismMotionSegmentType {
-  CubismMotionSegmentType_Linear = 0, // リニア
-  CubismMotionSegmentType_Bezier = 1, // ベジェ曲線
-  CubismMotionSegmentType_Stepped = 2, // ステップ
-  CubismMotionSegmentType_InverseStepped = 3 // インバースステップ
+  CubismMotionSegmentType_Linear = 0, // Linear
+  CubismMotionSegmentType_Bezier = 1, // Bezier curve
+  CubismMotionSegmentType_Stepped = 2, // Step
+  CubismMotionSegmentType_InverseStepped = 3 // Inverse Stepped
 }
 
 /**
- * @brief モーションカーブの制御点
+ * @brief Motion curve control points
  *
- * モーションカーブの制御点。
+ * Motion curve control point.
  */
 export class CubismMotionPoint {
-  time = 0.0; // 時間[秒]
+  time = 0.0; // time [seconds]
   value = 0.0; // 値
 }
 
 /**
- * モーションカーブのセグメントの評価関数
+ * Evaluation function of the segment of the motion curve
  *
- * @param   points      モーションカーブの制御点リスト
- * @param   time        評価する時間[秒]
+ * @param points Motion curve control point list
+ * @param time Time to evaluate [seconds]
  */
 export interface csmMotionSegmentEvaluationFunction {
   (points: CubismMotionPoint[], time: number): number;
 }
 
 /**
- * @brief モーションカーブのセグメント
+ * @brief Motion curve segment
  *
- * モーションカーブのセグメント。
+ * Motion curve segment.
  */
 export class CubismMotionSegment {
   /**
-   * @brief コンストラクタ
+   * @brief constructor
    *
-   * コンストラクタ。
+   * Constructor.
    */
   public constructor() {
     this.evaluate = null;
@@ -69,15 +69,15 @@ export class CubismMotionSegment {
     this.segmentType = 0;
   }
 
-  evaluate: csmMotionSegmentEvaluationFunction; // 使用する評価関数
-  basePointIndex: number; // 最初のセグメントへのインデックス
-  segmentType: number; // セグメントの種類
+  evaluate: csmMotionSegmentEvaluationFunction; // Evaluation function to use
+  basePointIndex: number; // Index to first segment
+  segmentType: number; // Segment type
 }
 
 /**
- * @brief モーションカーブ
+ * @brief Motion curve
  *
- * モーションカーブ。
+ * Motion curve.
  */
 export class CubismMotionCurve {
   public constructor() {
@@ -88,16 +88,16 @@ export class CubismMotionCurve {
     this.fadeOutTime = 0.0;
   }
 
-  type: CubismMotionCurveTarget; // カーブの種類
-  id: CubismIdHandle; // カーブのID
-  segmentCount: number; // セグメントの個数
-  baseSegmentIndex: number; // 最初のセグメントのインデックス
-  fadeInTime: number; // フェードインにかかる時間[秒]
-  fadeOutTime: number; // フェードアウトにかかる時間[秒]
+  type: CubismMotionCurveTarget; // Curve type
+  id: CubismIdHandle; // Curve ID
+  segmentCount: number; // Number of segments
+  baseSegmentIndex: number; // Index of the first segment
+  fadeInTime: number; // Time to fade in [seconds]
+  fadeOutTime: number; // Time to fade out [seconds]
 }
 
 /**
- * イベント。
+ * event.
  */
 export class CubismMotionEvent {
   fireTime = 0.0;
@@ -105,9 +105,9 @@ export class CubismMotionEvent {
 }
 
 /**
- * @brief モーションデータ
+ * @brief motion data
  *
- * モーションデータ。
+ * Motion data.
  */
 export class CubismMotionData {
   public constructor() {
@@ -123,15 +123,15 @@ export class CubismMotionData {
     this.events = new csmVector<CubismMotionEvent>();
   }
 
-  duration: number; // モーションの長さ[秒]
-  loop: boolean; // ループするかどうか
-  curveCount: number; // カーブの個数
-  eventCount: number; // UserDataの個数
-  fps: number; // フレームレート
-  curves: csmVector<CubismMotionCurve>; // カーブのリスト
-  segments: csmVector<CubismMotionSegment>; // セグメントのリスト
-  points: csmVector<CubismMotionPoint>; // ポイントのリスト
-  events: csmVector<CubismMotionEvent>; // イベントのリスト
+  duration: number; // Motion length [seconds]
+  loop: boolean; // Whether to loop
+  curveCount: number; // Number of curves
+  eventCount: number; // Number of UserData
+  fps: number; // frame rate
+  curves: csmVector<CubismMotionCurve>; // List of curves
+  segments: csmVector<CubismMotionSegment>; // List of segments
+  points: csmVector<CubismMotionPoint>; // List of points
+  events: csmVector<CubismMotionEvent>; // List of events
 }
 
 // Namespace definition for compatibility.

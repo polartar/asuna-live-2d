@@ -6,38 +6,38 @@
  */
 
 /**
- * メモリアロケーションを抽象化したクラス
+ * A class that abstracts memory allocation
  *
- * メモリ確保・解放処理をプラットフォーム側で実装して
- * フレームワークから呼び出すためのインターフェース
+ * Implement memory allocation / release processing on the platform side
+ * Interface for calling from the framework
  */
 export abstract class ICubismAllocator {
   /**
-   * アラインメント制約なしのヒープ・メモリーを確保します
+   * Allocate heap memory without alignment constraints
    *
-   * @param size 確保するバイト数
-   * @return 成功すると割り当てられたメモリのアドレス。そうでなければ'0'を返す
+   * @param size Number of bytes to reserve
+   * @return Address of memory allocated on success. Otherwise returns '0'
    */
   public abstract allocate(size: number): any;
 
   /**
-   * アラインメント制約なしのヒープ・メモリーを解放します。
+   * Frees heap memory without alignment constraints.
    *
-   * @param memory 解放するメモリのアドレス
+   * @param memory Address of memory to release
    */
   public abstract deallocate(memory: any): void;
 
   /**
-   * アラインメント制約有のヒープ・メモリーを確保します。
-   * @param size 確保するバイト数
-   * @param alignment メモリーブロックのアラインメント幅
-   * @return 成功すると割り当てられたメモリのアドレス。そうでなければ'0'を返す
+   * Allocate heap memory with alignment constraints.
+   * @param size Number of bytes to reserve
+   * @param alignment Memory block alignment width
+   * @return Address of memory allocated on success. Otherwise returns '0'
    */
   public abstract allocateAligned(size: number, alignment: number): any;
 
   /**
-   * アラインメント制約ありのヒープ・メモリーを解放します。
-   * @param alignedMemory 解放するメモリのアドレス
+   * Frees heap memory with alignment constraints.
+   * @param alignedMemory Address of memory to release
    */
   public abstract deallocateAligned(alignedMemory: any): void;
 }

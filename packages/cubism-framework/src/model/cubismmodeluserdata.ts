@@ -14,28 +14,28 @@ import { CubismModelUserDataJson } from './cubismmodeluserdatajson';
 const ArtMesh = 'ArtMesh';
 
 /**
- * ユーザーデータインターフェース
+ * User data interface
  *
- * Jsonから読み込んだユーザーデータを記録しておくための構造体
+ * Structure for recording user data read from Json
  */
 export class CubismModelUserDataNode {
-  targetType: CubismIdHandle; // ユーザーデータターゲットタイプ
-  targetId: CubismIdHandle; // ユーザーデータターゲットのID
-  value: csmString; // ユーザーデータ
+  targetType: CubismIdHandle; // User data target type
+  targetId: CubismIdHandle; // ID of the user data target
+  value: csmString; // User data
 }
 
 /**
- * ユーザデータの管理クラス
+ * User data management class
  *
- * ユーザデータをロード、管理、検索インターフェイス、解放までを行う。
+ * Load, manage, search interface, and even release user data.
  */
 export class CubismModelUserData {
   /**
-   * インスタンスの作成
+   * Create an instance
    *
-   * @param buffer    userdata3.jsonが読み込まれているバッファ
-   * @param size      バッファのサイズ
-   * @return 作成されたインスタンス
+   * @param buffer The buffer in which userdata3.json is loaded
+   * @param size Buffer size
+   * @return Created instance
    */
   public static create(buffer: ArrayBuffer, size: number): CubismModelUserData {
     const ret: CubismModelUserData = new CubismModelUserData();
@@ -46,9 +46,9 @@ export class CubismModelUserData {
   }
 
   /**
-   * インスタンスを破棄する
+   * Destroy the instance
    *
-   * @param modelUserData 破棄するインスタンス
+   * @param modelUserData Instance to discard
    */
   public static delete(modelUserData: CubismModelUserData): void {
     if (modelUserData != null) {
@@ -58,19 +58,19 @@ export class CubismModelUserData {
   }
 
   /**
-   * ArtMeshのユーザーデータのリストの取得
+   * Get a list of ArtMesh user data
    *
-   * @return ユーザーデータリスト
+   * @return User data list
    */
   public getArtMeshUserDatas(): csmVector<CubismModelUserDataNode> {
     return this._artMeshUserDataNode;
   }
 
   /**
-   * userdata3.jsonのパース
+   * Perth of userdata3.json
    *
-   * @param buffer    userdata3.jsonが読み込まれているバッファ
-   * @param size      バッファのサイズ
+   * @param buffer The buffer in which userdata3.json is loaded
+   * @param size Buffer size
    */
   public parseUserData(buffer: ArrayBuffer, size: number): void {
     let json: CubismModelUserDataJson = new CubismModelUserDataJson(
@@ -101,7 +101,7 @@ export class CubismModelUserData {
   }
 
   /**
-   * コンストラクタ
+   * Constructor
    */
   public constructor() {
     this._userDataNodes = new csmVector<CubismModelUserDataNode>();
@@ -109,9 +109,9 @@ export class CubismModelUserData {
   }
 
   /**
-   * デストラクタ相当の処理
+   * Destructor-equivalent processing
    *
-   * ユーザーデータ構造体配列を解放する
+   * Free the user data structure array
    */
   public release(): void {
     for (let i = 0; i < this._userDataNodes.getSize(); ++i) {
@@ -121,8 +121,8 @@ export class CubismModelUserData {
     this._userDataNodes = null;
   }
 
-  private _userDataNodes: csmVector<CubismModelUserDataNode>; // ユーザーデータ構造体配列
-  private _artMeshUserDataNode: csmVector<CubismModelUserDataNode>; // 閲覧リストの保持
+  private _userDataNodes: csmVector<CubismModelUserDataNode>; // User data structure array
+  private _artMeshUserDataNode: csmVector<CubismModelUserDataNode>; // Keep browsing list
 }
 
 // Namespace definition for compatibility.

@@ -9,38 +9,38 @@ import { CubismMatrix44 } from '../math/cubismmatrix44';
 import { CubismModel } from '../model/cubismmodel';
 
 /**
- * モデル描画を処理するレンダラ
+ * Renderer to handle model drawing
  *
- * サブクラスに環境依存の描画命令を記述する。
+ * Write environment-dependent drawing instructions in the subclass.
  */
 export abstract class CubismRenderer {
   /**
-   * レンダラのインスタンスを生成して取得する
+   * Create and get an instance of the renderer
    *
-   * @return レンダラのインスタンス
+   * @return Instance of renderer
    */
   public static create(): CubismRenderer {
     return null;
   }
 
   /**
-   * レンダラのインスタンスを解放する
+   * Release an instance of the renderer
    */
   public static delete(renderer: CubismRenderer): void {
     renderer = null;
   }
 
   /**
-   * レンダラの初期化処理を実行する
-   * 引数に渡したモデルからレンダラの初期化処理に必要な情報を取り出すことができる
-   * @param model モデルのインスタンス
+   * Execute the renderer initialization process
+   * Information required for renderer initialization can be extracted from the model passed as an argument.
+   * @param model Model instance
    */
   public initialize(model: CubismModel): void {
     this._model = model;
   }
 
   /**
-   * モデルを描画する
+   * Draw a model
    */
   public drawModel(): void {
     if (this.getModel() == null) return;
@@ -49,8 +49,8 @@ export abstract class CubismRenderer {
   }
 
   /**
-   * Model-View-Projection 行列をセットする
-   * 配列は複製されるので、元の配列は外で破棄して良い
+   * Set the Model-View-Projection matrix
+   * The array is duplicated, so the original array may be discarded outside
    * @param matrix44 Model-View-Projection 行列
    */
   public setMvpMatrix(matrix44: CubismMatrix44): void {
@@ -58,7 +58,7 @@ export abstract class CubismRenderer {
   }
 
   /**
-   * Model-View-Projection 行列を取得する
+   * Get the Model-View-Projection matrix
    * @return Model-View-Projection 行列
    */
   public getMvpMatrix(): CubismMatrix44 {
@@ -66,12 +66,12 @@ export abstract class CubismRenderer {
   }
 
   /**
-   * モデルの色をセットする
-   * 各色0.0~1.0の間で指定する（1.0が標準の状態）
-   * @param red 赤チャンネルの値
-   * @param green 緑チャンネルの値
-   * @param blue 青チャンネルの値
-   * @param alpha αチャンネルの値
+   * Set the color of the model
+   * Specify between 0.0 and 1.0 for each color (1.0 is the standard state)
+   * @param red Red channel value
+   * @param green Green channel value
+   * @param blue Blue channel value
+   * @param alpha α channel value
    */
   public setModelColor(
     red: number,
@@ -110,76 +110,76 @@ export abstract class CubismRenderer {
   }
 
   /**
-   * モデルの色を取得する
-   * 各色0.0~1.0の間で指定する(1.0が標準の状態)
+   * Get the color of the model
+   * Specify between 0.0 and 1.0 for each color (1.0 is the standard state)
    *
-   * @return RGBAのカラー情報
+   * @return RGBA color information
    */
   public getModelColor(): CubismTextureColor {
     return JSON.parse(JSON.stringify(this._modelColor));
   }
 
   /**
-   * 乗算済みαの有効・無効をセットする
-   * 有効にするならtrue、無効にするならfalseをセットする
+   * Set valid / invalid of multiplied α
+   * Set true to enable, false to disable
    */
   public setIsPremultipliedAlpha(enable: boolean): void {
     this._isPremultipliedAlpha = enable;
   }
 
   /**
-   * 乗算済みαの有効・無効を取得する
-   * @return true 乗算済みのα有効
-   * @return false 乗算済みのα無効
+   * Get valid / invalid of multiplied α
+   * @return true Multiplied α is valid
+   * @return false Multiplied α invalid
    */
   public isPremultipliedAlpha(): boolean {
     return this._isPremultipliedAlpha;
   }
 
   /**
-   * カリング（片面描画）の有効・無効をセットする。
-   * 有効にするならtrue、無効にするならfalseをセットする
+   * Set whether culling (single-sided drawing) is enabled or disabled.
+   * Set true to enable, false to disable
    */
   public setIsCulling(culling: boolean): void {
     this._isCulling = culling;
   }
 
   /**
-   * カリング（片面描画）の有効・無効を取得する。
-   * @return true カリング有効
-   * @return false カリング無効
+   * Get valid / invalid for culling (single-sided drawing).
+   * @return true Culling enabled
+   * @return false Culling disabled
    */
   public isCulling(): boolean {
     return this._isCulling;
   }
 
   /**
-   * テクスチャの異方性フィルタリングのパラメータをセットする
-   * パラメータ値の影響度はレンダラの実装に依存する
-   * @param n パラメータの値
+   * Set texture anisotropic filtering parameters
+   * The degree of influence of the parameter value depends on the implementation of the renderer.
+   * @param n Parameter value
    */
   public setAnisotropy(n: number): void {
     this._anisortopy = n;
   }
 
   /**
-   * テクスチャの異方性フィルタリングのパラメータをセットする
-   * @return 異方性フィルタリングのパラメータ
+   * Set texture anisotropic filtering parameters
+   * @return Anisotropic filtering parameters
    */
   public getAnisotropy(): number {
     return this._anisortopy;
   }
 
   /**
-   * レンダリングするモデルを取得する
-   * @return レンダリングするモデル
+   * Get the model to render
+   * @return Model to render
    */
   public getModel(): CubismModel {
     return this._model;
   }
 
   /**
-   * コンストラクタ
+   * Constructor
    */
   protected constructor() {
     this._isCulling = false;
@@ -188,28 +188,28 @@ export abstract class CubismRenderer {
     this._model = null;
     this._modelColor = new CubismTextureColor();
 
-    // 単位行列に初期化
+    // Initialize to identity matrix
     this._mvpMatrix4x4 = new CubismMatrix44();
     this._mvpMatrix4x4.loadIdentity();
   }
 
   /**
-   * モデル描画の実装
+   * Implementation of model drawing
    */
   public abstract doDrawModel(): void;
 
   /**
-   * 描画オブジェクト（アートメッシュ）を描画する
-   * ポリゴンメッシュとテクスチャ番号をセットで渡す。
-   * @param textureNo 描画するテクスチャ番号
-   * @param indexCount 描画オブジェクトのインデックス値
-   * @param vertexCount ポリゴンメッシュの頂点数
-   * @param indexArray ポリゴンメッシュ頂点のインデックス配列
-   * @param vertexArray ポリゴンメッシュの頂点配列
+   * Draw a drawing object (art mesh)
+   * Pass the polygon mesh and texture number as a set.
+   * @param textureNo Texture number to draw
+   * @param indexCount Index value of the drawing object
+   * @param vertexCount Number of vertices on the polygon mesh
+   * @param indexArray Index array of polygon mesh vertices
+   * @param vertexArray Polygon mesh vertex array
    * @param uvArray uv配列
-   * @param opacity 不透明度
-   * @param colorBlendMode カラーブレンディングのタイプ
-   * @param invertedMask マスク使用時のマスクの反転使用
+   * @param opacity opacity
+   * @param colorBlendMode Color blending type
+   * @param invertedMask Using mask inversion when using mask
    */
   public abstract drawMesh(
     textureNo: number,
@@ -224,30 +224,30 @@ export abstract class CubismRenderer {
   ): void;
 
   /**
-   * レンダラが保持する静的なリソースを開放する
+   * Release static resources held by the renderer
    */
   public static staticRelease: Function;
 
   protected _mvpMatrix4x4: CubismMatrix44; // Model-View-Projection 行列
-  protected _modelColor: CubismTextureColor; // モデル自体のカラー（RGBA）
-  protected _isCulling: boolean; // カリングが有効ならtrue
-  protected _isPremultipliedAlpha: boolean; // 乗算済みαならtrue
-  protected _anisortopy: any; // テクスチャの異方性フィルタリングのパラメータ
-  protected _model: CubismModel; // レンダリング対象のモデル
+  protected _modelColor: CubismTextureColor; // Color of the model itself (RGBA)
+  protected _isCulling: boolean; // true if culling is enabled
+  protected _isPremultipliedAlpha: boolean; // true if multiplied α
+  protected _anisortopy: any; // Texture anisotropic filtering parameters
+  protected _model: CubismModel; // Model to render
 }
 
 export enum CubismBlendMode {
-  CubismBlendMode_Normal = 0, // 通常
-  CubismBlendMode_Additive = 1, // 加算
-  CubismBlendMode_Multiplicative = 2 // 乗算
+  CubismBlendMode_Normal = 0, // normally
+  CubismBlendMode_Additive = 1, // Add
+  CubismBlendMode_Multiplicative = 2 // Multiplication
 }
 
 /**
- * テクスチャの色をRGBAで扱うためのクラス
+ * Class for handling texture colors in RGBA
  */
 export class CubismTextureColor {
   /**
-   * コンストラクタ
+   * Constructor
    */
   constructor() {
     this.R = 1.0;
@@ -256,10 +256,10 @@ export class CubismTextureColor {
     this.A = 1.0;
   }
 
-  R: number; // 赤チャンネル
-  G: number; // 緑チャンネル
-  B: number; // 青チャンネル
-  A: number; // αチャンネル
+  R: number; // Red channel
+  G: number; // Green channel
+  B: number; // Blue channel
+  A: number; // α channel
 }
 
 // Namespace definition for compatibility.

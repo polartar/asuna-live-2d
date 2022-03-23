@@ -7,10 +7,10 @@
 
 export class CubismString {
   /**
-   * 標準出力の書式を適用した文字列を取得する。
-   * @param format    標準出力の書式指定文字列
-   * @param ...args   書式指定文字列に渡す文字列
-   * @return 書式を適用した文字列
+   * Get the string with the standard output format applied.
+   * @param format Standard output format string
+   * @param ... args String to pass to format string
+   * @return Formatted string
    */
   public static getFormatedString(format: string, ...args: any[]): string {
     const ret: string = format;
@@ -26,11 +26,11 @@ export class CubismString {
   }
 
   /**
-   * textがstartWordで始まっているかどうかを返す
-   * @param test 検査対象の文字列
-   * @param startWord 比較対象の文字列
-   * @return true textがstartWordで始まっている
-   * @return false textがstartWordで始まっていない
+   * Returns whether text starts with startWord
+   * @param test Character string to be inspected
+   * @param startWord Character string to be compared
+   * @return true text starts with startWord
+   * @return false text does not start with startWord
    */
   public static isStartWith(text: string, startWord: string): boolean {
     let textIndex = 0;
@@ -47,13 +47,13 @@ export class CubismString {
   }
 
   /**
-   * position位置の文字から数字を解析する。
+   * position Analyze numbers from the letters at the position.
    *
-   * @param string 文字列
-   * @param length 文字列の長さ
-   * @param position 解析したい文字の位置
-   * @param outEndPos 一文字も読み込まなかった場合はエラー値(-1)が入る
-   * @return 解析結果の数値
+   * @param string literal column
+   * @param length The length of the string
+   * @param position The position of the character you want to analyze
+   * @param outEndPos If no character is read, an error value (-1) will be entered.
+   * @return Numerical value of analysis result
    */
   public static stringToFloat(
     string: string,
@@ -62,18 +62,18 @@ export class CubismString {
     outEndPos: number[]
   ): number {
     let i: number = position;
-    let minus = false; // マイナスフラグ
+    let minus = false; // minus flag
     let period = false;
     let v1 = 0;
 
-    //負号の確認
+    // Confirmation of negative issue
     let c: number = parseInt(string[i]);
     if (c < 0) {
       minus = true;
       i++;
     }
 
-    //整数部の確認
+    // Check the integer part
     for (; i < length; i++) {
       const c = string[i];
       if (0 <= parseInt(c) && parseInt(c) <= 9) {
@@ -87,7 +87,7 @@ export class CubismString {
       }
     }
 
-    //小数部の確認
+    // Check the fractional part
     if (period) {
       let mul = 0.1;
       for (; i < length; i++) {
@@ -97,14 +97,14 @@ export class CubismString {
         } else {
           break;
         }
-        mul *= 0.1; //一桁下げる
+        mul *= 0.1; // Decrease by one digit
         if (!c) break;
       }
     }
 
     if (i == position) {
-      //一文字も読み込まなかった場合
-      outEndPos[0] = -1; //エラー値が入るので呼び出し元で適切な処理を行う
+      // If no character is read
+      outEndPos[0] = -1; // An error value will be entered, so the caller will take appropriate action.
       return 0;
     }
 
@@ -115,9 +115,9 @@ export class CubismString {
   }
 
   /**
-   * コンストラクタ呼び出し不可な静的クラスにする。
+   * Make it a static class that cannot be called by the constructor.
    */
-  private constructor() {}
+  private constructor() { }
 }
 
 // Namespace definition for compatibility.

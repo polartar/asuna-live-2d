@@ -13,7 +13,7 @@ import { csmVector } from './type/csmvector';
 import { CubismJson, Value } from './utils/cubismjson';
 
 /**
- * Model3Jsonのキー文字列
+ * Model3Json key string
  */
 
 // JSON Keys
@@ -77,16 +77,16 @@ enum FrequestNode {
 }
 
 /**
- * Model3Jsonパーサー
+ * Model3Json parser
  *
- * model3.jsonファイルをパースして値を取得する
+ * Parse the model3.json file to get the value
  */
 export class CubismModelSettingJson extends ICubismModelSetting {
   /**
-   * 引数付きコンストラクタ
+   * Constructor with arguments
    *
-   * @param buffer    Model3Jsonをバイト配列として読み込んだデータバッファ
-   * @param size      Model3Jsonのデータサイズ
+   * @param buffer A data buffer that reads Model3Json as a byte array
+   * @param size Model3 Json data size
    */
   public constructor(buffer: ArrayBuffer, size: number) {
     super();
@@ -95,7 +95,7 @@ export class CubismModelSettingJson extends ICubismModelSetting {
     if (this._json) {
       this._jsonValue = new csmVector<Value>();
 
-      // 順番はenum FrequestNodeと一致させる
+      // The order matches the enum FrequestNode
       this._jsonValue.pushBack(this._json.getRoot().getValueByString(Groups));
       this._jsonValue.pushBack(
         this._json
@@ -138,7 +138,7 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * デストラクタ相当の処理
+   * Destructor-equivalent processing
    */
   public release(): void {
     CubismJson.delete(this._json);
@@ -147,7 +147,7 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * CubismJsonオブジェクトを取得する
+   * Get a CubismJson object
    *
    * @return CubismJson
    */
@@ -156,8 +156,8 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * Mocファイルの名前を取得する
-   * @return Mocファイルの名前
+   * Get the name of the Moc file
+   * @return Moc File name
    */
   public getModelFileName(): string {
     if (!this.isExistModelFile()) {
@@ -167,8 +167,8 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * モデルが使用するテクスチャの数を取得する
-   * テクスチャの数
+   * Get the number of textures used by the model
+   * Number of textures
    */
   public getTextureCount(): number {
     if (!this.isExistTextureFiles()) {
@@ -179,8 +179,8 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * テクスチャが配置されたディレクトリの名前を取得する
-   * @return テクスチャが配置されたディレクトリの名前
+   * Get the name of the directory where the texture is placed
+   * @return The name of the directory where the texture is located
    */
   public getTextureDirectory(): string {
     return this._jsonValue
@@ -189,9 +189,9 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * モデルが使用するテクスチャの名前を取得する
-   * @param index 配列のインデックス値
-   * @return テクスチャの名前
+   * Get the name of the texture used by the model
+   * @param index Array index value
+   * @return Texture name
    */
   public getTextureFileName(index: number): string {
     return this._jsonValue
@@ -201,8 +201,8 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * モデルに設定された当たり判定の数を取得する
-   * @return モデルに設定された当たり判定の数
+   * Get the number of collision detections set in the model
+   * @return Number of collision detections set in the model
    */
   public getHitAreasCount(): number {
     if (!this.isExistHitAreas()) {
@@ -213,10 +213,10 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * 当たり判定に設定されたIDを取得する
+   * Get the ID set for collision detection
    *
-   * @param index 配列のindex
-   * @return 当たり判定に設定されたID
+   * @param index Array index
+   * @return ID set for collision detection
    */
   public getHitAreaId(index: number): CubismIdHandle {
     return CubismFramework.getIdManager().getId(
@@ -229,9 +229,9 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * 当たり判定に設定された名前を取得する
-   * @param index 配列のインデックス値
-   * @return 当たり判定に設定された名前
+   * Get the name set for collision detection
+   * @param index Array index value
+   * @return The name set for collision detection
    */
   public getHitAreaName(index: number): string {
     return this._jsonValue
@@ -242,8 +242,8 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * 物理演算設定ファイルの名前を取得する
-   * @return 物理演算設定ファイルの名前
+   * Get the name of the physics configuration file
+   * @return The name of the physics configuration file
    */
   public getPhysicsFileName(): string {
     if (!this.isExistPhysicsFile()) {
@@ -254,8 +254,8 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * パーツ切り替え設定ファイルの名前を取得する
-   * @return パーツ切り替え設定ファイルの名前
+   * Get the name of the parts switching setting file
+   * @return Name of parts switching configuration file
    */
   public getPoseFileName(): string {
     if (!this.isExistPoseFile()) {
@@ -266,8 +266,8 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * 表情設定ファイルの数を取得する
-   * @return 表情設定ファイルの数
+   * Get the number of facial expression setting files
+   * @return Number of facial expression setting files
    */
   public getExpressionCount(): number {
     if (!this.isExistExpressionFile()) {
@@ -278,9 +278,9 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * 表情設定ファイルを識別する名前（別名）を取得する
-   * @param index 配列のインデックス値
-   * @return 表情の名前
+   * Get the name (alias) that identifies the facial expression setting file
+   * @param index Array index value
+   * @return Facial expression name
    */
   public getExpressionName(index: number): string {
     return this._jsonValue
@@ -291,9 +291,9 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * 表情設定ファイルの名前を取得する
-   * @param index 配列のインデックス値
-   * @return 表情設定ファイルの名前
+   * Get the name of the facial expression setting file
+   * @param index Array index value
+   * @return The name of the facial expression setting file
    */
   public getExpressionFileName(index: number): string {
     return this._jsonValue
@@ -304,8 +304,8 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * モーショングループの数を取得する
-   * @return モーショングループの数
+   * Get the number of motion groups
+   * @return Number of motion groups
    */
   public getMotionGroupCount(): number {
     if (!this.isExistMotionGroups()) {
@@ -319,9 +319,9 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * モーショングループの名前を取得する
-   * @param index 配列のインデックス値
-   * @return モーショングループの名前
+   * Get the name of the motion group
+   * @param index Array index value
+   * @return Motion group name
    */
   public getMotionGroupName(index: number): string {
     if (!this.isExistMotionGroups()) {
@@ -335,9 +335,9 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * モーショングループに含まれるモーションの数を取得する
-   * @param groupName モーショングループの名前
-   * @return モーショングループの数
+   * Get the number of motions contained in a motion group
+   * @param groupName The name of the motion group
+   * @return Number of motion groups
    */
   public getMotionCount(groupName: string): number {
     if (!this.isExistMotionGroupName(groupName)) {
@@ -351,10 +351,10 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * グループ名とインデックス値からモーションファイル名を取得する
-   * @param groupName モーショングループの名前
-   * @param index     配列のインデックス値
-   * @return モーションファイルの名前
+   * Get the motion file name from the group name and index value
+   * @param groupName The name of the motion group
+   * @param index Array index value
+   * @return The name of the motion file
    */
   public getMotionFileName(groupName: string, index: number): string {
     if (!this.isExistMotionGroupName(groupName)) {
@@ -370,10 +370,10 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * モーションに対応するサウンドファイルの名前を取得する
-   * @param groupName モーショングループの名前
-   * @param index 配列のインデックス値
-   * @return サウンドファイルの名前
+   * Get the name of the sound file that corresponds to the motion
+   * @param groupName The name of the motion group
+   * @param index Array index value
+   * @return The name of the sound file
    */
   public getMotionSoundFileName(groupName: string, index: number): string {
     if (!this.isExistMotionSoundFile(groupName, index)) {
@@ -389,10 +389,10 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * モーション開始時のフェードイン処理時間を取得する
-   * @param groupName モーショングループの名前
-   * @param index 配列のインデックス値
-   * @return フェードイン処理時間[秒]
+   * Get the fade-in processing time at the start of motion
+   * @param groupName The name of the motion group
+   * @param index Array index value
+   * @return Fade-in processing time [seconds]
    */
   public getMotionFadeInTimeValue(groupName: string, index: number): number {
     if (!this.isExistMotionFadeIn(groupName, index)) {
@@ -408,10 +408,10 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * モーション終了時のフェードアウト処理時間を取得する
-   * @param groupName モーショングループの名前
-   * @param index 配列のインデックス値
-   * @return フェードアウト処理時間[秒]
+   * Get the fade-out processing time at the end of the motion
+   * @param groupName The name of the motion group
+   * @param index Array index value
+   * @return Fade out processing time [seconds]
    */
   public getMotionFadeOutTimeValue(groupName: string, index: number): number {
     if (!this.isExistMotionFadeOut(groupName, index)) {
@@ -427,8 +427,8 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * ユーザーデータのファイル名を取得する
-   * @return ユーザーデータのファイル名
+   * Get the file name of user data
+   * @return File name of user data
    */
   public getUserDataFile(): string {
     if (!this.isExistUserDataFile()) {
@@ -443,13 +443,13 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * レイアウト情報を取得する
-   * @param outLayoutMap csmMapクラスのインスタンス
-   * @return true レイアウト情報が存在する
-   * @return false レイアウト情報が存在しない
+   * Get layout information
+   * @param outLayoutMap An instance of the csmMap class
+   * @return true Layout information exists
+   * @return false Layout information does not exist
    */
   public getLayoutMap(outLayoutMap: csmMap<string, number>): boolean {
-    // 存在しない要素にアクセスするとエラーになるためValueがnullの場合はnullを代入する
+    // If an element that does not exist is accessed, an error will occur, so if Value is null, assign null.
     const map: csmMap<string, Value> = this._json
       .getRoot()
       .getValueByString(Layout)
@@ -474,8 +474,8 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * 目パチに関連付けられたパラメータの数を取得する
-   * @return 目パチに関連付けられたパラメータの数
+   * Get the number of parameters associated with the eye crack
+   * @return Number of parameters associated with eye cracks
    */
   public getEyeBlinkParameterCount(): number {
     if (!this.isExistEyeBlinkParameters()) {
@@ -508,9 +508,9 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * 目パチに関連付けられたパラメータのIDを取得する
-   * @param index 配列のインデックス値
-   * @return パラメータID
+   * Get the ID of the parameter associated with the eye crack
+   * @param index Array index value
+   * @return Parameter ID
    */
   public getEyeBlinkParameterId(index: number): CubismIdHandle {
     if (!this.isExistEyeBlinkParameters()) {
@@ -542,8 +542,8 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * リップシンクに関連付けられたパラメータの数を取得する
-   * @return リップシンクに関連付けられたパラメータの数
+   * Get the number of parameters associated with lip sync
+   * @return Number of parameters associated with lip sync
    */
   public getLipSyncParameterCount(): number {
     if (!this.isExistLipSyncParameters()) {
@@ -576,9 +576,9 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * リップシンクに関連付けられたパラメータの数を取得する
-   * @param index 配列のインデックス値
-   * @return パラメータID
+   * Get the number of parameters associated with lip sync
+   * @param index Array index value
+   * @return Parameter ID
    */
   public getLipSyncParameterId(index: number): CubismIdHandle {
     if (!this.isExistLipSyncParameters()) {
@@ -610,9 +610,9 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * モデルファイルのキーが存在するかどうかを確認する
-   * @return true キーが存在する
-   * @return false キーが存在しない
+   * Check if the model file key exists
+   * @return true Key exists
+   * @return false Key does not exist
    */
   private isExistModelFile(): boolean {
     const node: Value = this._jsonValue.at(FrequestNode.FrequestNode_Moc);
@@ -620,9 +620,9 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * テクスチャファイルのキーが存在するかどうかを確認する
-   * @return true キーが存在する
-   * @return false キーが存在しない
+   * Check if the key for the texture file exists
+   * @return true Key exists
+   * @return false Key does not exist
    */
   private isExistTextureFiles(): boolean {
     const node: Value = this._jsonValue.at(FrequestNode.FrequestNode_Textures);
@@ -630,9 +630,9 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * 当たり判定のキーが存在するかどうかを確認する
-   * @return true キーが存在する
-   * @return false キーが存在しない
+   * Check if the key for collision detection exists
+   * @return true Key exists
+   * @return false Key does not exist
    */
   private isExistHitAreas(): boolean {
     const node: Value = this._jsonValue.at(FrequestNode.FrequestNode_HitAreas);
@@ -640,9 +640,9 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * 物理演算ファイルのキーが存在するかどうかを確認する
-   * @return true キーが存在する
-   * @return false キーが存在しない
+   * Check if the key of the physics file exists
+   * @return true Key exists
+   * @return false Key does not exist
    */
   private isExistPhysicsFile(): boolean {
     const node: Value = this._jsonValue.at(FrequestNode.FrequestNode_Physics);
@@ -650,9 +650,9 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * ポーズ設定ファイルのキーが存在するかどうかを確認する
-   * @return true キーが存在する
-   * @return false キーが存在しない
+   * Check if the key of the pose setting file exists
+   * @return true Key exists
+   * @return false Key does not exist
    */
   private isExistPoseFile(): boolean {
     const node: Value = this._jsonValue.at(FrequestNode.FrequestNode_Pose);
@@ -660,9 +660,9 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * 表情設定ファイルのキーが存在するかどうかを確認する
-   * @return true キーが存在する
-   * @return false キーが存在しない
+   * Check if the key of the facial expression setting file exists
+   * @return true Key exists
+   * @return false Key does not exist
    */
   private isExistExpressionFile(): boolean {
     const node: Value = this._jsonValue.at(
@@ -672,9 +672,9 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * モーショングループのキーが存在するかどうかを確認する
-   * @return true キーが存在する
-   * @return false キーが存在しない
+   * Check if the motion group key exists
+   * @return true Key exists
+   * @return false Key does not exist
    */
   private isExistMotionGroups(): boolean {
     const node: Value = this._jsonValue.at(FrequestNode.FrequestNode_Motions);
@@ -682,10 +682,10 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * 引数で指定したモーショングループのキーが存在するかどうかを確認する
-   * @param groupName  グループ名
-   * @return true キーが存在する
-   * @return false キーが存在しない
+   * Check if the key of the motion group specified by the argument exists
+   * @param groupName Group name
+   * @return true Key exists
+   * @return false Key does not exist
    */
   private isExistMotionGroupName(groupName: string): boolean {
     const node: Value = this._jsonValue
@@ -695,11 +695,11 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * 引数で指定したモーションに対応するサウンドファイルのキーが存在するかどうかを確認する
-   * @param groupName  グループ名
-   * @param index 配列のインデックス値
-   * @return true キーが存在する
-   * @return false キーが存在しない
+   * Check if the key of the sound file corresponding to the motion specified by the argument exists.
+   * @param groupName Group name
+   * @param index Array index value
+   * @return true Key exists
+   * @return false Key does not exist
    */
   private isExistMotionSoundFile(groupName: string, index: number): boolean {
     const node: Value = this._jsonValue
@@ -711,11 +711,11 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * 引数で指定したモーションに対応するフェードイン時間のキーが存在するかどうかを確認する
-   * @param groupName  グループ名
-   * @param index 配列のインデックス値
-   * @return true キーが存在する
-   * @return false キーが存在しない
+   * Check if the fade-in time key corresponding to the motion specified by the argument exists.
+   * @param groupName Group name
+   * @param index Array index value
+   * @return true Key exists
+   * @return false Key does not exist
    */
   private isExistMotionFadeIn(groupName: string, index: number): boolean {
     const node: Value = this._jsonValue
@@ -727,11 +727,11 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * 引数で指定したモーションに対応するフェードアウト時間のキーが存在するかどうかを確認する
-   * @param groupName  グループ名
-   * @param index 配列のインデックス値
-   * @return true キーが存在する
-   * @return false キーが存在しない
+   * Check if there is a fade-out time key corresponding to the motion specified by the argument
+   * @param groupName Group name
+   * @param index Array index value
+   * @return true Key exists
+   * @return false Key does not exist
    */
   private isExistMotionFadeOut(groupName: string, index: number): boolean {
     const node: Value = this._jsonValue
@@ -743,9 +743,9 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * UserDataのファイル名が存在するかどうかを確認する
-   * @return true キーが存在する
-   * @return false キーが存在しない
+   * Check if the UserData file name exists
+   * @return true Key exists
+   * @return false Key does not exist
    */
   private isExistUserDataFile(): boolean {
     const node: Value = this._json
@@ -756,9 +756,9 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * 目ぱちに対応付けられたパラメータが存在するかどうかを確認する
-   * @return true キーが存在する
-   * @return false キーが存在しない
+   * Check if there is a parameter associated with the eye patch
+   * @return true Key exists
+   * @return false Key does not exist
    */
   private isExistEyeBlinkParameters(): boolean {
     if (
@@ -788,9 +788,9 @@ export class CubismModelSettingJson extends ICubismModelSetting {
   }
 
   /**
-   * リップシンクに対応付けられたパラメータが存在するかどうかを確認する
-   * @return true キーが存在する
-   * @return false キーが存在しない
+   * Check if the parameter associated with LipSync exists
+   * @return true Key exists
+   * @return false Key does not exist
    */
   private isExistLipSyncParameters(): boolean {
     if (

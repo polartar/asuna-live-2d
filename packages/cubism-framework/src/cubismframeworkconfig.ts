@@ -6,27 +6,27 @@
  */
 
 //========================================================
-//  ログ出力関数の設定
+// Log output function settings
 //========================================================
 
-//---------- ログ出力レベル 選択項目 定義 ----------
-// 詳細ログ出力設定
+// ---------- Log output level Selection item definition ----------
+// Detailed log output settings
 export const CSM_LOG_LEVEL_VERBOSE = 0;
-// デバッグログ出力設定
+// Debug log output settings
 export const CSM_LOG_LEVEL_DEBUG = 1;
-// Infoログ出力設定
+// Info log output settings
 export const CSM_LOG_LEVEL_INFO = 2;
-// 警告ログ出力設定
+// Warning log output settings
 export const CSM_LOG_LEVEL_WARNING = 3;
-// エラーログ出力設定
+// Error log output settings
 export const CSM_LOG_LEVEL_ERROR = 4;
-// ログ出力オフ設定
+// Log output off setting
 export const CSM_LOG_LEVEL_OFF = 5;
 
 /**
- * ログ出力レベル設定。
+ * Log output level setting.
  *
- * 強制的にログ出力レベルを変える時に定義を有効にする。
- * CSM_LOG_LEVEL_VERBOSE ～ CSM_LOG_LEVEL_OFF を選択する。
+ * Enable the definition when forcibly changing the log output level.
+ * Select CSM_LOG_LEVEL_VERBOSE to CSM_LOG_LEVEL_OFF.
  */
 export const CSM_LOG_LEVEL: number = CSM_LOG_LEVEL_VERBOSE;

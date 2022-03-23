@@ -13,13 +13,13 @@ import {
 } from './cubismmotionqueuemanager';
 
 /**
- * モーションの管理
+ * Motion management
  *
- * モーションの管理を行うクラス
+ * Class that manages motion
  */
 export class CubismMotionManager extends CubismMotionQueueManager {
   /**
-   * コンストラクタ
+   * Constructor
    */
   public constructor() {
     super();
@@ -28,36 +28,36 @@ export class CubismMotionManager extends CubismMotionQueueManager {
   }
 
   /**
-   * 再生中のモーションの優先度の取得
-   * @return  モーションの優先度
+   * Get priority of motion during playback
+   * @return Motion priority
    */
   public getCurrentPriority(): number {
     return this._currentPriority;
   }
 
   /**
-   * 予約中のモーションの優先度を取得する。
-   * @return  モーションの優先度
+   * Get the priority of the motion being reserved.
+   * @return Motion priority
    */
   public getReservePriority(): number {
     return this._reservePriority;
   }
 
   /**
-   * 予約中のモーションの優先度を設定する。
-   * @param   val     優先度
+   * Set the priority of the reserved motion.
+   * @param val priority
    */
   public setReservePriority(val: number): void {
     this._reservePriority = val;
   }
 
   /**
-   * 優先度を設定してモーションを開始する。
+   * Set the priority and start the motion.
    *
-   * @param motion          モーション
-   * @param autoDelete      再生が狩猟したモーションのインスタンスを削除するならtrue
-   * @param priority        優先度
-   * @return                開始したモーションの識別番号を返す。個別のモーションが終了したか否かを判定するIsFinished()の引数で使用する。開始できない時は「-1」
+   * @param motion motion
+   * @param autoDelete true if playback deletes an instance of the hunted motion
+   * @param priority priority
+   * @return Returns the identification number of the started motion. Used in the argument of IsFinished () to determine whether an individual motion has ended. "-1" when you cannot start
    */
   public startMotionPriority(
     motion: ACubismMotion,
@@ -65,21 +65,21 @@ export class CubismMotionManager extends CubismMotionQueueManager {
     priority: number
   ): CubismMotionQueueEntryHandle {
     if (priority == this._reservePriority) {
-      this._reservePriority = 0; // 予約を解除
+      this._reservePriority = 0; // Cancel reservation
     }
 
-    this._currentPriority = priority; // 再生中モーションの優先度を設定
+    this._currentPriority = priority; // Set the priority of the motion being played
 
     return super.startMotion(motion, autoDelete, this._userTimeSeconds);
   }
 
   /**
-   * モーションを更新して、モデルにパラメータ値を反映する。
+   * Update the motion to reflect the parameter values ​​in the model.
    *
-   * @param model   対象のモデル
-   * @param deltaTimeSeconds    デルタ時間[秒]
-   * @return  true    更新されている
-   * @return  false   更新されていない
+   * @param model Target model
+   * @param deltaTimeSeconds Delta time [seconds]
+   * @return true Updated
+   * @return false Not updated
    */
   public updateMotion(model: CubismModel, deltaTimeSeconds: number): boolean {
     this._userTimeSeconds += deltaTimeSeconds;
@@ -87,18 +87,18 @@ export class CubismMotionManager extends CubismMotionQueueManager {
     const updated: boolean = super.doUpdateMotion(model, this._userTimeSeconds);
 
     if (this.isFinished()) {
-      this._currentPriority = 0; // 再生中のモーションの優先度を解除
+      this._currentPriority = 0; // Cancel the priority of the motion being played
     }
 
     return updated;
   }
 
   /**
-   * モーションを予約する。
+   * Book a motion.
    *
-   * @param   priority    優先度
-   * @return  true    予約できた
-   * @return  false   予約できなかった
+   * @param priority priority
+   * @return true I was able to make a reservation
+   * @return false Could not make a reservation
    */
   public reserveMotion(priority: number): boolean {
     if (
@@ -113,8 +113,8 @@ export class CubismMotionManager extends CubismMotionQueueManager {
     return true;
   }
 
-  _currentPriority: number; // 現在再生中のモーションの優先度
-  _reservePriority: number; // 再生予定のモーションの優先度。再生中は0になる。モーションファイルを別スレッドで読み込むときの機能。
+  _currentPriority: number; // Priority of the currently playing motion
+  _reservePriority: number; // Priority of the motion to be played. It becomes 0 during playback. Function when reading a motion file in another thread.
 }
 
 // Namespace definition for compatibility.

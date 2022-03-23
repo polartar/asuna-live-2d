@@ -11,16 +11,16 @@ import { CubismModel } from '../model/cubismmodel';
 import { csmVector } from '../type/csmvector';
 
 /**
- * 自動まばたき機能
+ * Automatic blink function
  *
- * 自動まばたき機能を提供する。
+ * Provides an automatic blink function.
  */
 export class CubismEyeBlink {
   /**
-   * インスタンスを作成する
-   * @param modelSetting モデルの設定情報
-   * @return 作成されたインスタンス
-   * @note 引数がNULLの場合、パラメータIDが設定されていない空のインスタンスを作成する。
+   * Create an instance
+   * @param modelSetting Model setting information
+   * @return Created instance
+   * If the @note argument is NULL, create an empty instance with no parameter ID set.
    */
   public static create(
     modelSetting: ICubismModelSetting = null
@@ -29,8 +29,8 @@ export class CubismEyeBlink {
   }
 
   /**
-   * インスタンスの破棄
-   * @param eyeBlink 対象のCubismEyeBlink
+   * Destroy the instance
+   * @param eyeBlink Target CubismEyeBlink
    */
   public static delete(eyeBlink: CubismEyeBlink): void {
     if (eyeBlink != null) {
@@ -39,18 +39,18 @@ export class CubismEyeBlink {
   }
 
   /**
-   * まばたきの間隔の設定
-   * @param blinkingInterval まばたきの間隔の時間[秒]
+   * Blink interval setting
+   * @param blinkingInterval Time of blink interval [seconds]
    */
   public setBlinkingInterval(blinkingInterval: number): void {
     this._blinkingIntervalSeconds = blinkingInterval;
   }
 
   /**
-   * まばたきのモーションの詳細設定
-   * @param closing   まぶたを閉じる動作の所要時間[秒]
-   * @param closed    まぶたを閉じている動作の所要時間[秒]
-   * @param opening   まぶたを開く動作の所要時間[秒]
+   * Detailed settings for blinking motion
+   * @param closing Time required for closing the eyelids [seconds]
+   * @param closed Time required for closing the eyelids [seconds]
+   * @param opening Time required to open the eyelids [seconds]
    */
   public setBlinkingSetting(
     closing: number,
@@ -63,25 +63,25 @@ export class CubismEyeBlink {
   }
 
   /**
-   * まばたきさせるパラメータIDのリストの設定
-   * @param parameterIds パラメータのIDのリスト
+   * Setting a list of parameter IDs to blink
+   * @param parameterIds List of parameter IDs
    */
   public setParameterIds(parameterIds: csmVector<CubismIdHandle>): void {
     this._parameterIds = parameterIds;
   }
 
   /**
-   * まばたきさせるパラメータIDのリストの取得
-   * @return パラメータIDのリスト
+   * Get a list of parameter IDs to blink
+   * @return List of parameter IDs
    */
   public getParameterIds(): csmVector<CubismIdHandle> {
     return this._parameterIds;
   }
 
   /**
-   * モデルのパラメータの更新
-   * @param model 対象のモデル
-   * @param deltaTimeSeconds デルタ時間[秒]
+   * Update model parameters
+   * @param model Target model
+   * @param deltaTimeSeconds Delta time [seconds]
    */
   public updateParameters(model: CubismModel, deltaTimeSeconds: number): void {
     this._userTimeSeconds += deltaTimeSeconds;
@@ -158,8 +158,8 @@ export class CubismEyeBlink {
   }
 
   /**
-   * コンストラクタ
-   * @param modelSetting モデルの設定情報
+   * Constructor
+   * @param modelSetting Model setting information
    */
   public constructor(modelSetting: ICubismModelSetting) {
     this._blinkingState = EyeState.EyeState_First;
@@ -182,9 +182,9 @@ export class CubismEyeBlink {
   }
 
   /**
-   * 次の瞬きのタイミングの決定
+   * Determining the timing of the next blink
    *
-   * @return 次のまばたきを行う時刻[秒]
+   * @return Time to blink next [seconds]
    */
   public determinNextBlinkingTiming(): number {
     const r: number = Math.random();
@@ -193,33 +193,33 @@ export class CubismEyeBlink {
     );
   }
 
-  _blinkingState: number; // 現在の状態
-  _parameterIds: csmVector<CubismIdHandle>; // 操作対象のパラメータのIDのリスト
-  _nextBlinkingTime: number; // 次のまばたきの時刻[秒]
-  _stateStartTimeSeconds: number; // 現在の状態が開始した時刻[秒]
-  _blinkingIntervalSeconds: number; // まばたきの間隔[秒]
-  _closingSeconds: number; // まぶたを閉じる動作の所要時間[秒]
-  _closedSeconds: number; // まぶたを閉じている動作の所要時間[秒]
-  _openingSeconds: number; // まぶたを開く動作の所要時間[秒]
-  _userTimeSeconds: number; // デルタ時間の積算値[秒]
+  _blinkingState: number; // Current state
+  _parameterIds: csmVector<CubismIdHandle>; // List of IDs of parameters to be operated
+  _nextBlinkingTime: number; // Next blink time [seconds]
+  _stateStartTimeSeconds: number; // Time when the current state started [seconds]
+  _blinkingIntervalSeconds: number; // Blinking interval [seconds]
+  _closingSeconds: number; // Time required for closing the eyelids [seconds]
+  _closedSeconds: number; // Time required for closing the eyelids [seconds]
+  _openingSeconds: number; // Time required to open the eyelids [seconds]
+  _userTimeSeconds: number; // Integrated value of delta time [seconds]
 
   /**
-   * IDで指定された目のパラメータが、0のときに閉じるなら true 、1の時に閉じるなら false 。
+   * True if the eye parameter specified by ID closes when it is 0, false if it closes when it is 1.
    */
   static readonly CloseIfZero: boolean = true;
 }
 
 /**
- * まばたきの状態
+ * Blinking condition
  *
- * まばたきの状態を表す列挙型
+ * Enumeration type that represents the state of blinking
  */
 export enum EyeState {
-  EyeState_First = 0, // 初期状態
-  EyeState_Interval, // まばたきしていない状態
-  EyeState_Closing, // まぶたが閉じていく途中の状態
-  EyeState_Closed, // まぶたが閉じている状態
-  EyeState_Opening // まぶたが開いていく途中の状態
+  EyeState_First = 0, // Initial state
+  EyeState_Interval, // Not blinking
+  EyeState_Closing, // State while the eyelids are closing
+  EyeState_Closed, // Eyelids closed
+  EyeState_Opening // State while the eyelids are opening
 }
 
 // Namespace definition for compatibility.

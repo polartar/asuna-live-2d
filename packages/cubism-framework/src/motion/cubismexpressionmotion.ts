@@ -13,7 +13,7 @@ import { CubismJson, Value } from '../utils/cubismjson';
 import { ACubismMotion } from './acubismmotion';
 import { CubismMotionQueueEntry } from './cubismmotionqueueentry';
 
-// exp3.jsonのキーとデフォルト
+// Exp3.json key and default
 const ExpressionKeyFadeIn = 'FadeInTime';
 const ExpressionKeyFadeOut = 'FadeOutTime';
 const ExpressionKeyParameters = 'Parameters';
@@ -26,16 +26,16 @@ const BlendValueOverwrite = 'Overwrite';
 const DefaultFadeTime = 1.0;
 
 /**
- * 表情のモーション
+ * Facial expression motion
  *
- * 表情のモーションクラス。
+ * Facial expression motion class.
  */
 export class CubismExpressionMotion extends ACubismMotion {
   /**
-   * インスタンスを作成する。
-   * @param buffer expファイルが読み込まれているバッファ
-   * @param size バッファのサイズ
-   * @return 作成されたインスタンス
+   * Create an instance.
+   * @param buffer exp The buffer in which the file is read
+   * @param size Buffer size
+   * @return Created instance
    */
   public static create(
     buffer: ArrayBuffer,
@@ -48,12 +48,12 @@ export class CubismExpressionMotion extends ACubismMotion {
 
     expression.setFadeInTime(
       root.getValueByString(ExpressionKeyFadeIn).toFloat(DefaultFadeTime)
-    ); // フェードイン
+    ); // Fade-in
     expression.setFadeOutTime(
       root.getValueByString(ExpressionKeyFadeOut).toFloat(DefaultFadeTime)
-    ); // フェードアウト
+    ); // Fade out
 
-    // 各パラメータについて
+    // About each parameter
     const parameterCount = root
       .getValueByString(ExpressionKeyParameters)
       .getSize();
@@ -65,13 +65,13 @@ export class CubismExpressionMotion extends ACubismMotion {
         .getValueByIndex(i);
       const parameterId: CubismIdHandle = CubismFramework.getIdManager().getId(
         param.getValueByString(ExpressionKeyId).getRawString()
-      ); // パラメータID
+      ); // Parameter ID
 
       const value: number = param
         .getValueByString(ExpressionKeyValue)
-        .toFloat(); // 値
+        .toFloat(); // Value
 
-      // 計算方法の設定
+      // Calculation method settings
       let blendType: ExpressionBlendType;
 
       if (
@@ -90,11 +90,11 @@ export class CubismExpressionMotion extends ACubismMotion {
       ) {
         blendType = ExpressionBlendType.ExpressionBlendType_Overwrite;
       } else {
-        // その他 仕様にない値を設定した時は加算モードにすることで復旧
+        // If you set a value that is not in the other specifications, you can recover by setting it to the addition mode.
         blendType = ExpressionBlendType.ExpressionBlendType_Add;
       }
 
-      // 設定オブジェクトを作成してリストに追加する
+      // Create a configuration object and add it to the list
       const item: ExpressionParameter = new ExpressionParameter();
 
       item.parameterId = parameterId;
@@ -104,16 +104,16 @@ export class CubismExpressionMotion extends ACubismMotion {
       expression._parameters.pushBack(item);
     }
 
-    CubismJson.delete(json); // JSONデータは不要になったら削除する
+    CubismJson.delete(json); // Delete JSON data when it is no longer needed
     return expression;
   }
 
   /**
-   * モデルのパラメータの更新の実行
-   * @param model 対象のモデル
-   * @param userTimeSeconds デルタ時間の積算値[秒]
-   * @param weight モーションの重み
-   * @param motionQueueEntry CubismMotionQueueManagerで管理されているモーション
+   * Perform model parameter updates
+   * @param model Target model
+   * @param userTimeSeconds Cumulative value of delta time [seconds]
+   * @param weight Motion weight
+   * @param motionQueueEntry Motion managed by CubismMotionQueueManager
    */
   public doUpdateParameters(
     model: CubismModel,
@@ -150,14 +150,14 @@ export class CubismExpressionMotion extends ACubismMotion {
           break;
         }
         default:
-          // 仕様にない値を設定した時はすでに加算モードになっている
+          // If you set a value that is not in the specifications, you are already in addition mode.
           break;
       }
     }
   }
 
   /**
-   * コンストラクタ
+   * Constructor
    */
   constructor() {
     super();
@@ -165,24 +165,24 @@ export class CubismExpressionMotion extends ACubismMotion {
     this._parameters = new csmVector<ExpressionParameter>();
   }
 
-  _parameters: csmVector<ExpressionParameter>; // 表情のパラメータ情報リスト
+  _parameters: csmVector<ExpressionParameter>; // Facial expression parameter information list
 }
 
 /**
- * 表情パラメータ値の計算方式
+ * Calculation method of facial expression parameter value
  */
 export enum ExpressionBlendType {
   ExpressionBlendType_Add = 0, // 加算
-  ExpressionBlendType_Multiply = 1, // 乗算
-  ExpressionBlendType_Overwrite = 2 // 上書き
+  ExpressionBlendType_Multiply = 1, // Multiplication
+  ExpressionBlendType_Overwrite = 2 // Overwrite
 }
 
 /**
- * 表情のパラメータ情報
+ * Facial expression parameter information
  */
 export class ExpressionParameter {
-  parameterId: CubismIdHandle; // パラメータID
-  blendType: ExpressionBlendType; // パラメータの演算種類
+  parameterId: CubismIdHandle; // Parameter ID
+  blendType: ExpressionBlendType; // Parameter operation type
   value: number; // 値
 }
 

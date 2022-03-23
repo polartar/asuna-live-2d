@@ -19,32 +19,32 @@ export function strtod(s: string, endPtr: string[]): number {
   for (let i = 1; ; i++) {
     const testC: string = s.slice(i - 1, i);
 
-    // 指数・マイナスの可能性があるのでスキップする
+    // Skip because there is a possibility of exponent / minus
     if (testC == 'e' || testC == '-' || testC == 'E') {
       continue;
-    } // 文字列の範囲を広げていく
+    } // Expand the range of strings
 
     const test: string = s.substring(0, i);
     const number = Number(test);
     if (isNaN(number)) {
-      // 数値として認識できなくなったので終了
+      // Finished because it can no longer be recognized as a numerical value
       break;
-    } // 最後に数値としてできたindexを格納しておく
+    } // Store the index created as a numerical value at the end
 
     index = i;
   }
-  let d = parseFloat(s); // パースした数値
+  let d = parseFloat(s); // parsed number
 
   if (isNaN(d)) {
-    // 数値として認識できなくなったので終了
+    // Finished because it can no longer be recognized as a numerical value
     d = NaN;
   }
 
-  endPtr[0] = s.slice(index); // 後続の文字列
+  endPtr[0] = s.slice(index); // Subsequent string
   return d;
 }
 
-// ファイルスコープの変数を初期化
+// Initialize file scope variables
 
 let s_isStarted = false;
 let s_isInitialized = false;
@@ -52,11 +52,11 @@ let s_option: Option = null;
 let s_cubismIdManager: CubismIdManager = null;
 
 /**
- * Framework内で使う定数の宣言
+ * Declaration of constants used in Framework
  */
 export const Constant = Object.freeze<Record<string, number>>({
-  vertexOffset: 0, // メッシュ頂点のオフセット値
-  vertexStep: 2 // メッシュ頂点のステップ値
+  vertexOffset: 0, // Offset value of the mesh vertex
+  vertexStep: 2 // Step value of the mesh vertex
 });
 
 export function csmDelete<T>(address: T): void {
@@ -68,18 +68,18 @@ export function csmDelete<T>(address: T): void {
 }
 
 /**
- * Live2D Cubism SDK Original Workflow SDKのエントリポイント
- * 利用開始時はCubismFramework.initialize()を呼び、CubismFramework.dispose()で終了する。
+ * Live2D Cubism SDK Original Workflow SDK entry point
+ * At the beginning of use, call CubismFramework.initialize () and end with CubismFramework.dispose ().
  */
 export class CubismFramework {
   /**
-   * Cubism FrameworkのAPIを使用可能にする。
-   *  APIを実行する前に必ずこの関数を実行すること。
-   *  一度準備が完了して以降は、再び実行しても内部処理がスキップされます。
+   * Enable the Cubism Framework API.
+   * Be sure to execute this function before executing the API.
+   * Once the preparation is completed, the internal processing will be skipped even if it is executed again.
    *
-   * @param    option      Optionクラスのインスタンス
+   * @param option An instance of the Option class
    *
-   * @return   準備処理が完了したらtrueが返ります。
+   * @return true is returned when the preparation process is completed.
    */
   public static startUp(option: Option = null): boolean {
     if (s_isStarted) {
@@ -95,7 +95,7 @@ export class CubismFramework {
 
     s_isStarted = true;
 
-    // Live2D Cubism Coreバージョン情報を表示
+    // Display Live2D Cubism Core version information
     if (s_isStarted) {
       const version: number = Live2DCubismCore.Version.csmGetVersion();
       const major: number = (version & 0xff000000) >> 24;
@@ -118,8 +118,8 @@ export class CubismFramework {
   }
 
   /**
-   * StartUp()で初期化したCubismFrameworkの各パラメータをクリアします。
-   * Dispose()したCubismFrameworkを再利用する際に利用してください。
+   * Clear each parameter of Cubism Framework initialized by StartUp ().
+   * Please use it when reusing the Cubism Framework that has been dispose ().
    */
   public static cleanUp(): void {
     s_isStarted = false;
@@ -129,8 +129,8 @@ export class CubismFramework {
   }
 
   /**
-   * Cubism Framework内のリソースを初期化してモデルを表示可能な状態にします。<br>
-   *     再度Initialize()するには先にDispose()を実行する必要があります。
+   * Initialize the resources in the Cubism Framework to make the model visible. <br>
+   * You need to execute Dispose () before you can Initialize () again.
    */
   public static initialize(): void {
     CSM_ASSERT(s_isStarted);
@@ -139,9 +139,9 @@ export class CubismFramework {
       return;
     }
 
-    // --- s_isInitializedによる連続初期化ガード ---
-    // 連続してリソース確保が行われないようにする。
-    // 再度Initialize()するには先にDispose()を実行する必要がある。
+    // --- Continuous initialization guard by s_isInitialized ---
+    // Prevent continuous resource reservation.
+    // You need to execute Dispose () first to Initialize () again.
     if (s_isInitialized) {
       CubismLogWarning(
         'CubismFramework.initialize() skipped, already initialized.'
@@ -149,7 +149,7 @@ export class CubismFramework {
       return;
     }
 
-    //---- static 初期化 ----
+    //---- static initialization----
     Value.staticInitializeNotForClientCall();
 
     s_cubismIdManager = new CubismIdManager();
@@ -160,9 +160,9 @@ export class CubismFramework {
   }
 
   /**
-   * Cubism Framework内の全てのリソースを解放します。
-   *      ただし、外部で確保されたリソースについては解放しません。
-   *      外部で適切に破棄する必要があります。
+   * Free all resources in the Cubism Framework.
+   * However, resources allocated externally will not be released.
+   * Must be properly destroyed externally.
    */
   public static dispose(): void {
     CSM_ASSERT(s_isStarted);
@@ -171,10 +171,10 @@ export class CubismFramework {
       return;
     }
 
-    // --- s_isInitializedによる未初期化解放ガード ---
-    // dispose()するには先にinitialize()を実行する必要がある。
+    // --- Uninitialized release guard by s_isInitialized ---
+    // You need to execute initialize () first to dispose ().
     if (!s_isInitialized) {
-      // false...リソース未確保の場合
+      // false ... If resources are not secured
       CubismLogWarning('CubismFramework.dispose() skipped, not initialized.');
       return;
     }
@@ -184,7 +184,7 @@ export class CubismFramework {
     s_cubismIdManager.release();
     s_cubismIdManager = null;
 
-    // レンダラの静的リソース（シェーダプログラム他）を解放する
+    // Release the renderer's static resources (shader program, etc.)
     CubismRenderer.staticRelease();
 
     s_isInitialized = false;
@@ -193,25 +193,25 @@ export class CubismFramework {
   }
 
   /**
-   * Cubism FrameworkのAPIを使用する準備が完了したかどうか
-   * @return APIを使用する準備が完了していればtrueが返ります。
+   * Are you ready to use the Cubism Framework API?
+   * Returns true if you are ready to use the @return API.
    */
   public static isStarted(): boolean {
     return s_isStarted;
   }
 
   /**
-   * Cubism Frameworkのリソース初期化がすでに行われているかどうか
-   * @return リソース確保が完了していればtrueが返ります
+   * Whether the Cubism Framework resource has already been initialized
+   * @return Returns true if resource allocation is complete
    */
   public static isInitialized(): boolean {
     return s_isInitialized;
   }
 
   /**
-   * Core APIにバインドしたログ関数を実行する
+   * Execute the log function bound to the Core API
    *
-   * @praram message ログメッセージ
+   * @praram message Log message
    */
   public static coreLogFunction(message: string): void {
     // Return if logging not possible.
@@ -223,9 +223,9 @@ export class CubismFramework {
   }
 
   /**
-   * 現在のログ出力レベル設定の値を返す。
+   * Returns the value of the current log output level setting.
    *
-   * @return  現在のログ出力レベル設定の値
+   * @return Current log output level setting value
    */
   public static getLoggingLevel(): LogLevel {
     if (s_option != null) {
@@ -235,35 +235,35 @@ export class CubismFramework {
   }
 
   /**
-   * IDマネージャのインスタンスを取得する
-   * @return CubismManagerクラスのインスタンス
+   * Get an instance of ID Manager
+   * @return An instance of the CubismManager class
    */
   public static getIdManager(): CubismIdManager {
     return s_cubismIdManager;
   }
 
   /**
-   * 静的クラスとして使用する
-   * インスタンス化させない
+   * Use as a static class
+   * Do not instantiate
    */
-  private constructor() {}
+  private constructor() { }
 }
 
 export class Option {
-  logFunction: Live2DCubismCore.csmLogFunction; // ログ出力の関数オブジェクト
-  loggingLevel: LogLevel; // ログ出力レベルの設定
+  logFunction: Live2DCubismCore.csmLogFunction; // Function object for log output
+  loggingLevel: LogLevel; // Setting the log output level
 }
 
 /**
- * ログ出力のレベル
+ * Log output level
  */
 export enum LogLevel {
-  LogLevel_Verbose = 0, // 詳細ログ
-  LogLevel_Debug, // デバッグログ
-  LogLevel_Info, // Infoログ
-  LogLevel_Warning, // 警告ログ
-  LogLevel_Error, // エラーログ
-  LogLevel_Off // ログ出力無効
+  LogLevel_Verbose = 0, // Detailed log
+  LogLevel_Debug, // Debug log
+  LogLevel_Info, // Info log
+  LogLevel_Warning, // Warning log
+  LogLevel_Error, // Error log
+  LogLevel_Off // Log output disabled
 }
 
 // Namespace definition for compatibility.

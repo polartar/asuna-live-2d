@@ -32,28 +32,28 @@ const Time = 'Time';
 const Value = 'Value';
 
 /**
- * motion3.jsonのコンテナ。
+ * Motion3.json container.
  */
 export class CubismMotionJson {
   /**
-   * コンストラクタ
-   * @param buffer motion3.jsonが読み込まれているバッファ
-   * @param size バッファのサイズ
+   * Constructor
+   * @param buffer The buffer in which motion3.json is loaded
+   * @param size Buffer size
    */
   public constructor(buffer: ArrayBuffer, size: number) {
     this._json = CubismJson.create(buffer, size);
   }
 
   /**
-   * デストラクタ相当の処理
+   * Destructor-equivalent processing
    */
   public release(): void {
     CubismJson.delete(this._json);
   }
 
   /**
-   * モーションの長さを取得する
-   * @return モーションの長さ[秒]
+   * Get the length of the motion
+   * @return Motion length [seconds]
    */
   public getMotionDuration(): number {
     return this._json
@@ -64,9 +64,9 @@ export class CubismMotionJson {
   }
 
   /**
-   * モーションのループ情報の取得
-   * @return true ループする
-   * @return false ループしない
+   * Get motion loop information
+   * @return true to loop
+   * @return false Do not loop
    */
   public isMotionLoop(): boolean {
     return this._json
@@ -91,8 +91,8 @@ export class CubismMotionJson {
   }
 
   /**
-   * モーションカーブの個数の取得
-   * @return モーションカーブの個数
+   * Get the number of motion curves
+   * @return Number of motion curves
    */
   public getMotionCurveCount(): number {
     return this._json
@@ -103,8 +103,8 @@ export class CubismMotionJson {
   }
 
   /**
-   * モーションのフレームレートの取得
-   * @return フレームレート[FPS]
+   * Get the frame rate of the motion
+   * @return Frame rate [FPS]
    */
   public getMotionFps(): number {
     return this._json
@@ -115,8 +115,8 @@ export class CubismMotionJson {
   }
 
   /**
-   * モーションのセグメントの総合計の取得
-   * @return モーションのセグメントの取得
+   * Get the total sum of motion segments
+   * @return Get motion segment
    */
   public getMotionTotalSegmentCount(): number {
     return this._json
@@ -127,8 +127,8 @@ export class CubismMotionJson {
   }
 
   /**
-   * モーションのカーブの制御店の総合計の取得
-   * @return モーションのカーブの制御点の総合計
+   * Get the total sum of the motion curve control stores
+   * @return Total of control points of motion curve
    */
   public getMotionTotalPointCount(): number {
     return this._json
@@ -139,9 +139,9 @@ export class CubismMotionJson {
   }
 
   /**
-   * モーションのフェードイン時間の存在
-   * @return true 存在する
-   * @return false 存在しない
+   * Existence of motion fade-in time
+   * @return true Exists
+   * @return false Does not exist
    */
   public isExistMotionFadeInTime(): boolean {
     return !this._json
@@ -152,9 +152,9 @@ export class CubismMotionJson {
   }
 
   /**
-   * モーションのフェードアウト時間の存在
-   * @return true 存在する
-   * @return false 存在しない
+   * Existence of motion fade-out time
+   * @return true Exists
+   * @return false Does not exist
    */
   public isExistMotionFadeOutTime(): boolean {
     return !this._json
@@ -165,8 +165,8 @@ export class CubismMotionJson {
   }
 
   /**
-   * モーションのフェードイン時間の取得
-   * @return フェードイン時間[秒]
+   * Get motion fade-in time
+   * @return Fade-in time [seconds]
    */
   public getMotionFadeInTime(): number {
     return this._json
@@ -177,8 +177,8 @@ export class CubismMotionJson {
   }
 
   /**
-   * モーションのフェードアウト時間の取得
-   * @return フェードアウト時間[秒]
+   * Get the motion fade-out time
+   * @return Fade out time [seconds]
    */
   public getMotionFadeOutTime(): number {
     return this._json
@@ -189,9 +189,9 @@ export class CubismMotionJson {
   }
 
   /**
-   * モーションのカーブの種類の取得
-   * @param curveIndex カーブのインデックス
-   * @return カーブの種類
+   * Get the type of motion curve
+   * @param curveIndex Curve index
+   * @return Curve type
    */
   public getMotionCurveTarget(curveIndex: number): string {
     return this._json
@@ -203,9 +203,9 @@ export class CubismMotionJson {
   }
 
   /**
-   * モーションのカーブのIDの取得
-   * @param curveIndex カーブのインデックス
-   * @return カーブのID
+   * Get the ID of the motion curve
+   * @param curveIndex Curve index
+   * @return Curve ID
    */
   public getMotionCurveId(curveIndex: number): CubismIdHandle {
     return CubismFramework.getIdManager().getId(
@@ -219,10 +219,10 @@ export class CubismMotionJson {
   }
 
   /**
-   * モーションのカーブのフェードイン時間の存在
-   * @param curveIndex カーブのインデックス
-   * @return true 存在する
-   * @return false 存在しない
+   * Existence of fade-in time for motion curves
+   * @param curveIndex Curve index
+   * @return true Exists
+   * @return false Does not exist
    */
   public isExistMotionCurveFadeInTime(curveIndex: number): boolean {
     return !this._json
@@ -234,10 +234,10 @@ export class CubismMotionJson {
   }
 
   /**
-   * モーションのカーブのフェードアウト時間の存在
-   * @param curveIndex カーブのインデックス
-   * @return true 存在する
-   * @return false 存在しない
+   * Existence of fade-out time for motion curves
+   * @param curveIndex Curve index
+   * @return true Exists
+   * @return false Does not exist
    */
   public isExistMotionCurveFadeOutTime(curveIndex: number): boolean {
     return !this._json
@@ -249,9 +249,9 @@ export class CubismMotionJson {
   }
 
   /**
-   * モーションのカーブのフェードイン時間の取得
-   * @param curveIndex カーブのインデックス
-   * @return フェードイン時間[秒]
+   * Get the fade-in time of the motion curve
+   * @param curveIndex Curve index
+   * @return Fade-in time [seconds]
    */
   public getMotionCurveFadeInTime(curveIndex: number): number {
     return this._json
@@ -263,9 +263,9 @@ export class CubismMotionJson {
   }
 
   /**
-   * モーションのカーブのフェードアウト時間の取得
-   * @param curveIndex カーブのインデックス
-   * @return フェードアウト時間[秒]
+   * Get the fade-out time of the motion curve
+   * @param curveIndex Curve index
+   * @return Fade out time [seconds]
    */
   public getMotionCurveFadeOutTime(curveIndex: number): number {
     return this._json
@@ -277,9 +277,9 @@ export class CubismMotionJson {
   }
 
   /**
-   * モーションのカーブのセグメントの個数を取得する
-   * @param curveIndex カーブのインデックス
-   * @return モーションのカーブのセグメントの個数
+   * Get the number of segments of a motion curve
+   * @param curveIndex Curve index
+   * @return Number of motion curve segments
    */
   public getMotionCurveSegmentCount(curveIndex: number): number {
     return this._json
@@ -292,10 +292,10 @@ export class CubismMotionJson {
   }
 
   /**
-   * モーションのカーブのセグメントの値の取得
-   * @param curveIndex カーブのインデックス
-   * @param segmentIndex セグメントのインデックス
-   * @return セグメントの値
+   * Get the value of a segment of a motion curve
+   * @param curveIndex Curve index
+   * @param segmentIndex Segment index
+   * @return segment value
    */
   public getMotionCurveSegment(
     curveIndex: number,
@@ -311,8 +311,8 @@ export class CubismMotionJson {
   }
 
   /**
-   * イベントの個数の取得
-   * @return イベントの個数
+   * Get the number of events
+   * @return Number of events
    */
   public getEventCount(): number {
     return this._json
@@ -323,8 +323,8 @@ export class CubismMotionJson {
   }
 
   /**
-   *  イベントの総文字数の取得
-   * @return イベントの総文字数
+   * Get the total number of characters in the event
+   * @return Total number of characters in the event
    */
   public getTotalEventValueSize(): number {
     return this._json
@@ -335,9 +335,9 @@ export class CubismMotionJson {
   }
 
   /**
-   * イベントの時間の取得
-   * @param userDataIndex イベントのインデックス
-   * @return イベントの時間[秒]
+   * Get time for the event
+   * @param userDataIndex Event index
+   * @return Event time [seconds]
    */
   public getEventTime(userDataIndex: number): number {
     return this._json
@@ -349,9 +349,9 @@ export class CubismMotionJson {
   }
 
   /**
-   * イベントの取得
-   * @param userDataIndex イベントのインデックス
-   * @return イベントの文字列
+   * Get the event
+   * @param userDataIndex Event index
+   * @return event string
    */
   public getEventValue(userDataIndex: number): csmString {
     return new csmString(
@@ -364,14 +364,14 @@ export class CubismMotionJson {
     );
   }
 
-  _json: CubismJson; // motion3.jsonのデータ
+  _json: CubismJson; // data of motion3.json
 }
 
 /**
- * @brief ベジェカーブの解釈方法のフラグタイプ
+ * @brief Flag type of how to interpret Bezier curves
  */
 export enum EvaluationOptionFlag {
-  EvaluationOptionFlag_AreBeziersRistricted = 0 ///< ベジェハンドルの規制状態
+  EvaluationOptionFlag_AreBeziersRistricted = 0 /// <Bezier handle restricted state
 }
 
 // Namespace definition for compatibility.

@@ -6,25 +6,25 @@
  */
 
 /**
- * 4x4の行列
+ * 4x4 matrix
  *
- * 4x4行列の便利クラス。
+ * Convenient class for 4x4 matrices.
  */
 export class CubismMatrix44 {
   /**
-   * コンストラクタ
+   * Constructor
    */
   public constructor() {
-    this._tr = new Float32Array(16); // 4 * 4のサイズ
+    this._tr = new Float32Array(16); // 4 * 4 size
     this.loadIdentity();
   }
 
   /**
-   * 受け取った２つの行列の乗算を行う。
+   * Multiply the two received matrices.
    *
-   * @param a 行列a
-   * @param b 行列b
-   * @return 乗算結果の行列
+   * @param a row column a
+   * @param b row and column b
+   * @return Multiplication result matrix
    */
   public static multiply(
     a: Float32Array,
@@ -66,7 +66,7 @@ export class CubismMatrix44 {
   }
 
   /**
-   * 単位行列に初期化する
+   * Initialize to identity matrix
    */
   public loadIdentity(): void {
     const c: Float32Array = new Float32Array([
@@ -92,9 +92,9 @@ export class CubismMatrix44 {
   }
 
   /**
-   * 行列を設定
+   * Set matrix
    *
-   * @param tr 16個の浮動小数点数で表される4x4の行列
+   * @param tr A 4x4 matrix represented by 16 floating point numbers
    */
   public setMatrix(tr: Float32Array): void {
     for (let i = 0; i < 16; ++i) {
@@ -103,88 +103,88 @@ export class CubismMatrix44 {
   }
 
   /**
-   * 行列を浮動小数点数の配列で取得
+   * Get a matrix as an array of floating point numbers
    *
-   * @return 16個の浮動小数点数で表される4x4の行列
+   * @return A 4x4 matrix represented by 16 floating point numbers
    */
   public getArray(): Float32Array {
     return this._tr;
   }
 
   /**
-   * X軸の拡大率を取得
-   * @return X軸の拡大率
+   * Get X-axis magnification
+   * @return X-axis magnification
    */
   public getScaleX(): number {
     return this._tr[0];
   }
 
   /**
-   * Y軸の拡大率を取得する
+   * Get the Y-axis magnification
    *
-   * @return Y軸の拡大率
+   * @return Y-axis magnification
    */
   public getScaleY(): number {
     return this._tr[5];
   }
 
   /**
-   * X軸の移動量を取得
-   * @return X軸の移動量
+   * Get the movement amount of the X axis
+   * @return X-axis movement
    */
   public getTranslateX(): number {
     return this._tr[12];
   }
 
   /**
-   * Y軸の移動量を取得
-   * @return Y軸の移動量
+   * Get the movement amount of Y axis
+   * @return Y-axis movement
    */
   public getTranslateY(): number {
     return this._tr[13];
   }
 
   /**
-   * X軸の値を現在の行列で計算
+   * Calculate X-axis values ​​in the current matrix
    *
-   * @param src X軸の値
-   * @return 現在の行列で計算されたX軸の値
+   * @param src X-axis value
+   * @return X-axis value calculated in the current matrix
    */
   public transformX(src: number): number {
     return this._tr[0] * src + this._tr[12];
   }
 
   /**
-   * Y軸の値を現在の行列で計算
+   * Calculate Y-axis value with current matrix
    *
-   * @param src Y軸の値
-   * @return 現在の行列で計算されたY軸の値
+   * @param src Y-axis value
+   * @return Y-axis value calculated in the current matrix
    */
   public transformY(src: number): number {
     return this._tr[5] * src + this._tr[13];
   }
 
   /**
-   * X軸の値を現在の行列で逆計算
+   * Inverse calculation of X-axis values ​​in the current matrix
    */
   public invertTransformX(src: number): number {
     return (src - this._tr[12]) / this._tr[0];
   }
 
   /**
-   * Y軸の値を現在の行列で逆計算
+   * Inversely calculate the Y-axis value in the current matrix
    */
   public invertTransformY(src: number): number {
     return (src - this._tr[13]) / this._tr[5];
   }
 
   /**
-   * 現在の行列の位置を起点にして移動
+   * Move from the current matrix position
    *
-   * 現在の行列の位置を起点にして相対的に移動する。
+   * Move relative to the current matrix position as the starting point.
    *
-   * @param x X軸の移動量
-   * @param y Y軸の移動量
+   * @param x X-axis movement
+   * @param y Y-axis movement
    */
   public translateRelative(x: number, y: number): void {
     const tr1: Float32Array = new Float32Array([
@@ -210,12 +210,12 @@ export class CubismMatrix44 {
   }
 
   /**
-   * 現在の行列の位置を移動
+   * Move the position of the current matrix
    *
-   * 現在の行列の位置を指定した位置へ移動する
+   * Move the current matrix position to the specified position
    *
-   * @param x X軸の移動量
-   * @param y y軸の移動量
+   * @param x X-axis movement
+   * @param yy Axis movement amount
    */
   public translate(x: number, y: number): void {
     this._tr[12] = x;
@@ -223,28 +223,28 @@ export class CubismMatrix44 {
   }
 
   /**
-   * 現在の行列のX軸の位置を指定した位置へ移動する
+   * Moves the position of the X-axis of the current matrix to the specified position
    *
-   * @param x X軸の移動量
+   * @param x X-axis movement
    */
   public translateX(x: number): void {
     this._tr[12] = x;
   }
 
   /**
-   * 現在の行列のY軸の位置を指定した位置へ移動する
+   * Moves the Y-axis position of the current matrix to the specified position
    *
-   * @param y Y軸の移動量
+   * @param y Y-axis movement
    */
   public translateY(y: number): void {
     this._tr[13] = y;
   }
 
   /**
-   * 現在の行列の拡大率を相対的に設定する
+   * Set the magnification of the current matrix relatively
    *
-   * @param x X軸の拡大率
-   * @param y Y軸の拡大率
+   * @param x X-axis magnification
+   * @param y Y-axis magnification
    */
   public scaleRelative(x: number, y: number): void {
     const tr1: Float32Array = new Float32Array([
@@ -270,10 +270,10 @@ export class CubismMatrix44 {
   }
 
   /**
-   * 現在の行列の拡大率を指定した倍率に設定する
+   * Set the magnification of the current matrix to the specified magnification
    *
-   * @param x X軸の拡大率
-   * @param y Y軸の拡大率
+   * @param x X-axis magnification
+   * @param y Y-axis magnification
    */
   public scale(x: number, y: number): void {
     this._tr[0] = x;
@@ -281,16 +281,16 @@ export class CubismMatrix44 {
   }
 
   /**
-   * 現在の行列に行列を乗算
+   * Multiply the current matrix by the matrix
    *
-   * @param m 行列
+   * @param m row and column
    */
   public multiplyByMatrix(m: CubismMatrix44): void {
     CubismMatrix44.multiply(m.getArray(), this._tr, this._tr);
   }
 
   /**
-   * オブジェクトのコピーを生成する
+   * Make a copy of the object
    */
   public clone(): CubismMatrix44 {
     const cloneMatrix: CubismMatrix44 = new CubismMatrix44();
@@ -302,7 +302,7 @@ export class CubismMatrix44 {
     return cloneMatrix;
   }
 
-  protected _tr: Float32Array; // 4x4行列データ
+  protected _tr: Float32Array; // 4x4 matrix data
 }
 
 // Namespace definition for compatibility.

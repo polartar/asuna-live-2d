@@ -6,14 +6,14 @@
  */
 
 /**
- * 文字列クラス。
+ * String class.
  */
 export class csmString {
   /**
-   * 文字列を後方に追加する
+   * Add a string to the back
    *
-   * @param c 追加する文字列
-   * @return 更新された文字列
+   * @param c Character string to add
+   * @return Updated string
    */
   public append(c: string, length?: number): csmString {
     this.s += length !== undefined ? c.substr(0, length) : c;
@@ -22,10 +22,10 @@ export class csmString {
   }
 
   /**
-   * 文字サイズを拡張して文字を埋める
-   * @param length    拡張する文字数
-   * @param v         埋める文字
-   * @return 更新された文字列
+   * Expand the font size to fill the font
+   * @param length Number of characters to expand
+   * @param v Character to fill
+   * @return Updated string
    */
   public expansion(length: number, v: string): csmString {
     for (let i = 0; i < length; i++) {
@@ -36,60 +36,60 @@ export class csmString {
   }
 
   /**
-   * 文字列の長さをバイト数で取得する
+   * Get the length of the string in bytes
    */
   public getBytes(): number {
     return encodeURIComponent(this.s).replace(/%../g, 'x').length;
   }
 
   /**
-   * 文字列の長さを返す
+   * Returns the length of the string
    */
   public getLength(): number {
     return this.s.length;
   }
 
   /**
-   * 文字列比較 <
-   * @param s 比較する文字列
-   * @return true:    比較する文字列より小さい
-   * @return false:   比較する文字列より大きい
+   * String comparison <
+   * @param s String to compare
+   * @return true: less than the string to compare
+   * @return false: Greater than the string to compare
    */
   public isLess(s: csmString): boolean {
     return this.s < s.s;
   }
 
   /**
-   * 文字列比較 >
-   * @param s 比較する文字列
-   * @return true:    比較する文字列より大きい
-   * @return false:   比較する文字列より小さい
+   * Text column comparison>
+   * @param s String to compare
+   * @return true: Greater than the string to compare
+   * @return false: less than the string to compare
    */
   public isGreat(s: csmString): boolean {
     return this.s > s.s;
   }
 
   /**
-   * 文字列比較 ==
-   * @param s 比較する文字列
-   * @return true:    比較する文字列と等しい
-   * @return false:   比較する文字列と異なる
+   * String comparison ==
+   * @param s String to compare
+   * @return true: equal to the string to compare
+   * @return false: Different from the string to compare
    */
   public isEqual(s: string): boolean {
     return this.s == s;
   }
 
   /**
-   * 文字列が空かどうか
-   * @return true: 空の文字列
-   * @return false: 値が設定されている
+   * Whether the string is empty
+   * @return true: empty string
+   * @return false: Value is set
    */
   public isEmpty(): boolean {
     return this.s.length == 0;
   }
 
   /**
-   * 引数付きコンストラクタ
+   * Constructor with arguments
    */
   public constructor(s: string) {
     this.s = s;

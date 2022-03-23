@@ -10,21 +10,21 @@ import { CubismModel } from '../model/cubismmodel';
 import { csmVector } from '../type/csmvector';
 
 /**
- * 呼吸機能
+ * Respiratory function
  *
- * 呼吸機能を提供する。
+ * Provides respiratory function.
  */
 export class CubismBreath {
   /**
-   * インスタンスの作成
+   * Create an instance
    */
   public static create(): CubismBreath {
     return new CubismBreath();
   }
 
   /**
-   * インスタンスの破棄
-   * @param instance 対象のCubismBreath
+   * Destroy the instance
+   * @param instance Target CubismBreath
    */
   public static delete(instance: CubismBreath): void {
     if (instance != null) {
@@ -33,25 +33,25 @@ export class CubismBreath {
   }
 
   /**
-   * 呼吸のパラメータの紐づけ
-   * @param breathParameters 呼吸を紐づけたいパラメータのリスト
+   * Respiratory parameter association
+   * @param breathParameters List of parameters you want to associate with breathing
    */
   public setParameters(breathParameters: csmVector<BreathParameterData>): void {
     this._breathParameters = breathParameters;
   }
 
   /**
-   * 呼吸に紐づいているパラメータの取得
-   * @return 呼吸に紐づいているパラメータのリスト
+   * Acquisition of parameters associated with breathing
+   * @return List of parameters associated with breathing
    */
   public getParameters(): csmVector<BreathParameterData> {
     return this._breathParameters;
   }
 
   /**
-   * モデルのパラメータの更新
-   * @param model 対象のモデル
-   * @param deltaTimeSeconds デルタ時間[秒]
+   * Update model parameters
+   * @param model Target model
+   * @param deltaTimeSeconds Delta time [seconds]
    */
   public updateParameters(model: CubismModel, deltaTimeSeconds: number): void {
     this._currentTime += deltaTimeSeconds;
@@ -60,9 +60,6 @@ export class CubismBreath {
 
     for (let i = 0; i < this._breathParameters.getSize(); ++i) {
       const data: BreathParameterData = this._breathParameters.at(i);
-
-      // console.log(data.offset + data.peak * Math.sin(t / data.cycle))
-      // console.log(data.parameterId)
 
       model.addParameterValueById(
         data.parameterId,
@@ -73,27 +70,27 @@ export class CubismBreath {
   }
 
   /**
-   * コンストラクタ
+   * Constructor
    */
   public constructor() {
     this._currentTime = 0.0;
   }
 
-  _breathParameters: csmVector<BreathParameterData>; // 呼吸にひもづいているパラメータのリスト
-  _currentTime: number; // 積算時間[秒]
+  _breathParameters: csmVector<BreathParameterData>; // List of parameters associated with breathing
+  _currentTime: number; // Accumulated time [seconds]
 }
 
 /**
- * 呼吸のパラメータ情報
+ * Respiratory parameter information
  */
 export class BreathParameterData {
   /**
-   * コンストラクタ
-   * @param parameterId   呼吸をひもづけるパラメータID
-   * @param offset        呼吸を正弦波としたときの、波のオフセット
-   * @param peak          呼吸を正弦波としたときの、波の高さ
-   * @param cycle         呼吸を正弦波としたときの、波の周期
-   * @param weight        パラメータへの重み
+   * Constructor
+   * @param parameterId Parameter ID that links breathing
+   * @param offset Wave offset when breathing is a sine wave
+   * @param peak Wave height when breathing is a sine wave
+   * @param cycle Wave cycle when breathing is a sine wave
+   * @param weight Weight to parameter
    */
   constructor(
     parameterId?: CubismIdHandle,
@@ -109,11 +106,11 @@ export class BreathParameterData {
     this.weight = weight == undefined ? 0.0 : weight;
   }
 
-  parameterId: CubismIdHandle; // 呼吸をひもづけるパラメータID\
-  offset: number; // 呼吸を正弦波としたときの、波のオフセット
-  peak: number; // 呼吸を正弦波としたときの、波の高さ
-  cycle: number; // 呼吸を正弦波としたときの、波の周期
-  weight: number; // パラメータへの重み
+  parameterId: CubismIdHandle; // Parameter ID that links breathing \
+  offset: number; // Wave offset when breathing is a sine wave
+  peak: number; // Wave height when breathing is a sine wave
+  cycle: number; // Wave cycle when breathing is a sine wave
+  weight: number; // Weight to parameter
 }
 
 // Namespace definition for compatibility.

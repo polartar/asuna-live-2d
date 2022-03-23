@@ -11,82 +11,82 @@ import { csmString } from '../type/csmstring';
 import { csmVector, iterator as csmVector_iterator } from '../type/csmvector';
 import { CubismLogInfo } from './cubismdebug';
 
-// StaticInitializeNotForClientCall()で初期化する
+// Initialize with StaticInitializeNotForClientCall ()
 const CSM_JSON_ERROR_TYPE_MISMATCH = 'Error: type mismatch';
 const CSM_JSON_ERROR_INDEX_OF_BOUNDS = 'Error: index out of bounds';
 
 /**
- * パースしたJSONエレメントの要素の基底クラス。
+ * Base class of the element of the parsed JSON element.
  */
 export abstract class Value {
   /**
-   * コンストラクタ
+   * Constructor
    */
-  public constructor() {}
+  public constructor() { }
 
   /**
-   * 要素を文字列型で返す(csmString型)
+   * Returns an element as a string type (csmString type)
    */
   public abstract getString(defaultValue?: string, indent?: string): string;
 
   /**
-   * 要素を文字列型で返す(string)
+   * Returns the element as a string (string)
    */
   public getRawString(defaultValue?: string, indent?: string): string {
     return this.getString(defaultValue, indent);
   }
 
   /**
-   * 要素を数値型で返す(number)
+   * Returns an element as a number (number)
    */
   public toInt(defaultValue = 0): number {
     return defaultValue;
   }
 
   /**
-   * 要素を数値型で返す(number)
+   * Returns an element as a number (number)
    */
   public toFloat(defaultValue = 0): number {
     return defaultValue;
   }
 
   /**
-   * 要素を真偽値で返す(boolean)
+   * Returns an element as a boolean
    */
   public toBoolean(defaultValue = false): boolean {
     return defaultValue;
   }
 
   /**
-   * サイズを返す
+   * Returns size
    */
   public getSize(): number {
     return 0;
   }
 
   /**
-   * 要素を配列で返す(Value[])
+   * Returns the element as an array (Value [])
    */
   public getArray(defaultValue: Value[] = null): Value[] {
     return defaultValue;
   }
 
   /**
-   * 要素をコンテナで返す(array)
+   * Returns an element in a container (array)
    */
   public getVector(defaultValue = new csmVector<Value>()): csmVector<Value> {
     return defaultValue;
   }
 
   /**
-   * 要素をマップで返す(csmMap<csmString, Value>)
+   * Returns the element as a map (csmMap <csmString, Value>)
    */
   public getMap(defaultValue?: csmMap<string, Value>): csmMap<string, Value> {
     return defaultValue;
   }
 
   /**
-   * 添字演算子[index]
+   * Subscript operator [index]
    */
   public getValueByIndex(index: number): Value {
     return Value.errorValue.setErrorNotForClientCall(
@@ -95,7 +95,7 @@ export abstract class Value {
   }
 
   /**
-   * 添字演算子[string | csmString]
+   * Subscript operator [string | csmString]
    */
   public getValueByString(s: string | csmString): Value {
     return Value.nullValue.setErrorNotForClientCall(
@@ -104,65 +104,65 @@ export abstract class Value {
   }
 
   /**
-   * マップのキー一覧をコンテナで返す
+   * Return map key list in container
    *
-   * @return マップのキーの一覧
+   * @return List of map keys
    */
   public getKeys(): csmVector<string> {
     return Value.s_dummyKeys;
   }
 
   /**
-   * Valueの種類がエラー値ならtrue
+   * True if the Value type is an error value
    */
   public isError(): boolean {
     return false;
   }
 
   /**
-   * Valueの種類がnullならtrue
+   * True if the Value type is null
    */
   public isNull(): boolean {
     return false;
   }
 
   /**
-   * Valueの種類が真偽値ならtrue
+   * True if the Value type is boolean
    */
   public isBool(): boolean {
     return false;
   }
 
   /**
-   * Valueの種類が数値型ならtrue
+   * True if the Value type is numeric
    */
   public isFloat(): boolean {
     return false;
   }
 
   /**
-   * Valueの種類が文字列ならtrue
+   * True if the Value type is a string
    */
   public isString(): boolean {
     return false;
   }
 
   /**
-   * Valueの種類が配列ならtrue
+   * True if the Value type is an array
    */
   public isArray(): boolean {
     return false;
   }
 
   /**
-   * Valueの種類がマップ型ならtrue
+   * True if the Value type is map type
    */
   public isMap(): boolean {
     return false;
   }
 
   /**
-   * 引数の値と等しければtrue
+   * True if equal to the argument value
    */
   public equals(value: csmString): boolean;
   public equals(value: string): boolean;
@@ -173,21 +173,21 @@ export abstract class Value {
   }
 
   /**
-   * Valueの値が静的ならtrue、静的なら解放しない
+   * True if the Value value is static, do not release if static
    */
   public isStatic(): boolean {
     return false;
   }
 
   /**
-   * Valueにエラー値をセットする
+   * Set Value to the error value
    */
   public setErrorNotForClientCall(errorStr: string): Value {
     return JsonError.errorValue;
   }
 
   /**
-   * 初期化用メソッド
+   * Initialization method
    */
   public static staticInitializeNotForClientCall(): void {
     JsonBoolean.trueValue = new JsonBoolean(true);
@@ -198,7 +198,7 @@ export abstract class Value {
   }
 
   /**
-   * リリース用メソッド
+   * Release method
    */
   public static staticReleaseNotForClientCall(): void {
     JsonBoolean.trueValue = null;
@@ -208,26 +208,26 @@ export abstract class Value {
     Value.s_dummyKeys = null;
   }
 
-  protected _stringBuffer: string; // 文字列バッファ
+  protected _stringBuffer: string; // string buffer
 
   private static s_dummyKeys: csmVector<string>; // ダミーキー
 
-  public static errorValue: Value; // 一時的な返り値として返すエラー。 CubismFramework::Disposeするまではdeleteしない
-  public static nullValue: Value; // 一時的な返り値として返すNULL。   CubismFramework::Disposeするまではdeleteしない
+  public static errorValue: Value; // Error returned as a temporary return value. Do not delete until CubismFramework :: Dispose
+  public static nullValue: Value; // NULL to return as a temporary return value. Do not delete until CubismFramework :: Dispose
 }
 
 /**
- * Ascii文字のみ対応した最小限の軽量JSONパーサ。
- * 仕様はJSONのサブセットとなる。
- * 設定ファイル(model3.json)などのロード用
+ * Minimal lightweight JSON parser that only supports Ascii characters.
+ * The specification is a subset of JSON.
+ * For loading configuration files (model3.json) etc.
  *
- * [未対応項目]
- * ・日本語などの非ASCII文字
- * ・eによる指数表現
+ * [Unsupported items]
+ * ・ Non-ASCII characters such as Japanese
+ * ・ Exponential notation by e
  */
 export class CubismJson {
   /**
-   * コンストラクタ
+   * Constructor
    */
   public constructor(buffer?: ArrayBuffer, length?: number) {
     this._error = null;
@@ -240,11 +240,11 @@ export class CubismJson {
   }
 
   /**
-   * バイトデータから直接ロードしてパースする
+   * Load and parse directly from byte data
    *
-   * @param buffer バッファ
-   * @param size バッファサイズ
-   * @return CubismJsonクラスのインスタンス。失敗したらNULL
+   * @param buffer buffer
+   * @param size Buffer size
+   * @return An instance of the CubismJson class. NULL if failed
    */
   public static create(buffer: ArrayBuffer, size: number) {
     const json = new CubismJson();
@@ -259,26 +259,26 @@ export class CubismJson {
   }
 
   /**
-   * パースしたJSONオブジェクトの解放処理
+   * Release processing of parsed JSON object
    *
-   * @param instance CubismJsonクラスのインスタンス
+   * @param instance An instance of the CubismJson class
    */
   public static delete(instance: CubismJson) {
     instance = null;
   }
 
   /**
-   * パースしたJSONのルート要素を返す
+   * Returns the root element of the parsed JSON
    */
   public getRoot(): Value {
     return this._root;
   }
 
   /**
-   *  UnicodeのバイナリをStringに変換
+   * Convert Unicode binaries to String
    *
-   * @param buffer 変換するバイナリデータ
-   * @return 変換後の文字列
+   * @param buffer Binary data to convert
+   * @return Converted string
    */
   public arrayBufferToString(buffer: ArrayBuffer): string {
     const uint8Array: Uint8Array = new Uint8Array(buffer);
@@ -293,21 +293,21 @@ export class CubismJson {
   }
 
   /**
-   * エンコード、パディング
+   * Encoding, padding
    */
   private pad(n: string): string {
     return n.length < 2 ? '0' + n : n;
   }
 
   /**
-   * JSONのパースを実行する
-   * @param buffer    パース対象のデータバイト
-   * @param size      データバイトのサイズ
-   * return true : 成功
-   * return false: 失敗
+   * Perform JSON parsing
+   * @param buffer Data bytes to be parsed
+   * @param size Data byte size
+   * return true : success
+   * return false: failed
    */
   public parseBytes(buffer: ArrayBuffer, size: number): boolean {
-    const endPos: number[] = new Array(1); // 参照渡しにするため配列
+    const endPos: number[] = new Array(1); // Array to pass by reference
     const decodeBuffer: string = this.arrayBufferToString(buffer);
     this._root = this.parseValue(decodeBuffer, size, 0, endPos);
 
@@ -319,35 +319,35 @@ export class CubismJson {
       CubismLogInfo('{0}', this._root.getRawString());
       return false;
     } else if (this._root == null) {
-      this._root = new JsonError(new csmString(this._error), false); // rootは解放されるのでエラーオブジェクトを別途作成する
+      this._root = new JsonError(new csmString(this._error), false); // Since root is released, create an error object separately.
       return false;
     }
     return true;
   }
 
   /**
-   * パース時のエラー値を返す
+   * Returns the error value when parsing
    */
   public getParseError(): string {
     return this._error;
   }
 
   /**
-   * ルート要素の次の要素がファイルの終端だったらtrueを返す
+   * Returns true if the next element after the root element is the end of the file
    */
   public checkEndOfFile(): boolean {
     return this._root.getArray()[1].equals('EOF');
   }
 
   /**
-   * JSONエレメントからValue(float,String,Value*,Array,null,true,false)をパースする
-   * エレメントの書式に応じて内部でParseString(), ParseObject(), ParseArray()を呼ぶ
+   * Parse Value (float, String, Value *, Array, null, true, false) from JSON element
+   * Call ParseString (), ParseObject (), ParseArray () internally depending on the format of the element
    *
-   * @param   buffer      JSONエレメントのバッファ
-   * @param   length      パースする長さ
-   * @param   begin       パースを開始する位置
-   * @param   outEndPos   パース終了時の位置
-   * @return      パースから取得したValueオブジェクト
+   * @param buffer JSON element buffer
+   * @param length The length to parse
+   * @param begin Position to start parsing
+   * @param outEndPos Position at the end of parsing
+   * @return Value object obtained from perspective
    */
   protected parseValue(
     buffer: string,
@@ -376,7 +376,7 @@ export class CubismJson {
         case '7':
         case '8':
         case '9': {
-          const afterString: string[] = new Array(1); // 参照渡しにするため
+          const afterString: string[] = new Array(1); // To pass by reference
           f = strtod(buffer.slice(i), afterString);
           outEndPos[0] = buffer.indexOf(afterString[0]);
           return new JsonFloat(f);
@@ -384,22 +384,22 @@ export class CubismJson {
         case '"':
           return new JsonString(
             this.parseString(buffer, length, i + 1, outEndPos)
-          ); // \"の次の文字から
+          ); // From the next character of \ "
         case '[':
           o = this.parseArray(buffer, length, i + 1, outEndPos);
           return o;
         case '{':
           o = this.parseObject(buffer, length, i + 1, outEndPos);
           return o;
-        case 'n': // null以外にない
+        case 'n': // Nothing but null
           if (i + 3 < length) {
-            o = new JsonNullvalue(); // 解放できるようにする
+            o = new JsonNullvalue(); // Allow to be released
             outEndPos[0] = i + 4;
           } else {
             this._error = 'parse null';
           }
           return o;
-        case 't': // true以外にない
+        case 't': // Nothing but true
           if (i + 3 < length) {
             o = JsonBoolean.trueValue;
             outEndPos[0] = i + 4;
@@ -407,7 +407,7 @@ export class CubismJson {
             this._error = 'parse true';
           }
           return o;
-        case 'f': // false以外にない
+        case 'f': // Nothing but false
           if (i + 4 < length) {
             o = JsonBoolean.falseValue;
             outEndPos[0] = i + 5;
@@ -418,8 +418,8 @@ export class CubismJson {
         case ',': // Array separator
           this._error = "illegal ',' position";
           return null;
-        case ']': // 不正な｝だがスキップする。配列の最後に不要な , があると思われる
-          outEndPos[0] = i; // 同じ文字を再処理
+        case ']': // Illegal} but skip. There seems to be an unnecessary, at the end of the array
+          outEndPos[0] = i; // Reprocess the same character
           return null;
         case '\n':
           this._lineCount++;
@@ -427,7 +427,7 @@ export class CubismJson {
         case '\t':
         case '\r':
         default:
-          // スキップ
+          // Skip
           break;
       }
     }
@@ -437,13 +437,13 @@ export class CubismJson {
   }
 
   /**
-   * 次の「"」までの文字列をパースする。
+   * Parse the string up to the next "" ".
    *
-   * @param   string  ->  パース対象の文字列
-   * @param   length  ->  パースする長さ
-   * @param   begin   ->  パースを開始する位置
-   * @param  outEndPos   ->  パース終了時の位置
-   * @return      パースした文F字列要素
+   * @param string-> String to be parsed
+   * @param length-> length to parse
+   * @param begin-> Position to start parsing
+   * @param outEndPos-> Position at the end of parsing
+   * @return parsed sentence F string element
    */
   protected parseString(
     string: string,
@@ -456,26 +456,26 @@ export class CubismJson {
     let i = begin;
     let c: string, c2: string;
     const ret: csmString = new csmString('');
-    let bufStart: number = begin; // sbufに登録されていない文字の開始位置
+    let bufStart: number = begin; // Start position of characters not registered in sbuf
 
     for (; i < length; i++) {
       c = string[i];
 
       switch (c) {
         case '"': {
-          // 終端の”、エスケープ文字は別に処理されるのでここに来ない
-          outEndPos[0] = i + 1; // ”の次の文字
-          ret.append(string.slice(bufStart), i - bufStart); // 前の文字までを登録する
+          // Do not come here because the "end" and escape characters are processed separately
+          outEndPos[0] = i + 1; // The next character of ”
+          ret.append(string.slice(bufStart), i - bufStart); // Register up to the previous character
           return ret.s;
         }
         case '//': {
-          // エスケープの場合
-          i++; // ２文字をセットで扱う
+          // In case of escape
+          i++; // Handle 2 characters as a set
 
           if (i - 1 > bufStart) {
-            ret.append(string.slice(bufStart), i - bufStart); // 前の文字までを登録する
+            ret.append(string.slice(bufStart), i - bufStart); // Register up to the previous character
           }
-          bufStart = i + 1; // エスケープ（２文字)の次の文字から
+          bufStart = i + 1; // From the character following the escape (2 characters)
 
           if (i < length) {
             c2 = string[i];
@@ -526,13 +526,13 @@ export class CubismJson {
   }
 
   /**
-   * JSONのオブジェクトエレメントをパースしてValueオブジェクトを返す
+   * Parse a JSON object element and return a Value object
    *
-   * @param buffer    JSONエレメントのバッファ
-   * @param length    パースする長さ
-   * @param begin     パースを開始する位置
-   * @param outEndPos パース終了時の位置
-   * @return パースから取得したValueオブジェクト
+   * @param buffer JSON element buffer
+   * @param length The length to parse
+   * @param begin Position to start parsing
+   * @param outEndPos Position at the end of parsing
+   * @return Value object obtained from perspective
    */
   protected parseObject(
     buffer: string,
@@ -550,7 +550,7 @@ export class CubismJson {
     const localRetEndPos2: number[] = Array(1);
     let ok = false;
 
-    // , が続く限りループ
+    // Loop as long as,
     for (; i < length; i++) {
       FOR_LOOP: for (; i < length; i++) {
         c = buffer[i];
@@ -564,17 +564,17 @@ export class CubismJson {
 
             i = localRetEndPos2[0];
             ok = true;
-            break FOR_LOOP; //-- loopから出る
-          case '}': // 閉じカッコ
+            break FOR_LOOP; //-get out of the loop
+          case '}': // Closed parentheses
             outEndPos[0] = i + 1;
-            return ret; // 空
+            return ret; // empty
           case ':':
             this._error = "illegal ':' position";
             break;
           case '\n':
             this._lineCount++;
           default:
-            break; // スキップする文字
+            break; // Character to skip
         }
       }
       if (!ok) {
@@ -584,7 +584,7 @@ export class CubismJson {
 
       ok = false;
 
-      // : をチェック
+      // : check
       FOR_LOOP2: for (; i < length; i++) {
         c = buffer[i];
 
@@ -600,7 +600,7 @@ export class CubismJson {
             this._lineCount++;
           // case ' ': case '\t' : case '\r':
           default:
-            break; // スキップする文字
+            break; // Character to skip
         }
       }
 
@@ -609,7 +609,7 @@ export class CubismJson {
         return null;
       }
 
-      // 値をチェック
+      // Check the value
       const value: Value = this.parseValue(buffer, length, i, localRetEndPos2);
       if (this._error) {
         return null;
@@ -628,11 +628,11 @@ export class CubismJson {
             break FOR_LOOP3;
           case '}':
             outEndPos[0] = i + 1;
-            return ret; // 正常終了
+            return ret; // normal end
           case '\n':
             this._lineCount++;
           default:
-            break; // スキップ
+            break; // skip
         }
       }
     }
@@ -642,12 +642,12 @@ export class CubismJson {
   }
 
   /**
-   * 次の「"」までの文字列をパースする。
-   * @param buffer    JSONエレメントのバッファ
-   * @param length    パースする長さ
-   * @param begin     パースを開始する位置
-   * @param outEndPos パース終了時の位置
-   * @return パースから取得したValueオブジェクト
+   * Parse the string up to the next "" ".
+   * @param buffer JSON element buffer
+   * @param length The length to parse
+   * @param begin Position to start parsing
+   * @param outEndPos Position at the end of parsing
+   * @return Value object obtained from perspective
    */
   protected parseArray(
     buffer: string,
@@ -663,9 +663,9 @@ export class CubismJson {
     let c: string;
     const localRetEndpos2: number[] = new Array(1);
 
-    // , が続く限りループ
+    // Loop as long as,
     for (; i < length; i++) {
-      // : をチェック
+      // : check
       const value: Value = this.parseValue(buffer, length, i, localRetEndpos2);
 
       if (this._error) {
@@ -685,16 +685,16 @@ export class CubismJson {
         switch (c) {
           case ',':
             // breakflag = true;
-            // break; // 次のKEY, VAlUEへ
+            // break; // To the next KEY, VAlUE
             break FOR_LOOP;
           case ']':
             outEndPos[0] = i + 1;
-            return ret; // 終了
+            return ret; // end
           case '\n':
             ++this._lineCount;
           //case ' ': case '\t': case '\r':
           default:
-            break; // スキップ
+            break; // skip
         }
       }
     }
@@ -704,17 +704,17 @@ export class CubismJson {
     return null;
   }
 
-  _error: string; // パース時のエラー
-  _lineCount: number; // エラー報告に用いる行数カウント
-  _root: Value; // パースされたルート要素
+  _error: string; // Error when parsing
+  _lineCount: number; // Count the number of lines used for error reporting
+  _root: Value; // parsed root element
 }
 
 /**
- * パースしたJSONの要素をfloat値として扱う
+ * Treat parsed JSON elements as float values
  */
 export class JsonFloat extends Value {
   /**
-   * コンストラクタ
+   * Constructor
    */
   constructor(v: number) {
     super();
@@ -723,17 +723,17 @@ export class JsonFloat extends Value {
   }
 
   /**
-   * Valueの種類が数値型ならtrue
+   * True if the Value type is numeric
    */
   public isFloat(): boolean {
     return true;
   }
 
   /**
-   * 要素を文字列で返す(csmString型)
+   * Returns an element as a string (csmString type)
    */
   public getString(defaultValue: string, indent: string): string {
-    const strbuf = '\0';
+    const strbuf = '\ 0';
     this._value = parseFloat(strbuf);
     this._stringBuffer = strbuf;
 
@@ -741,21 +741,21 @@ export class JsonFloat extends Value {
   }
 
   /**
-   * 要素を数値型で返す(number)
+   * Returns an element as a number (number)
    */
   public toInt(defaultValue = 0): number {
     return parseInt(this._value.toString());
   }
 
   /**
-   * 要素を数値型で返す(number)
+   * Returns an element as a number (number)
    */
   public toFloat(defaultValue = 0.0): number {
     return this._value;
   }
 
   /**
-   * 引数の値と等しければtrue
+   * True if equal to the argument value
    */
   public equals(value: csmString): boolean;
   public equals(value: string): boolean;
@@ -775,29 +775,29 @@ export class JsonFloat extends Value {
     return false;
   }
 
-  private _value: number; // JSON要素の値
+  private _value: number; // JSON element value
 }
 
 /**
- * パースしたJSONの要素を真偽値として扱う
+ * Treat parsed JSON elements as boolean values
  */
 export class JsonBoolean extends Value {
   /**
-   * Valueの種類が真偽値ならtrue
+   * True if the Value type is boolean
    */
   public isBool(): boolean {
     return true;
   }
 
   /**
-   * 要素を真偽値で返す(boolean)
+   * Returns an element as a boolean
    */
   public toBoolean(defaultValue = false): boolean {
     return this._boolValue;
   }
 
   /**
-   * 要素を文字列で返す(csmString型)
+   * Returns an element as a string (csmString type)
    */
   public getString(defaultValue: string, indent: string): string {
     this._stringBuffer = this._boolValue ? 'true' : 'false';
@@ -806,7 +806,7 @@ export class JsonBoolean extends Value {
   }
 
   /**
-   * 引数の値と等しければtrue
+   * True if equal to the argument value
    */
   public equals(value: csmString): boolean;
   public equals(value: string): boolean;
@@ -820,14 +820,14 @@ export class JsonBoolean extends Value {
   }
 
   /**
-   * Valueの値が静的ならtrue, 静的なら解放しない
+   * True if the Value value is static, do not release if static
    */
   public isStatic(): boolean {
     return true;
   }
 
   /**
-   * 引数付きコンストラクタ
+   * Constructor with arguments
    */
   public constructor(v: boolean) {
     super();
@@ -838,15 +838,15 @@ export class JsonBoolean extends Value {
   static trueValue: JsonBoolean; // true
   static falseValue: JsonBoolean; // false
 
-  private _boolValue: boolean; // JSON要素の値
+  private _boolValue: boolean; // JSON element value
 }
 
 /**
- * パースしたJSONの要素を文字列として扱う
+ * Treat parsed JSON elements as strings
  */
 export class JsonString extends Value {
   /**
-   * 引数付きコンストラクタ
+   * Constructor with arguments
    */
   public constructor(s: string);
   public constructor(s: csmString);
@@ -863,21 +863,21 @@ export class JsonString extends Value {
   }
 
   /**
-   * Valueの種類が文字列ならtrue
+   * True if the Value type is a string
    */
   public isString(): boolean {
     return true;
   }
 
   /**
-   * 要素を文字列で返す(csmString型)
+   * Returns an element as a string (csmString type)
    */
   public getString(defaultValue: string, indent: string): string {
     return this._stringBuffer;
   }
 
   /**
-   * 引数の値と等しければtrue
+   * True if equal to the argument value
    */
   public equals(value: csmString): boolean;
   public equals(value: string): boolean;
@@ -897,18 +897,18 @@ export class JsonString extends Value {
 }
 
 /**
- * JSONパース時のエラー結果。文字列型のようにふるまう
+ * Error result when parsing JSON. Behave like a string
  */
 export class JsonError extends JsonString {
   /**
-   * Valueの値が静的ならtrue、静的なら解放しない
+   * True if the Value value is static, do not release if static
    */
   public isStatic(): boolean {
     return this._isStatic;
   }
 
   /**
-   * エラー情報をセットする
+   * Set error information
    */
   public setErrorNotForClientCall(s: string): Value {
     this._stringBuffer = s;
@@ -916,7 +916,7 @@ export class JsonError extends JsonString {
   }
 
   /**
-   * 引数付きコンストラクタ
+   * Constructor with arguments
    */
   public constructor(s: csmString | string, isStatic: boolean) {
     if ('string' === typeof s) {
@@ -928,42 +928,42 @@ export class JsonError extends JsonString {
   }
 
   /**
-   * Valueの種類がエラー値ならtrue
+   * True if the Value type is an error value
    */
   public isError(): boolean {
     return true;
   }
 
-  protected _isStatic: boolean; // 静的なValueかどうか
+  protected _isStatic: boolean; // Whether it is a static Value
 }
 
 /**
- * パースしたJSONの要素をNULL値として持つ
+ * Have a parsed JSON element as a null value
  */
 export class JsonNullvalue extends Value {
   /**
-   * Valueの種類がNULL値ならtrue
+   * True if the Value type is null
    */
   public isNull(): boolean {
     return true;
   }
 
   /**
-   * 要素を文字列で返す(csmString型)
+   * Returns an element as a string (csmString type)
    */
   public getString(defaultValue: string, indent: string): string {
     return this._stringBuffer;
   }
 
   /**
-   * Valueの値が静的ならtrue, 静的なら解放しない
+   * True if the Value value is static, do not release if static
    */
   public isStatic(): boolean {
     return true;
   }
 
   /**
-   * Valueにエラー値をセットする
+   * Set Value to the error value
    */
   public setErrorNotForClientCall(s: string): Value {
     this._stringBuffer = s;
@@ -971,7 +971,7 @@ export class JsonNullvalue extends Value {
   }
 
   /**
-   * コンストラクタ
+   * Constructor
    */
   public constructor() {
     super();
@@ -981,11 +981,11 @@ export class JsonNullvalue extends Value {
 }
 
 /**
- * パースしたJSONの要素を配列として持つ
+ * Have parsed JSON elements as an array
  */
 export class JsonArray extends Value {
   /**
-   * コンストラクタ
+   * Constructor
    */
   public constructor() {
     super();
@@ -993,7 +993,7 @@ export class JsonArray extends Value {
   }
 
   /**
-   * デストラクタ相当の処理
+   * Destructor-equivalent processing
    */
   public release(): void {
     for (
@@ -1011,14 +1011,14 @@ export class JsonArray extends Value {
   }
 
   /**
-   * Valueの種類が配列ならtrue
+   * True if the Value type is an array
    */
   public isArray(): boolean {
     return true;
   }
 
   /**
-   * 添字演算子[index]
+   * Subscript operator [index]
    */
   public getValueByIndex(index: number): Value {
     if (index < 0 || this._array.getSize() <= index) {
@@ -1037,7 +1037,7 @@ export class JsonArray extends Value {
   }
 
   /**
-   * 添字演算子[string | csmString]
+   * Subscript operator [string | csmString]
    */
   public getValueByString(s: string | csmString): Value {
     return Value.errorValue.setErrorNotForClientCall(
@@ -1046,7 +1046,7 @@ export class JsonArray extends Value {
   }
 
   /**
-   * 要素を文字列で返す(csmString型)
+   * Returns an element as a string (csmString type)
    */
   public getString(defaultValue: string, indent: string): string {
     const stringBuffer: string = indent + '[\n';
@@ -1066,36 +1066,36 @@ export class JsonArray extends Value {
   }
 
   /**
-   * 配列要素を追加する
-   * @param v 追加する要素
+   * Add an array element
+   * @param v Elements to add
    */
   public add(v: Value): void {
     this._array.pushBack(v);
   }
 
   /**
-   * 要素をコンテナで返す(csmVector<Value>)
+   * Returns the element in a container (csmVector <Value>)
    */
   public getVector(defaultValue: csmVector<Value> = null): csmVector<Value> {
     return this._array;
   }
 
   /**
-   * 要素の数を返す
+   * Returns the number of elements
    */
   public getSize(): number {
     return this._array.getSize();
   }
 
-  private _array: csmVector<Value>; // JSON要素の値
+  private _array: csmVector<Value>; // JSON element value
 }
 
 /**
- * パースしたJSONの要素をマップとして持つ
+ * Have a parsed JSON element as a map
  */
 export class JsonMap extends Value {
   /**
-   * コンストラクタ
+   * Constructor
    */
   public constructor() {
     super();
@@ -1103,7 +1103,7 @@ export class JsonMap extends Value {
   }
 
   /**
-   * デストラクタ相当の処理
+   * Destructor-equivalent processing
    */
   public release(): void {
     const ite: csmMap_iterator<string, Value> = this._map.begin();
@@ -1121,14 +1121,14 @@ export class JsonMap extends Value {
   }
 
   /**
-   * Valueの値がMap型ならtrue
+   * True if the Value value is Map type
    */
   public isMap(): boolean {
     return true;
   }
 
   /**
-   * 添字演算子[string | csmString]
+   * Subscript operator [string | csmString]
    */
   public getValueByString(s: string | csmString): Value {
     if (s instanceof csmString) {
@@ -1156,7 +1156,7 @@ export class JsonMap extends Value {
   }
 
   /**
-   * 添字演算子[index]
+   * Subscript operator [index]
    */
   public getValueByIndex(index: number): Value {
     return Value.errorValue.setErrorNotForClientCall(
@@ -1165,7 +1165,7 @@ export class JsonMap extends Value {
   }
 
   /**
-   * 要素を文字列で返す(csmString型)
+   * Returns an element as a string (csmString type)
    */
   public getString(defaultValue: string, indent: string) {
     this._stringBuffer = indent + '{\n';
@@ -1186,21 +1186,21 @@ export class JsonMap extends Value {
   }
 
   /**
-   * 要素をMap型で返す
+   * Returns an element as a Map type
    */
   public getMap(defaultValue?: csmMap<string, Value>): csmMap<string, Value> {
     return this._map;
   }
 
   /**
-   * Mapに要素を追加する
+   * Add an element to the Map
    */
   public put(key: string, v: Value): void {
     this._map.setValue(key, v);
   }
 
   /**
-   * Mapからキーのリストを取得する
+   * Get a list of keys from Map
    */
   public getKeys(): csmVector<string> {
     if (!this._keys) {
@@ -1218,14 +1218,14 @@ export class JsonMap extends Value {
   }
 
   /**
-   * Mapの要素数を取得する
+   * Get the number of elements in Map
    */
   public getSize(): number {
     return this._keys.getSize();
   }
 
-  private _map: csmMap<string, Value>; // JSON要素の値
-  private _keys: csmVector<string>; // JSON要素の値
+  private _map: csmMap<string, Value>; // JSON element value
+  private _keys: csmVector<string>; // JSON element value
 }
 
 // Namespace definition for compatibility.

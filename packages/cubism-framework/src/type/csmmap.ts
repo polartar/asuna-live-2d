@@ -8,14 +8,14 @@
 import { CubismLogDebug } from '../utils/cubismdebug';
 
 /**
- * Key-Valueのペアを定義するクラス
- * csmMapクラスの内部データで使用する。
+ * A class that defines a key-value pair
+ * Used for internal data of csmMap class.
  */
 export class csmPair<_KeyT, _ValT> {
   /**
-   * コンストラクタ
-   * @param key Keyとしてセットする値
-   * @param value Valueとしてセットする値
+   * Constructor
+   * @param key Value to set as Key
+   * @param value The value to set as Value
    */
   public constructor(key?: _KeyT, value?: _ValT) {
     this.first = key == undefined ? null : key;
@@ -23,17 +23,17 @@ export class csmPair<_KeyT, _ValT> {
     this.second = value == undefined ? null : value;
   }
 
-  public first: _KeyT; // keyとして用いる変数
-  public second: _ValT; // valueとして用いる変数
+  public first: _KeyT; // Variable used as key
+  public second: _ValT; // Variable used as value
 }
 
 /**
- * マップ型
+ * Map type
  */
 export class csmMap<_KeyT, _ValT> {
   /**
-   * 引数付きコンストラクタ
-   * @param size 初期化時点で確保するサイズ
+   * Constructor with arguments
+   * @param size The size to be secured at the time of initialization
    */
   public constructor(size?: number) {
     if (size != undefined) {
@@ -53,28 +53,28 @@ export class csmMap<_KeyT, _ValT> {
   }
 
   /**
-   * デストラクタ
+   * Destructor
    */
   public release() {
     this.clear();
   }
 
   /**
-   * キーを追加する
-   * @param key 新たに追加するキー
+   * Add key
+   * @param key Newly added key
    */
   public appendKey(key: _KeyT): void {
-    // 新しくKey/Valueのペアを作る
-    this.prepareCapacity(this._size + 1, false); // 1つ以上入る隙間を作る
-    // 新しいkey/valueのインデックスは_size
+    // Create a new Key / Value pair
+    this.prepareCapacity(this._size + 1, false); // Make a gap for one or more
+    // The index of the new key / value is _size
 
     this._keyValues[this._size] = new csmPair<_KeyT, _ValT>(key);
     this._size += 1;
   }
 
   /**
-   * 添字演算子[key]のオーバーロード(get)
-   * @param key 添字から特定されるValue値
+   * Overload (get) of subscript operator [key]
+   * @param key Value value specified from the subscript
    */
   public getValue(key: _KeyT): _ValT {
     let found = -1;
@@ -89,15 +89,15 @@ export class csmMap<_KeyT, _ValT> {
     if (found >= 0) {
       return this._keyValues[found].second;
     } else {
-      this.appendKey(key); // 新規キーを追加
+      this.appendKey(key); // Add a new key
       return this._keyValues[this._size - 1].second;
     }
   }
 
   /**
-   * 添字演算子[key]のオーバーロード(set)
-   * @param key 添字から特定されるValue値
-   * @param value 代入するValue値
+   * Overload of subscript operator [key] (set)
+   * @param key Value value specified from the subscript
+   * @param value Value value to be assigned
    */
   public setValue(key: _KeyT, value: _ValT): void {
     let found = -1;
@@ -112,16 +112,16 @@ export class csmMap<_KeyT, _ValT> {
     if (found >= 0) {
       this._keyValues[found].second = value;
     } else {
-      this.appendKey(key); // 新規キーを追加
+      this.appendKey(key); // Add a new key
       this._keyValues[this._size - 1].second = value;
     }
   }
 
   /**
-   * 引数で渡したKeyを持つ要素が存在するか
-   * @param key 存在を確認するkey
-   * @return true 引数で渡したkeyを持つ要素が存在する
-   * @return false 引数で渡したkeyを持つ要素が存在しない
+   * Does the element with the Key passed as an argument exist?
+   * @param key key to confirm existence
+   * @return true There is an element with the key passed as an argument
+   * @return false The element with the key passed in the argument does not exist
    */
   public isExist(key: _KeyT): boolean {
     for (let i = 0; i < this._size; i++) {
@@ -133,7 +133,7 @@ export class csmMap<_KeyT, _ValT> {
   }
 
   /**
-   * keyValueのポインタを全て解放する
+   * Release all keyValue pointers
    */
   public clear(): void {
     this._keyValues = void 0;
@@ -144,18 +144,18 @@ export class csmMap<_KeyT, _ValT> {
   }
 
   /**
-   * コンテナのサイズを取得する
+   * Get the size of the container
    *
-   * @return コンテナのサイズ
+   * @return Container size
    */
   public getSize(): number {
     return this._size;
   }
 
   /**
-   * コンテナのキャパシティを確保する
-   * @param newSize 新たなキャパシティ。引数の値が現在のサイズ未満の場合は何もしない。
-   * @param fitToSize trueなら指定したサイズに合わせる。falseならサイズを2倍確保しておく。
+   * Secure container capacity
+   * @param newSize New capacity. If the value of the argument is less than the current size, do nothing.
+   * @param fitToSize If true, fit to the specified size. If false, reserve twice the size.
    */
   public prepareCapacity(newSize: number, fitToSize: boolean): void {
     if (newSize > this._keyValues.length) {
@@ -172,7 +172,7 @@ export class csmMap<_KeyT, _ValT> {
   }
 
   /**
-   * コンテナの先頭要素を返す
+   * Returns the first element of the container
    */
   public begin(): iterator<_KeyT, _ValT> {
     const ite: iterator<_KeyT, _ValT> = new iterator<_KeyT, _ValT>(this, 0);
@@ -180,40 +180,40 @@ export class csmMap<_KeyT, _ValT> {
   }
 
   /**
-   * コンテナの終端要素を返す
+   * Returns the end element of the container
    */
   public end(): iterator<_KeyT, _ValT> {
     const ite: iterator<_KeyT, _ValT> = new iterator<_KeyT, _ValT>(
       this,
       this._size
-    ); // 終了
+    ); // end
     return ite;
   }
 
   /**
-   * コンテナから要素を削除する
+   * Remove the element from the container
    *
-   * @param ite 削除する要素
+   * @param ite element to delete
    */
   public erase(ite: iterator<_KeyT, _ValT>): iterator<_KeyT, _ValT> {
     const index: number = ite._index;
     if (index < 0 || this._size <= index) {
-      return ite; // 削除範囲外
+      return ite; // Out of deletion range
     }
 
-    // 削除
+    // delete
     this._keyValues.splice(index, 1);
     --this._size;
 
     const ite2: iterator<_KeyT, _ValT> = new iterator<_KeyT, _ValT>(
       this,
       index
-    ); // 終了
+    ); // end
     return ite2;
   }
 
   /**
-   * コンテナの値を32ビット符号付き整数型でダンプする
+   * Dump the container value as a 32-bit signed integer type
    */
   public dumpAsInt() {
     for (let i = 0; i < this._size; i++) {
@@ -222,18 +222,18 @@ export class csmMap<_KeyT, _ValT> {
     }
   }
 
-  public static readonly DefaultSize = 10; // コンテナの初期化のデフォルトサイズ
-  public _keyValues: csmPair<_KeyT, _ValT>[]; // key-valueペアの配列
-  public _dummyValue: _ValT; // 空の値を返す為のダミー
-  public _size: number; // コンテナの要素数
+  public static readonly DefaultSize = 10; // Default size for container initialization
+  public _keyValues: csmPair<_KeyT, _ValT>[]; // Array of key-value pairs
+  public _dummyValue: _ValT; // Dummy to return an empty value
+  public _size: number; // Number of elements in the container
 }
 
 /**
- * csmMap<T>のイテレータ
+ * Iterator of csmMap <T>
  */
 export class iterator<_KeyT, _ValT> {
   /**
-   * コンストラクタ
+   * Constructor
    */
   constructor(v?: csmMap<_KeyT, _ValT>, idx?: number) {
     this._map = v != undefined ? v : new csmMap<_KeyT, _ValT>();
@@ -242,7 +242,7 @@ export class iterator<_KeyT, _ValT> {
   }
 
   /**
-   * =演算子のオーバーロード
+   * = Operator overload
    */
   public set(ite: iterator<_KeyT, _ValT>): iterator<_KeyT, _ValT> {
     this._index = ite._index;
@@ -251,7 +251,7 @@ export class iterator<_KeyT, _ValT> {
   }
 
   /**
-   * 前置き++演算子のオーバーロード
+   * Preface ++ Operator overloading
    */
   public preIncrement(): iterator<_KeyT, _ValT> {
     ++this._index;
@@ -259,7 +259,7 @@ export class iterator<_KeyT, _ValT> {
   }
 
   /**
-   * 前置き--演算子のオーバーロード
+   * Preface--Operator overload
    */
   public preDecrement(): iterator<_KeyT, _ValT> {
     --this._index;
@@ -267,39 +267,39 @@ export class iterator<_KeyT, _ValT> {
   }
 
   /**
-   * 後置き++演算子のオーバーロード
+   * Postscript ++ Operator overloading
    */
   public increment(): iterator<_KeyT, _ValT> {
-    const iteold = new iterator<_KeyT, _ValT>(this._map, this._index++); // 古い値を保存
+    const iteold = new iterator<_KeyT, _ValT>(this._map, this._index++); // Save the old value
     return iteold;
   }
 
   /**
-   * 後置き--演算子のオーバーロード
+   * Postscript--Operator overload
    */
   public decrement(): iterator<_KeyT, _ValT> {
-    const iteold = new iterator<_KeyT, _ValT>(this._map, this._index); // 古い値を保存
+    const iteold = new iterator<_KeyT, _ValT>(this._map, this._index); // Save the old value
     this._map = iteold._map;
     this._index = iteold._index;
     return this;
   }
 
   /**
-   * *演算子のオーバーロード
+   * * Operator overloading
    */
   public ptr(): csmPair<_KeyT, _ValT> {
     return this._map._keyValues[this._index];
   }
 
   /**
-   * !=演算
+   *! = Operation
    */
   public notEqual(ite: iterator<_KeyT, _ValT>): boolean {
     return this._index != ite._index || this._map != ite._map;
   }
 
-  _index: number; // コンテナのインデックス値
-  _map: csmMap<_KeyT, _ValT>; // コンテナ
+  _index: number; // Container index value
+  _map: csmMap<_KeyT, _ValT>; // Container
 }
 
 // Namespace definition for compatibility.

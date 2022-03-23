@@ -6,13 +6,13 @@
  */
 
 /**
- * 2次元ベクトル型
+ * 2D vector type
  *
- * 2次元ベクトル型の機能を提供する。
+ * Provides 2D vector type functions.
  */
 export class CubismVector2 {
   /**
-   * コンストラクタ
+   * Constructor
    */
   public constructor(public x?: number, public y?: number) {
     this.x = x == undefined ? 0.0 : x;
@@ -21,10 +21,10 @@ export class CubismVector2 {
   }
 
   /**
-   * ベクトルの加算
+   * Vector addition
    *
-   * @param vector2 加算するベクトル値
-   * @return 加算結果 ベクトル値
+   * @param vector2 Vector value to add
+   * @return Addition result vector value
    */
   public add(vector2: CubismVector2): CubismVector2 {
     const ret: CubismVector2 = new CubismVector2(0.0, 0.0);
@@ -34,10 +34,10 @@ export class CubismVector2 {
   }
 
   /**
-   * ベクトルの減算
+   * Vector subtraction
    *
-   * @param vector2 減算するベクトル値
-   * @return 減算結果 ベクトル値
+   * @ param vector2 Vector value to subtract
+   * @return Subtraction result vector value
    */
   public substract(vector2: CubismVector2): CubismVector2 {
     const ret: CubismVector2 = new CubismVector2(0.0, 0.0);
@@ -47,10 +47,10 @@ export class CubismVector2 {
   }
 
   /**
-   * ベクトルの乗算
+   * Vector multiplication
    *
-   * @param vector2 乗算するベクトル値
-   * @return 乗算結果 ベクトル値
+   * @param vector2 Vector value to multiply
+   * @return Multiplication result vector value
    */
   public multiply(vector2: CubismVector2): CubismVector2 {
     const ret: CubismVector2 = new CubismVector2(0.0, 0.0);
@@ -60,20 +60,20 @@ export class CubismVector2 {
   }
 
   /**
-   * ベクトルの乗算(スカラー)
+   * Vector multiplication (scalar)
    *
-   * @param scalar 乗算するスカラー値
-   * @return 乗算結果 ベクトル値
+   * @param scalar Scalar value to multiply
+   * @return Multiplication result vector value
    */
   public multiplyByScaler(scalar: number): CubismVector2 {
     return this.multiply(new CubismVector2(scalar, scalar));
   }
 
   /**
-   * ベクトルの除算
+   * Vector division
    *
-   * @param vector2 除算するベクトル値
-   * @return 除算結果 ベクトル値
+   * @param vector2 Vector value to divide
+   * @return Division result vector value
    */
   public division(vector2: CubismVector2): CubismVector2 {
     const ret: CubismVector2 = new CubismVector2(0.0, 0.0);
@@ -83,29 +83,29 @@ export class CubismVector2 {
   }
 
   /**
-   * ベクトルの除算(スカラー)
+   * Vector division (scalar)
    *
-   * @param scalar 除算するスカラー値
-   * @return 除算結果 ベクトル値
+   * @param scalar Scalar value to divide
+   * @return Division result vector value
    */
   public divisionByScalar(scalar: number): CubismVector2 {
     return this.division(new CubismVector2(scalar, scalar));
   }
 
   /**
-   * ベクトルの長さを取得する
+   * Get the length of the vector
    *
-   * @return ベクトルの長さ
+   * @return Vector length
    */
   public getLength(): number {
     return Math.sqrt(this.x * this.x + this.y * this.y);
   }
 
   /**
-   * ベクトルの距離の取得
+   * Get vector distance
    *
-   * @param a 点
-   * @return ベクトルの距離
+   * @param a point
+   * @return vector distance
    */
   public getDistanceWith(a: CubismVector2): number {
     return Math.sqrt(
@@ -114,17 +114,17 @@ export class CubismVector2 {
   }
 
   /**
-   * ドット積の計算
+   * Dot product calculation
    *
    * @param a 値
-   * @return 結果
+   * @return result
    */
   public dot(a: CubismVector2): number {
     return this.x * a.x + this.y * a.y;
   }
 
   /**
-   * 正規化の適用
+   * Apply normalization
    */
   public normalize(): void {
     const length: number = Math.pow(this.x * this.x + this.y * this.y, 0.5);
@@ -134,26 +134,26 @@ export class CubismVector2 {
   }
 
   /**
-   * 等しさの確認（等しいか？）
+   * Confirmation of equality (is it equal?)
    *
-   * 値が等しいか？
+   * Are the values ​​equal?
    *
-   * @param rhs 確認する値
-   * @return true 値は等しい
-   * @return false 値は等しくない
+   * @param rhs Value to check
+   * @return true Values ​​are equal
+   * @return false Values ​​are not equal
    */
   public isEqual(rhs: CubismVector2): boolean {
     return this.x == rhs.x && this.y == rhs.y;
   }
 
   /**
-   * 等しさの確認（等しくないか？）
+   * Confirmation of equality (is it not equal?)
    *
-   * 値が等しくないか？
+   * Are the values ​​not equal?
    *
-   * @param rhs 確認する値
-   * @return true 値は等しくない
-   * @return false 値は等しい
+   * @param rhs Value to check
+   * @return true Values ​​are not equal
+   * @return false Values ​​are equal
    */
   public isNotEqual(rhs: CubismVector2): boolean {
     return !this.isEqual(rhs);

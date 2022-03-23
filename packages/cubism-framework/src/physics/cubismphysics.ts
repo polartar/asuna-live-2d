@@ -35,14 +35,14 @@ const MaximumWeight = 100.0;
 const MovementThreshold = 0.001;
 
 /**
- * 物理演算クラス
+ * Physics class
  */
 export class CubismPhysics {
   /**
-   * インスタンスの作成
-   * @param buffer    physics3.jsonが読み込まれているバッファ
-   * @param size      バッファのサイズ
-   * @return 作成されたインスタンス
+   * Create an instance
+   * @param buffer The buffer in which physics3.json is loaded
+   * @param size Buffer size
+   * @return Created instance
    */
   public static create(buffer: ArrayBuffer, size: number): CubismPhysics {
     const ret: CubismPhysics = new CubismPhysics();
@@ -54,8 +54,8 @@ export class CubismPhysics {
   }
 
   /**
-   * インスタンスを破棄する
-   * @param physics 破棄するインスタンス
+   * Destroy the instance
+   * @param physics Instance to discard
    */
   public static delete(physics: CubismPhysics): void {
     if (physics != null) {
@@ -65,9 +65,9 @@ export class CubismPhysics {
   }
 
   /**
-   * 物理演算の評価
-   * @param model 物理演算の結果を適用するモデル
-   * @param deltaTimeSeconds デルタ時間[秒]
+   * Evaluation of physics
+   * @param model A model that applies the results of physics operations
+   * @param deltaTimeSeconds Delta time [seconds]
    */
   public evaluate(model: CubismModel, deltaTimeSeconds: number): void {
     let totalAngle: { angle: number };
@@ -190,10 +190,10 @@ export class CubismPhysics {
         const outParameterValue: Float32Array =
           !Float32Array.prototype.slice && 'subarray' in Float32Array.prototype
             ? JSON.parse(
-                JSON.stringify(
-                  parameterValue.subarray(destinationParameterIndex)
-                )
-              ) // 値渡しするため、JSON.parse, JSON.stringify
+              JSON.stringify(
+                parameterValue.subarray(destinationParameterIndex)
+              )
+            ) // JSON.parse, JSON.stringify to pass by value
             : parameterValue.slice(destinationParameterIndex);
 
         updateOutputParameterValue(
@@ -204,7 +204,7 @@ export class CubismPhysics {
           currentOutput[i]
         );
 
-        // 値を反映
+        // Reflect the value
         for (
           let offset: number = destinationParameterIndex, outParamIndex = 0;
           offset < parameterValue.length;
@@ -217,23 +217,23 @@ export class CubismPhysics {
   }
 
   /**
-   * オプションの設定
-   * @param options オプション
+   * Option settings
+   * @param options options
    */
   public setOptions(options: Options): void {
     this._options = options;
   }
 
   /**
-   * オプションの取得
-   * @return オプション
+   * Get options
+   * @return option
    */
   public getOption(): Options {
     return this._options;
   }
 
   /**
-   * コンストラクタ
+   * Constructor
    */
   public constructor() {
     this._physicsRig = null;
@@ -247,7 +247,7 @@ export class CubismPhysics {
   }
 
   /**
-   * デストラクタ相当の処理
+   * Destructor-equivalent processing
    */
   public release(): void {
     this._physicsRig = void 0;
@@ -255,9 +255,9 @@ export class CubismPhysics {
   }
 
   /**
-   * physics3.jsonをパースする。
-   * @param physicsJson physics3.jsonが読み込まれているバッファ
-   * @param size バッファのサイズ
+   * Parse physics3.json.
+   * @param physicsJson physics3. The buffer in which json is loaded
+   * @param size Buffer size
    */
   public parse(physicsJson: ArrayBuffer, size: number): void {
     this._physicsRig = new CubismPhysicsRig();
@@ -454,7 +454,7 @@ export class CubismPhysics {
   }
 
   /**
-   * 初期化する
+   * initialize
    */
   public initialize(): void {
     let strand: CubismPhysicsParticle[];
@@ -504,12 +504,12 @@ export class CubismPhysics {
     }
   }
 
-  _physicsRig: CubismPhysicsRig; // 物理演算のデータ
-  _options: Options; // オプション
+  _physicsRig: CubismPhysicsRig; // Physics data
+  _options: Options; // Options
 }
 
 /**
- * 物理演算のオプション
+ * Physics options
  */
 export class Options {
   constructor() {
@@ -517,8 +517,8 @@ export class Options {
     this.wind = new CubismVector2(0, 0);
   }
 
-  gravity: CubismVector2; // 重力方向
-  wind: CubismVector2; // 風の方向
+  gravity: CubismVector2; // direction of gravity
+  wind: CubismVector2; // Wind direction
 }
 
 /**
@@ -711,10 +711,10 @@ function getOutputScaleAngle(
  * @param strand                Target array of particle.
  * @param strandCount           Count of particle.
  * @param totalTranslation      Total translation value.
- * @param totalAngle            Total angle.
+ * @param totalAngle Total angle.
  * @param windDirection         Direction of Wind.
  * @param thresholdValue        Threshold of movement.
- * @param deltaTimeSeconds      Delta time.
+ * @param deltaTimeSeconds Delta time.
  * @param airResistance         Air resistance.
  */
 function updateParticles(
