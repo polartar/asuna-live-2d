@@ -9,7 +9,7 @@ export enum TabId {
 
 export const Tab = createSlice({
   name: 'tab',
-  initialState: TabId.Body,
+  initialState: TabId.Parameters,
   reducers: {
     setActiveTab: (state, action: PayloadAction<TabId>) => {
       return action.payload

@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { MessageType, Payload_SC_SwapTexture } from 'asuna-web-live2d'
-import { sendMessage } from '../messenger'
 import { Dispatch, RootState } from './store'
+import { sendMessage } from '../messenger'
 
 export enum IFrameStatus {
   Ready,

@@ -1,6 +1,6 @@
 import { AsyncThunkAction, createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Dispatch, RootState } from './store'
-import iframe, { IFrameStatus } from './iframe'
+import { IFrameStatus } from './iframe'
 
 export enum ItemGroup {
   BodyColor,

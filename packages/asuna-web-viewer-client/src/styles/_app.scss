@@ -1,5 +1,5 @@
 html {
-  @apply bg-dark-600 text-white;
+  @apply bg-dark-600 text-white select-none;
   font-size: 13px;
 }
 
@@ -12,4 +12,14 @@ html, body {
   width: 510px;
   height: 512px;
   overflow: hidden;
+}
+
+.form:hover {
+  input[type="checkbox"] {
+    @apply bg-dark-600;
+
+    &:checked {
+      @apply bg-slate-400;
+    }
+  }
 }

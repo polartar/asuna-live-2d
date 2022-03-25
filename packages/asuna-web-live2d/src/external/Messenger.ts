@@ -1,7 +1,8 @@
 import { Loader } from "../Loader"
 import { AssetStore } from "../asset/AssetStore"
 import { Live2dModel } from "../asset/Live2dModel"
-import { Payload_SC_SwapTexture } from "./MessagePayload"
+import { Payload_SC_SetParameterOverride, Payload_SC_SetParameters, Payload_SC_SwapTexture } from "./MessagePayload"
+import { WorldState } from "../state/WorldState"
 
 const PARENT_ORIGIN = window.location.origin
 
@@ -15,15 +16,19 @@ export enum MessageType {
   CS_Loaded,
   CS_Complete,
 
-  SC_SwapTexture
+  SC_SwapTexture,
+  SC_SetParameterOverride,
+  SC_SetParameters
 }
 
 export class Messenger {
   parentWindow: Window | null
+  state: WorldState
   loader: Loader
   assetStore: AssetStore
 
-  constructor(loader: Loader, assetStore: AssetStore) {
+  constructor(state: WorldState, loader: Loader, assetStore: AssetStore) {
+    this.state = state
     this.loader = loader
     this.assetStore = assetStore
 
@@ -49,6 +54,20 @@ export class Messenger {
         const texture = await loader.loadTexture(textureId)
         asset.getRenderer().bindTexture(payload.index, texture.data)
         this.sendMessage(MessageType.CS_Complete, null, msg.id)
+
+      } else if (msg.type === MessageType.SC_SetParameterOverride) {
+        const payload = msg.payload as Payload_SC_SetParameterOverride
+        this.state.external.override = payload.override
+        this.sendMessage(MessageType.CS_Complete, null, msg.id)
+
+      } else if (msg.type === MessageType.SC_SetParameters) {
+        const payload = msg.payload as Payload_SC_SetParameters
+        this.state.external.faceX = payload.faceX / 50 - 1
+        this.state.external.faceY = payload.faceY / 50 - 1
+        this.state.external.bodyX = payload.bodyX / 50 - 1
+        this.state.external.bodyY = payload.bodyY / 50 - 1
+        this.sendMessage(MessageType.CS_Complete, null, msg.id)
+
       }
     })
   }

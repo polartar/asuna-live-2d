@@ -5,6 +5,33 @@ import { CubismDefaultParameterId } from 'cubism-framework/dist/cubismdefaultpar
 
 export function updateModel(state: WorldState, dt: number) {
   for (let m of Object.values(state.models)) {
+    // move this to input
+    let screenX = 2 * (-.5 + state.input.x / state.view.width)
+    let screenY = 1.75 * 2 * (.5 - state.input.y / state.view.height)
+    if (!state.input.drag) {
+      screenX = 0
+      screenY = 0
+    }
+    m.asset.setDragging(screenX, screenY)
+
+    m.asset._dragManager.update(dt)
+    const dragX = m.asset._dragManager.getX()
+    const dragY = m.asset._dragManager.getY()
+
+    let xId = CubismFramework.getIdManager().getId(CubismDefaultParameterId.ParamAngleX)
+    let yId = CubismFramework.getIdManager().getId(CubismDefaultParameterId.ParamAngleY)
+    let bxId = CubismFramework.getIdManager().getId(CubismDefaultParameterId.ParamBodyAngleX)
+    let byId = CubismFramework.getIdManager().getId(CubismDefaultParameterId.ParamBodyAngleY)
+
+    m.asset._model.setParameterValueById(xId, 0)
+    m.asset._model.setParameterValueById(yId, 0)
+    m.asset._model.setParameterValueById(bxId, 0)
+    m.asset._model.setParameterValueById(byId, 0)
+    m.asset._model.addParameterValueById(xId, dragX * 30)
+    m.asset._model.addParameterValueById(yId, dragY * 30)
+    m.asset._model.addParameterValueById(bxId, dragX * 10)
+    m.asset._model.addParameterValueById(byId, dragY * 10)
+
     // m.asset._model.loadParameters()
     // m.asset._model.saveParameters()
 
@@ -20,6 +47,13 @@ export function updateModel(state: WorldState, dt: number) {
 
     if (m.asset._physics != null) {
       m.asset._physics.evaluate(m.asset._model, dt)
+    }
+
+    if (state.external.override) {
+      m.asset._model.setParameterValueById(xId, 30 * state.external.faceX)
+      m.asset._model.setParameterValueById(yId, 30 * state.external.faceY)
+      m.asset._model.setParameterValueById(bxId, 10 * state.external.bodyX)
+      m.asset._model.setParameterValueById(byId, 10 * state.external.bodyY)
     }
 
     m.asset._model.update()

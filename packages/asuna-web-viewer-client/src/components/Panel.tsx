@@ -31,7 +31,7 @@ class Panel extends MithrilTsxComponent<PanelAttrs> {
         <Tab id={TabId.Body} activeTab={attrs.activeTab}>BODY</Tab>
         <Tab id={TabId.Eye} activeTab={attrs.activeTab}>EYES</Tab>
         <Tab id={TabId.Hair} activeTab={attrs.activeTab}>HAIR</Tab>
-        {/*<Tab id={TabId.Parameters} activeTab={attrs.activeTab}>PARAMETERS</Tab>*/}
+        <Tab id={TabId.Parameters} activeTab={attrs.activeTab}>PARAMETERS</Tab>
       </div>
       <div class='flex-1 w-full bg-dark-900 border-dark-700'>
         <TabCompnent />

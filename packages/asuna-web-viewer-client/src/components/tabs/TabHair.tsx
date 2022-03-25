@@ -3,7 +3,7 @@ import { MithrilTsxComponent } from 'mithril-tsx-component'
 import { Dispatch, RootState } from '../../store/store'
 import { ItemGroup } from '../../store/items'
 import upgrade from '../../hoc/upgrade'
-import Item from './Item'
+import Item from '../ui/Item'
 
 const items = [
   { id: 3, name: 'Ash', color: '#937a6f' },
