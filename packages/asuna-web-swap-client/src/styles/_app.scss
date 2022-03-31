@@ -1,0 +1,25 @@
+html {
+  @apply bg-dark-900 h-full;
+  font-size: 13px;
+  color: #fff;
+  user-select: none;
+}
+
+body {
+  @apply flex justify-center items-center h-full;
+}
+
+.swap-page {}
+
+.layered-image {
+  @apply relative;
+
+  img:first-child {
+    position: relative;
+    width: 100%;
+  }
+}
+
+.content-wrapper {
+  height: 500px;
+}
