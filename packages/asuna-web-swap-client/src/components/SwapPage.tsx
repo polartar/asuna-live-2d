@@ -40,7 +40,7 @@ const SwapPage = function (props: React.PropsWithChildren<Props>) {
 
   return (<div className='swap-page text-center'>
     <div className='flex'>
-      <div className='flex-1 overflow-hidden rounded-md'><LayeredImage traits={token1.traits} quality={1} /></div>
+      <div className='flex-1 overflow-hidden rounded-md'><LayeredImage traits={token1.traits} quality={0} /></div>
       <div className='px-140 flex flex-col justify-between'>
         {TraitTypes.map(item =>
           <div
@@ -51,7 +51,7 @@ const SwapPage = function (props: React.PropsWithChildren<Props>) {
           </div>
         )}
       </div>
-      <div className='flex-1 overflow-hidden rounded-md'><LayeredImage traits={token2.traits} quality={1} /></div>
+      <div className='flex-1 overflow-hidden rounded-md'><LayeredImage traits={token2.traits} quality={0} /></div>
     </div>
     <button
       onClick={props.togglePage}
