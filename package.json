@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node ./packages/asuna-web-viewer-server/src/server.js",
+    "start": "node ./packages/asuna-web-dev-server/src/server.js",
     "build": "lerna bootstrap -- -production=false && npx tsc --project ./packages/cubism-framework/tsconfig.json && npx webpack build --config ./packages/asuna-web-live2d/webpack.config && npx webpack build --config ./packages/asuna-web-viewer-client/webpack.config && npx webpack build --config ./packages/asuna-web-swap-client/webpack.config",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
