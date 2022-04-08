@@ -1,4 +1,4 @@
-const traitMetadata = require('./trait.metadata.json')
+const traitMetadata = require('./normalized-metadata.json')
 const fileList = require('./filelist.json')
 
 export type TraitValue = number
