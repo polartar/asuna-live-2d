@@ -1,0 +1,14 @@
+.page {
+  .action-panel {
+    &.hidden {
+      @apply -bottom-200;
+    }
+
+    @apply absolute flex justify-center items-center bottom-0 right-100 py-110 bg-slate-900 text-slate-900;
+
+    &,
+    button {
+      transition: all 300ms;
+    }
+  }
+}

@@ -2,7 +2,6 @@
   "compilerOptions": {
     "target": "es2019",
     "module": "commonjs",
-    "declaration": true,
     "strict": true,
     "strictNullChecks": true,
     "esModuleInterop": true,

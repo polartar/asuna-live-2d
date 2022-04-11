@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import './wrapper.scss';
+@import './page.scss';
+@import './grid.scss';
+@import './layered-image.scss';
+@import './action-panel.scss';
+@import './asuna-ratio.scss';
+
+html,
+body {
+  @apply w-full h-full min-h-screen bg-slate-900 m-0 text-white;
+}
+
+#root {
+  @apply h-full min-h-screen;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}

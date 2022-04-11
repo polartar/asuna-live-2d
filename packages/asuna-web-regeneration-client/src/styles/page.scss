@@ -1,0 +1,66 @@
+.page {
+  @apply relative flex flex-col w-full overflow-y-hidden;
+
+  &.hidden {
+    opacity: 0 !important;
+  }
+
+  // d = depth
+  // enter/exit left
+  &.page-d0.page-d0-enter,
+  &.page-d1.page-d1-enter {
+    @apply absolute opacity-40;
+    left: -100%;
+  }
+
+  &.page-d0.page-d0-enter-active,
+  &.page-d1.page-d1-enter-active {
+    @apply opacity-100;
+    left: 0;
+    transition: all 300ms ease-in-out;
+  }
+
+  &.page-d0.page-d0-exit,
+  &.page-d1.page-d1-exit {
+    @apply absolute opacity-100;
+    left: 0;
+  }
+
+  &.page-d0.page-d0-exit-active,
+  &.page-d1.page-d1-exit-active {
+    @apply opacity-40;
+    left: -100%;
+    transition: all 300ms ease-in-out;
+  }
+
+  // enter/exit right
+  &.page-d1.page-d0-enter,
+  &.page-d2.page-d0-enter,
+  &.page-d2.page-d1-enter {
+    @apply absolute opacity-40;
+    left: 100%;
+  }
+
+  &.page-d1.page-d0-enter-active,
+  &.page-d2.page-d0-enter-active,
+  &.page-d2.page-d1-enter-active {
+    @apply opacity-100;
+    left: 0;
+    transition: all 300ms ease-in-out;
+  }
+
+  &.page-d1.page-d0-exit,
+  &.page-d2.page-d0-exit,
+  &.page-d2.page-d1-exit {
+    @apply absolute opacity-100;
+    left: 0;
+  }
+
+  &.page-d1.page-d0-exit-active,
+  &.page-d2.page-d0-exit-active,
+  &.page-d2.page-d1-exit-active {
+    @apply opacity-40;
+    left: 100%;
+    transition: all 300ms ease-in-out;
+  }
+}

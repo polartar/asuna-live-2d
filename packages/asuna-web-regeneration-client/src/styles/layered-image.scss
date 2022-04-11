@@ -1,0 +1,8 @@
+.layered-image {
+  @apply relative overflow-hidden rounded-lg;
+
+  img:first-child {
+    position: relative;
+    width: 100%;
+  }
+}

@@ -1,0 +1,40 @@
+.page {
+  .grid-container {
+    @apply flex-1 overflow-y-scroll mt-110 pr-90;
+
+    &::-webkit-scrollbar {
+      @apply w-100;
+    }
+
+    &::-webkit-scrollbar-track {
+      @apply bg-slate-800;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      @apply bg-slate-500 rounded-lg;
+    }
+
+    .grid {
+      @apply grid-cols-6 gap-90 mt-50 mb-180;
+
+      .grid-item {
+        &:hover .layered-image {
+          @apply -top-50;
+        }
+
+        &.selected .layered-image {
+          @apply border-amber-500;
+        }
+
+        .layered-image {
+          @apply top-0;
+          transition: top 150ms, opacity 500ms;
+          border: 3px solid rgba(255, 255, 255, 0);
+        }
+
+        @apply relative bg-slate-700 rounded-lg cursor-pointer;
+        aspect-ratio: 2200/3000;
+      }
+    }
+  }
+}

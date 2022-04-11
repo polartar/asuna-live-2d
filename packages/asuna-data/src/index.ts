@@ -1,6 +1,6 @@
-const traitMetadata = require('./normalized-metadata.json')
-const fileList = require('./filelist.json')
+let fileList = require('../metadata/filelist.json')
 
+export type TokenId = number
 export type TraitValue = number
 export type LayerId = string
 
@@ -49,6 +49,11 @@ export enum LayerType {
   Hand
 }
 
+export type TokenData = {
+  id: TokenId,
+  traitData: TraitData
+}
+
 export type TraitData = {
   [T in TraitType]: TraitValue | undefined
 }
@@ -62,10 +67,6 @@ export function getFiles(layerId: LayerId | undefined) {
     return []
   }
   return fileList[layerId].map((file: string) => `${layerId}/${file}`) as string[]
-}
-
-export function getTraitData(tokenId: number) {
-  return traitMetadata[tokenId].traitData as TraitData
 }
 
 export function mapToLayerData(attrs: TraitData): LayerData {
