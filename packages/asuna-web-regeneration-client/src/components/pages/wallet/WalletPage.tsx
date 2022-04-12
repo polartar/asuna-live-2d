@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState } from 'react'
 import { CSSTransition, SwitchTransition } from 'react-transition-group'
-import { TokenData } from "asuna-data"
+import { TokenData } from 'asuna-data'
 
 import { Page } from '../../App'
 import { walletAddress } from '../../../wallet'
-import LayeredImage, { LayeredImageQuality } from "../../ui/LayeredImage"
-import GridItem from "../../ui/GridItem"
-import ImportPanel from "./ImportPanel"
-import AwaitImportPage from "./AwaitImportPage"
+import LayeredImage, { LayeredImageQuality } from '../../ui/LayeredImage'
+import GridItem from '../../ui/GridItem'
+import ActionPanel from '../../ui/ActionPanel'
+import AwaitImportPage from './AwaitImportPage'
+import { useAppDispatch } from '../../../store/hooks'
+import { setLoaded } from '../../../store/inventory'
 
 
 export interface WalletPageProps {
@@ -15,6 +17,7 @@ export interface WalletPageProps {
 }
 
 function WalletPage({ changePage }: WalletPageProps) {
+  const dispatch = useAppDispatch()
   const [wallet, setWallet] = useState({} as { [tokenId: string]: TokenData })
   const [selection, setSelection] = useState({} as { [tokenId: string]: boolean })
   const [importing, setImporting] = useState(false)
@@ -44,6 +47,7 @@ function WalletPage({ changePage }: WalletPageProps) {
   }
 
   const handleImport = () => {
+    dispatch(setLoaded(false))
     setImporting(true)
 
     fetch('/api/deposit', {
@@ -70,10 +74,19 @@ function WalletPage({ changePage }: WalletPageProps) {
           importing
             ? <AwaitImportPage />
             : <div className={`page page-d1`}>
-              <h1 className="text-2xl leading-loose">Select any number of Asunas to import</h1>
-              <p>Imported Asunas will be unable to be withdrawn for a period of 3 days.</p>
-              <div className="grid-container">
-                <div className="grid">
+              <div className='header'>
+                <button
+                  className='px-100 mb-100'
+                  onClick={() => changePage(Page.Inventory)}
+                >
+                  <i className='icon icon-arrow_left' />
+                  Back
+                </button>
+                <h1 className='text-2xl leading-loose'>Select any number of Asunas to import</h1>
+                <p>Imported Asunas will be unable to be withdrawn for a period of 3 days.</p>
+              </div>
+              <div className='grid-container'>
+                <div className='grid'>
                   {Object.values(wallet).map(token =>
                     <GridItem
                       key={token.id}
@@ -86,14 +99,12 @@ function WalletPage({ changePage }: WalletPageProps) {
                   )}
                 </div>
               </div>
-              <ImportPanel count={selectedCount}>
-                <button
-                  className="px-120 py-75 ml-100 bg-indigo-400 text-white font-bold rounded hover:bg-indigo-300"
-                  onClick={handleImport}
-                >
+              <ActionPanel hidden={selectedCount === 0}>
+                <button onClick={handleImport}>
+                  <i className='icon icon-download text-2xl' />
                   Import
                 </button>
-              </ImportPanel>
+              </ActionPanel>
             </div>
         }</CSSTransition>
     </SwitchTransition >

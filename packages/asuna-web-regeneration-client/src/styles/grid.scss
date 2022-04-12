@@ -1,13 +1,13 @@
 .page {
   .grid-container {
-    @apply flex-1 overflow-y-scroll mt-110 pr-90;
+    @apply flex-1 overflow-y-scroll mt-120 pr-90;
 
     &::-webkit-scrollbar {
-      @apply w-100;
+      @apply w-80;
     }
 
     &::-webkit-scrollbar-track {
-      @apply bg-slate-800;
+      @apply bg-slate-800 opacity-0;
     }
 
     &::-webkit-scrollbar-thumb {
@@ -15,25 +15,24 @@
     }
 
     .grid {
-      @apply grid-cols-6 gap-90 mt-50 mb-180;
+      @apply grid-cols-6 gap-90 mt-50;
 
       .grid-item {
+        @apply relative cursor-pointer;
+
         &:hover .layered-image {
           @apply -top-50;
         }
 
         &.selected .layered-image {
-          @apply border-amber-500;
+          @apply bg-amber-500;
         }
 
         .layered-image {
           @apply top-0;
-          transition: top 150ms, opacity 500ms;
+          transition: all 150ms;
           border: 3px solid rgba(255, 255, 255, 0);
         }
-
-        @apply relative bg-slate-700 rounded-lg cursor-pointer;
-        aspect-ratio: 2200/3000;
       }
     }
   }

@@ -1,14 +1,37 @@
 .page {
   .action-panel {
-    &.hidden {
-      @apply -bottom-200;
+
+    & * {
+      transition: all 500ms;
     }
 
-    @apply absolute flex justify-center items-center bottom-0 right-100 py-110 bg-slate-900 text-slate-900;
+    @apply flex justify-center items-end py-125;
+
+    &.hidden {
+      @apply opacity-0;
+    }
+
+    .slot {
+      @apply w-170 mr-90 border-2 bg-cover border-indigo-200 rounded-md overflow-hidden;
+      background-image: url('../assets/media/wildcard.jpg');
+      aspect-ratio: 2200/2900;
+    }
 
     &,
     button {
       transition: all 300ms;
+    }
+
+    button {
+      @apply inline-flex justify-center items-center w-210 py-50 bg-white text-indigo-700 font-bold rounded-full;
+
+      icon {
+        @apply text-2xl;
+      }
+
+      &:hover {
+        @apply bg-indigo-400 text-white;
+      }
     }
   }
 }

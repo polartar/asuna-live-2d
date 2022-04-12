@@ -1,8 +1,12 @@
 .layered-image {
   @apply relative overflow-hidden rounded-lg;
 
-  img:first-child {
-    position: relative;
-    width: 100%;
+  &::before {
+    content: '';
+    @apply absolute w-full h-full bg-slate-700 rounded-lg;
+  }
+
+  .images {
+    transition: opacity 500ms;
   }
 }

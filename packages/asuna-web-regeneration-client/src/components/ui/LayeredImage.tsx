@@ -9,6 +9,7 @@ export enum LayeredImageQuality {
 
 interface Props {
   tokenData: TokenData,
+  labelPosition?: 'top' | 'bottom',
   quality: LayeredImageQuality
 }
 
@@ -26,22 +27,25 @@ const LayeredImage = function (props: Props) {
       return ''
     }
   }
-
   const opacityClass = loaded === imgs.length ? '' : ' opacity-0'
+  const labelClass = props.labelPosition === 'bottom' ? ' bottom-0 rounded-tl-full' : ' top-0 rounded-bl-full'
+
   const onLoad = () => {
     setLoaded(loaded + 1)
   }
 
   return (
-    <div className={`layered-image${opacityClass}`}>
-      {imgs.map((src, idx) => <img
-        key={idx}
-        className={`absolute w-full h-full top-0${getBlendClass(src)}`}
-        src={basePath + src}
-        alt=''
-        onLoad={onLoad}
-      />)}
-      <div className="absolute top-30 right-30 px-40 py-10 bg-white font-bold text-xs text-slate-900 rounded-full">#{props.tokenData.id}</div>
+    <div className={`layered-image asuna-ratio`}>
+      <div className={`images${opacityClass}`}>
+        {imgs.map((src, idx) => <img
+          key={idx}
+          className={`absolute w-full h-full top-0${getBlendClass(src)}`}
+          src={basePath + src}
+          alt=''
+          onLoad={onLoad}
+        />)}
+      </div>
+      <div className={`absolute right-0 pl-80 pr-40 py-10 bg-white font-bold text-xs text-indigo-900 drop-shadow-xl${labelClass}`}>#{props.tokenData.id}</div>
     </div>
   )
 }

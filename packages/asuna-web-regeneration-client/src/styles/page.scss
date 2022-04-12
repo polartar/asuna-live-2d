@@ -1,5 +1,15 @@
 .page {
-  @apply relative flex flex-col w-full overflow-y-hidden;
+  @apply relative flex flex-col w-full h-full pt-140 overflow-y-hidden;
+
+  .header {
+    button {
+      @apply inline-flex items-center justify-center py-50 bg-indigo-400 text-white font-semibold text-sm rounded-full transition duration-300;
+
+      &:hover {
+        @apply bg-indigo-500;
+      }
+    }
+  }
 
   &.hidden {
     opacity: 0 !important;
