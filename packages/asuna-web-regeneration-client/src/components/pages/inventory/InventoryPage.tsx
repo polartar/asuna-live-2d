@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 
 import { Page } from '../../App'
 import { walletAddress } from '../../../wallet'

@@ -13,12 +13,21 @@ let config = {
     extend: {
       spacing: {},
       colors: {
-        'dark': {
-          'default': v['dark-600'],
-          '600': v['dark-600'],
-          '700': v['dark-700'],
-          '800': v['dark-800'],
-          '900': v['dark-900']
+        'slate': {
+          'default': v['slate-600'],
+          '50': v['slate-50'],
+          '100': v['slate-100'],
+          '200': v['slate-200'],
+          '300': v['slate-300'],
+          '400': v['slate-400'],
+          '500': v['slate-500'],
+          '600': v['slate-600'],
+          '700': v['slate-700'],
+          '800': v['slate-800'],
+          '900': v['slate-900']
+        },
+        'amber': {
+          '500': v['amber-500'],
         },
         'light': {
           '50': v['light']

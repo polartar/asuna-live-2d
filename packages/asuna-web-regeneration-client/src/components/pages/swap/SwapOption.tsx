@@ -33,14 +33,14 @@ function SwapOption({ handleEnter, handleExit, handleClick, token1, token2, type
     onMouseLeave={handleMouseExit}
     className={`swap-option${hiddenClass}${swappedClass}`}
   >
-    {showLabel && token1.traitData[type]
+    {showLabel && token1.traitData[type] !== undefined
       ? <div className='label label-left'>
         {getTraitMetadata(type, token1.traitData[type]!).name}
         <i className='icon icon-arrow-right' />
       </div>
       : null
     }
-    {showLabel && token2.traitData[type]
+    {showLabel && token2.traitData[type] !== undefined
       ? <div className='label label-right'>
         <i className='icon icon-arrow-left' />
         {getTraitMetadata(type, token2.traitData[type]!).name}

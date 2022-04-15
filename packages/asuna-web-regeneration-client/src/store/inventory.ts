@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { TraitType, TraitData, TokenData } from 'asuna-data'
+import { TraitType, TokenData } from 'asuna-data'
 
 type InventoryState = {
   loaded: boolean, // indicates whether InventoryPage will request api for inventory

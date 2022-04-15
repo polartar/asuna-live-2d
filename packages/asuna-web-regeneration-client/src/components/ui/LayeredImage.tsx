@@ -17,6 +17,7 @@ interface Props {
 }
 
 interface Layer {
+  key: string
   type: 'img' | 'mask'
   src: string | string[]
 }
@@ -32,11 +33,11 @@ const LayeredImage = function ({ highlight, highlightTrait, quality, tokenData, 
 
   for (let i = 0; i < layerFiles.length; i++) {
     for (let j = 0; j < layerFiles[i].length; j++) {
-      imgs.push({ type: 'img', src: layerFiles[i][j] })
+      imgs.push({ key: `img${i}/${j}`, type: 'img', src: layerFiles[i][j] })
       imgCount++
     }
     if (layerFiles[i].length > 0 && highlights.indexOf(i) >= 0) {
-      imgs.push({ type: 'mask', src: layerFiles[i] })
+      imgs.push({ key: `mask${i}`, type: 'mask', src: layerFiles[i] })
     }
   }
 
@@ -67,20 +68,18 @@ const LayeredImage = function ({ highlight, highlightTrait, quality, tokenData, 
         {imgs.map((layer, idx) =>
           layer.type === 'img'
             ? <img
-              key={layer.src as string}
+              key={layer.key}
               className={`absolute w-full h-full top-0${getBlendClass(layer.src as string)}`}
               src={basePath + layer.src}
               alt=''
               onLoad={onLoad}
             />
-            : <div
-              key={'mask' + (layer.src as string[])[0]}
+            : true ? null : <div
+              key={layer.key}
               className={`absolute mask w-full h-full bg-white${highlightClass}`}
               style={{
                 WebkitMaskImage: (layer.src as string[]).map(src => `url(${basePath + src})`).join(','),
-                maskImage: (layer.src as string[]).map(src => `url(${basePath + src})`).join(','),
-                WebkitMaskSize: 'cover',
-                maskSize: 'cover'
+                WebkitMaskSize: 'cover'
               }}
             />
         )}
