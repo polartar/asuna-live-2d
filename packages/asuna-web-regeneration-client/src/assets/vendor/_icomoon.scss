@@ -35,11 +35,11 @@
   content: "\e903";
 }
 
-.icon-arrow_left:before {
+.icon-arrow-left:before {
   content: "\e901";
 }
 
-.icon-arrow_right:before {
+.icon-arrow-right:before {
   content: "\e902";
 }
 
@@ -47,10 +47,14 @@
   content: "\e904";
 }
 
-.icon-reverse_swap:before {
+.icon-reverse-swap:before {
   content: "\e905";
 }
 
 .icon-sparkle:before {
   content: "\e906";
+}
+
+.icon-close:before {
+  content: "\e907";
 }

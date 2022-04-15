@@ -3,7 +3,7 @@ import { CSSTransition, SwitchTransition } from 'react-transition-group'
 
 import InventoryPage from './pages/inventory/InventoryPage'
 import WalletPage from './pages/wallet/WalletPage'
-import SwapPage from './pages/SwapPage'
+import SwapPage from './pages/swap/SwapPage'
 
 import bg from '../assets/media/bg.png'
 import logo from '../assets/media/logo-white.png'
@@ -31,7 +31,7 @@ function App() {
   return (
     <div className='flex h-full bg-cover' style={{ backgroundImage: `url(${bg})` }}>
       <div className='flex-1 pt-120 pl-120'>
-        <img src={logo} className='h-180' alt='logo' />
+        <img src={logo} className='max-h-180' alt='logo' />
       </div>
       <Wrapper className='flex flex-col'>
         <div className='flex flex-1 relative overflow-hidden'>
@@ -43,7 +43,8 @@ function App() {
             >
               {page === Page.Inventory ? <InventoryPage firstLoad={firstLoad} changePage={changePage} />
                 : page === Page.Wallet ? <WalletPage changePage={changePage} />
-                  : <SwapPage />
+                  : page === Page.Swap ? <SwapPage changePage={changePage} />
+                    : null
               }
             </CSSTransition>
           </SwitchTransition>
@@ -52,7 +53,7 @@ function App() {
       <div className='flex-1 flex justify-end items-start pt-120 pr-120'>
         <div className='flex items-center px-100 py-50 border border-white rounded-full'>
           <i className='icon icon-sparkle mr-50' />
-          {`${walletAddress.substring(0, 7)}...${walletAddress.substring(walletAddress.length - 5)}`}
+          {`${walletAddress.substring(0, 5)}...${walletAddress.substring(walletAddress.length - 4)}`}
         </div>
       </div>
     </div>

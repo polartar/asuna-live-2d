@@ -1,9 +1,10 @@
 .page {
-  @apply relative flex flex-col w-full h-full pt-140 overflow-y-hidden;
+  @apply flex flex-col w-full h-full pt-140;
 
   .header {
     button {
-      @apply inline-flex items-center justify-center py-50 bg-indigo-400 text-white font-semibold text-sm rounded-full transition duration-300;
+      @apply inline-flex items-center justify-center py-50 bg-indigo-400 text-white font-semibold text-sm rounded-full;
+      transition: background 300ms;
 
       &:hover {
         @apply bg-indigo-500;
@@ -19,7 +20,7 @@
   // enter/exit left
   &.page-d0.page-d0-enter,
   &.page-d1.page-d1-enter {
-    @apply absolute opacity-40;
+    @apply absolute opacity-20;
     left: -100%;
   }
 
@@ -38,7 +39,7 @@
 
   &.page-d0.page-d0-exit-active,
   &.page-d1.page-d1-exit-active {
-    @apply opacity-40;
+    @apply opacity-20;
     left: -100%;
     transition: all 300ms ease-in-out;
   }
@@ -47,7 +48,7 @@
   &.page-d1.page-d0-enter,
   &.page-d2.page-d0-enter,
   &.page-d2.page-d1-enter {
-    @apply absolute opacity-40;
+    @apply absolute opacity-20;
     left: 100%;
   }
 
@@ -69,7 +70,7 @@
   &.page-d1.page-d0-exit-active,
   &.page-d2.page-d0-exit-active,
   &.page-d2.page-d1-exit-active {
-    @apply opacity-40;
+    @apply opacity-20;
     left: 100%;
     transition: all 300ms ease-in-out;
   }

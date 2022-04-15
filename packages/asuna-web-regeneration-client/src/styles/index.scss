@@ -9,10 +9,12 @@
 @import './layered-image.scss';
 @import './action-panel.scss';
 @import './asuna-ratio.scss';
+@import './swap-option.scss';
 
 html,
 body {
   @apply w-full h-full min-h-screen bg-slate-900 m-0 text-white;
+  user-select: none;
 }
 
 #root {

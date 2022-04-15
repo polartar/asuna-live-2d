@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { mapToLayerData, getFiles, TokenData } from 'asuna-data'
+import { TraitHighlights, mapToLayerData, getFiles, TokenData, TraitType, LayerType } from 'asuna-data'
 
 export enum LayeredImageQuality {
   Low,
@@ -9,15 +9,37 @@ export enum LayeredImageQuality {
 
 interface Props {
   tokenData: TokenData,
+  highlight?: 'flash' | 'flicker',
+  highlightTrait?: TraitType,
+  labelSize?: 'large' | 'default',
   labelPosition?: 'top' | 'bottom',
   quality: LayeredImageQuality
 }
 
-const LayeredImage = function (props: Props) {
-  const [loaded, setLoaded] = useState(0)
+interface Layer {
+  type: 'img' | 'mask'
+  src: string | string[]
+}
 
-  const basePath = '/assets/' + (props.quality === LayeredImageQuality.Low ? 'lowres/' : props.quality === LayeredImageQuality.Mid ? 'midres/' : '')
-  const imgs = Object.values(mapToLayerData(props.tokenData.traitData)).map(getFiles).flat()
+const LayeredImage = function ({ highlight, highlightTrait, quality, tokenData, labelPosition, labelSize }: Props) {
+  const [loaded, setLoaded] = useState(false)
+  const [loadedCount, setLoadedCount] = useState(0)
+  const basePath = '/assets/' + (quality === LayeredImageQuality.Low ? 'lowres/' : quality === LayeredImageQuality.Mid ? 'midres/' : '')
+  const layerFiles = Object.values(mapToLayerData(tokenData.traitData)).map(getFiles)
+  const highlights = highlightTrait !== undefined ? TraitHighlights[highlightTrait] : [] as LayerType[]
+  const imgs: Layer[] = []
+  let imgCount = 0
+
+  for (let i = 0; i < layerFiles.length; i++) {
+    for (let j = 0; j < layerFiles[i].length; j++) {
+      imgs.push({ type: 'img', src: layerFiles[i][j] })
+      imgCount++
+    }
+    if (layerFiles[i].length > 0 && highlights.indexOf(i) >= 0) {
+      imgs.push({ type: 'mask', src: layerFiles[i] })
+    }
+  }
+
   const getBlendClass = (src: string) => {
     if (src.indexOf('Multiply') >= 0) {
       return ' mix-blend-multiply'
@@ -27,25 +49,43 @@ const LayeredImage = function (props: Props) {
       return ''
     }
   }
-  const opacityClass = loaded === imgs.length ? '' : ' opacity-0'
-  const labelClass = props.labelPosition === 'bottom' ? ' bottom-0 rounded-tl-full' : ' top-0 rounded-bl-full'
+  const opacityClass = loaded ? '' : ' opacity-0'
+  const labelSizeClass = labelSize === 'large' ? ' pl-110 pr-80 py-55 text-xl' : ' pl-80 pr-40 py-10 text-xs'
+  const labelPosClass = labelPosition === 'bottom' ? ' bottom-0 rounded-tl-full' : ' top-0 rounded-bl-full'
+  const highlightClass = highlight === 'flash' ? ' mask-flash' : ' mask-flicker'
 
   const onLoad = () => {
-    setLoaded(loaded + 1)
+    if (loadedCount + 1 === imgCount) {
+      setLoaded(true)
+    }
+    setLoadedCount(loadedCount + 1)
   }
 
   return (
     <div className={`layered-image asuna-ratio`}>
       <div className={`images${opacityClass}`}>
-        {imgs.map((src, idx) => <img
-          key={idx}
-          className={`absolute w-full h-full top-0${getBlendClass(src)}`}
-          src={basePath + src}
-          alt=''
-          onLoad={onLoad}
-        />)}
+        {imgs.map((layer, idx) =>
+          layer.type === 'img'
+            ? <img
+              key={layer.src as string}
+              className={`absolute w-full h-full top-0${getBlendClass(layer.src as string)}`}
+              src={basePath + layer.src}
+              alt=''
+              onLoad={onLoad}
+            />
+            : <div
+              key={'mask' + (layer.src as string[])[0]}
+              className={`absolute mask w-full h-full bg-white${highlightClass}`}
+              style={{
+                WebkitMaskImage: (layer.src as string[]).map(src => `url(${basePath + src})`).join(','),
+                maskImage: (layer.src as string[]).map(src => `url(${basePath + src})`).join(','),
+                WebkitMaskSize: 'cover',
+                maskSize: 'cover'
+              }}
+            />
+        )}
       </div>
-      <div className={`absolute right-0 pl-80 pr-40 py-10 bg-white font-bold text-xs text-indigo-900 drop-shadow-xl${labelClass}`}>#{props.tokenData.id}</div>
+      <div className={`absolute right-0 bg-white font-bold text-indigo-900 drop-shadow-xl${labelSizeClass}${labelPosClass}`}>#{tokenData.id}</div>
     </div>
   )
 }

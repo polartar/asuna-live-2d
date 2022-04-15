@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { TokenData } from 'asuna-data'
 
 import { Page } from '../../App'
 import { walletAddress } from '../../../wallet'
 import LayeredImage, { LayeredImageQuality } from '../../ui/LayeredImage'
 import GridItem from '../../ui/GridItem'
 import { useAppDispatch, useAppSelector } from '../../../store/hooks'
-import { setInventory, setLoaded, toggleSelected } from '../../../store/inventory'
+import { setInventory, setLoaded, toggleSelected, restoreSelected } from '../../../store/inventory'
 import ActionPanel from '../../ui/ActionPanel'
-
-import wildcard from '../../../assets/media/wildcard.jpg'
 
 
 export interface InventoryPageProps {
@@ -24,12 +21,15 @@ function InventoryPage({ firstLoad, changePage }: React.PropsWithoutRef<Inventor
   const hideClass = firstLoad && Object.keys(inventory).length === 0 ? ' hidden' : ''
   const renderedInv = loaded ? inventory : {}
   const slotTokens = Object.values(selected)
+  const hideNextClass = slotTokens.length === 2 ? '' : 'opacity-0'
 
   const handleSelect = (id: number) => {
     dispatch(toggleSelected(id))
   }
 
   useEffect(() => {
+    dispatch(restoreSelected())
+
     const url = new URL('/api/inventory', window.location.origin)
     url.search = new URLSearchParams({ address: walletAddress }).toString()
 
@@ -78,23 +78,41 @@ function InventoryPage({ firstLoad, changePage }: React.PropsWithoutRef<Inventor
         )}
       </div>
     </div>
-    <ActionPanel hidden={false}>
-      {[0, 1].map(idx =>
-        <div key={idx} className='slot'>
-          {slotTokens[idx] !== undefined
-            ? <LayeredImage
-              key={slotTokens[idx].id}
-              quality={LayeredImageQuality.Low}
-              tokenData={slotTokens[idx]}
-              labelPosition='bottom'
-            />
-            : null}
-        </div>
-      )}
-      <button>
-        <i className='icon icon-swap text-2xl' />
-        Regenerate
-      </button>
+    <ActionPanel hidden={slotTokens.length === 0}>
+      <div className='flex-1'></div>
+      <div className='flex items-center'>
+        {[0, -1, 1].map(idx =>
+          idx === -1
+            ? <i key={idx} className='icon icon-swap text-4xl p-50' />
+            : <div
+              key={idx}
+              className='slot relative cursor-pointer'
+              onClick={() => slotTokens[idx] !== undefined ? dispatch(toggleSelected(slotTokens[idx].id)) : null}
+            >
+              {slotTokens[idx] !== undefined
+                ? <LayeredImage
+                  key={slotTokens[idx].id}
+                  quality={LayeredImageQuality.Low}
+                  tokenData={slotTokens[idx]}
+                  labelPosition='bottom'
+                />
+                : null}
+              {slotTokens[idx] !== undefined
+                ? <i className='icon icon-close absolute -top-60 -right-60 p-20 bg-indigo-400 text-white rounded-full' />
+                : null
+              }
+            </div>
+        )}
+      </div>
+      <div className='flex-1 flex justify-end'>
+        <button
+          className={hideNextClass}
+          onClick={() => changePage(Page.Swap)}
+        >
+          Next
+          <i className='icon icon-arrow-right' />
+        </button>
+      </div>
     </ActionPanel>
   </div>
 }

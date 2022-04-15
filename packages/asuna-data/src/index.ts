@@ -1,4 +1,7 @@
 let fileList = require('../metadata/filelist.json')
+let traitMetadata = require('../metadata/trait-metadata.json')
+
+export * from './swapUtil'
 
 export type TokenId = number
 export type TraitValue = number
@@ -49,6 +52,28 @@ export enum LayerType {
   Hand
 }
 
+export const TraitHighlights = {
+  [TraitType.Appendage]: [LayerType.Appendage],
+  [TraitType.Background]: [LayerType.Background],
+  [TraitType.ClipAccessory]: [LayerType.ClipsAccessory],
+  [TraitType.Ears]: [LayerType.Ears],
+  [TraitType.EyeColor]: [LayerType.Eyes],
+  [TraitType.Eyebrows]: [LayerType.Eyebrows],
+  [TraitType.Eyes]: [LayerType.Eyes],
+  [TraitType.FaceAccessory]: [LayerType.FaceAccessory],
+  [TraitType.HairBack]: [LayerType.HairBack],
+  [TraitType.HairFront]: [LayerType.HairFront],
+  [TraitType.HairColor]: [LayerType.HairBack, LayerType.HairFront],
+  [TraitType.Hand]: [LayerType.Hand],
+  [TraitType.HeadAccessory]: [LayerType.HatAccessoryBack, LayerType.HatsAccessory, LayerType.EarsAccessory],
+  [TraitType.Mouth]: [LayerType.Mouth],
+  [TraitType.Nose]: [LayerType.Nose],
+  [TraitType.Outfit]: [LayerType.OutfitBack, LayerType.OutfitFront],
+  [TraitType.SkinMarking]: [LayerType.SkinMarking],
+  [TraitType.SkinTone]: [LayerType.Body, LayerType.Hand],
+  [TraitType.Weapon]: [LayerType.Weapon]
+}
+
 export type TokenData = {
   id: TokenId,
   traitData: TraitData
@@ -60,6 +85,13 @@ export type TraitData = {
 
 export type LayerData = {
   [L in LayerType]: LayerId | undefined
+}
+
+export function getTraitMetadata(type: TraitType, trait: TraitValue) {
+  return traitMetadata[type][trait] as {
+    name: string,
+    tags: string
+  }
 }
 
 export function getFiles(layerId: LayerId | undefined) {

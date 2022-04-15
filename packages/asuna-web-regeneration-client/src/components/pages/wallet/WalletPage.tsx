@@ -79,7 +79,7 @@ function WalletPage({ changePage }: WalletPageProps) {
                   className='px-100 mb-100'
                   onClick={() => changePage(Page.Inventory)}
                 >
-                  <i className='icon icon-arrow_left' />
+                  <i className='icon icon-arrow-left' />
                   Back
                 </button>
                 <h1 className='text-2xl leading-loose'>Select any number of Asunas to import</h1>
@@ -100,7 +100,7 @@ function WalletPage({ changePage }: WalletPageProps) {
                 </div>
               </div>
               <ActionPanel hidden={selectedCount === 0}>
-                <button onClick={handleImport}>
+                <button className='w-210' onClick={handleImport}>
                   <i className='icon icon-download text-2xl' />
                   Import
                 </button>

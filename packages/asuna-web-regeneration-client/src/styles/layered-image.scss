@@ -9,4 +9,64 @@
   .images {
     transition: opacity 500ms;
   }
+
+  .mask {
+    &.mask-flash {
+      animation: mask-flash-start 1s, mask-flash-run 1s infinite 1s;
+
+      @keyframes mask-flash-start {
+        0% {
+          opacity: .6;
+        }
+
+        6% {
+          opacity: 0;
+        }
+
+        12% {
+          opacity: .6;
+        }
+
+        25% {
+          opacity: 0;
+        }
+
+        100% {
+          opacity: .3;
+        }
+      }
+
+      @keyframes mask-flash-run {
+        0% {
+          opacity: .3;
+        }
+
+        50% {
+          opacity: 0;
+        }
+
+        100% {
+          opacity: .3;
+        }
+      }
+    }
+
+    &.mask-flicker {
+      animation: mask-flicker 1s infinite;
+
+      @keyframes mask-flicker {
+        0% {
+          opacity: .3;
+        }
+
+        50% {
+          opacity: 0;
+        }
+
+        100% {
+          opacity: .3;
+        }
+      }
+    }
+  }
 }
