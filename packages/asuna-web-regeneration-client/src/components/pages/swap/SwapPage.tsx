@@ -7,6 +7,7 @@ import LayeredImage from '../../ui/LayeredImage'
 import { Page } from '../../App'
 import SwapOption from './SwapOption'
 import ActionPanel from '../../ui/ActionPanel'
+import SwapImage from './SwapImage'
 
 
 const TraitTypes = [
@@ -37,7 +38,7 @@ function SwapPage({ changePage }: SwapPageProps) {
   const dispatch = useAppDispatch()
   const selected = useAppSelector(state => Object.values(state.inventory.selected))
   const [highlightTrait, setHightlightTrait] = useState(undefined as TraitType | undefined)
-  const [swapped, setSwapped] = useState(Array(Object.keys(TraitType).length).fill(false) as boolean[])
+  const [swapped, setSwapped] = useState({} as { [T in TraitType]?: boolean })
   const [highlight, setHighlight] = useState('flicker' as 'flash' | 'flicker')
 
   const handleEnter = (trait: TraitType) => {
@@ -51,14 +52,15 @@ function SwapPage({ changePage }: SwapPageProps) {
 
   const handleClick = (trait: TraitType) => {
     setHighlight('flash')
-    let next = [...swapped]
-    next[trait] = !next[trait]
-    setSwapped(next)
-    dispatch(swapTrait({
-      id1: +selected[0].id,
-      id2: +selected[1].id,
-      trait
-    }))
+    setSwapped({
+      ...swapped,
+      [trait]: !swapped[trait]
+    })
+    // dispatch(swapTrait({
+    //   id1: +selected[0].id,
+    //   id2: +selected[1].id,
+    //   trait
+    // }))
   }
 
   return <div className='page page-d1'>
@@ -71,7 +73,13 @@ function SwapPage({ changePage }: SwapPageProps) {
     </div>
     <div className='flex'>
       <div className='flex-1 overflow-hidden rounded-md'>
-        <LayeredImage labelSize='large' tokenData={selected[0]} quality={0} highlight={highlight} highlightTrait={highlightTrait} />
+        <SwapImage
+          token1={selected[0]}
+          token2={selected[1]}
+          swappedTraits={swapped}
+          highlight={highlight}
+          highlightTrait={highlightTrait}
+        />
       </div>
       <div className='px-100 flex flex-col justify-between'>
         {TraitTypes.map(item =>
@@ -83,14 +91,20 @@ function SwapPage({ changePage }: SwapPageProps) {
             token1={selected[0]}
             token2={selected[1]}
             type={item.type}
-            swapped={swapped[item.type]}
+            swapped={!!swapped[item.type]}
           >
             {item.text}
           </SwapOption>
         )}
       </div>
       <div className='flex-1 overflow-hidden rounded-md'>
-        <LayeredImage labelSize='large' tokenData={selected[1]} quality={0} highlight={highlight} highlightTrait={highlightTrait} />
+        <SwapImage
+          token1={selected[1]}
+          token2={selected[0]}
+          swappedTraits={swapped}
+          highlight={highlight}
+          highlightTrait={highlightTrait}
+        />
       </div>
     </div>
     <ActionPanel hidden={false}>

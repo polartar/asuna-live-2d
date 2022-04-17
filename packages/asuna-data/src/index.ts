@@ -74,6 +74,29 @@ export const TraitHighlights = {
   [TraitType.Weapon]: [LayerType.Weapon]
 }
 
+export const LayerTraits = {
+  [LayerType.Background]: [TraitType.Background],
+  [LayerType.Appendage]: [TraitType.Appendage],
+  [LayerType.Weapon]: [TraitType.Weapon],
+  [LayerType.HatAccessoryBack]: [TraitType.HeadAccessory],
+  [LayerType.HairBack]: [TraitType.HairColor, TraitType.HairBack],
+  [LayerType.OutfitBack]: [TraitType.Outfit],
+  [LayerType.Body]: [TraitType.SkinTone],
+  [LayerType.Ears]: [TraitType.SkinTone, TraitType.Ears],
+  [LayerType.SkinMarking]: [TraitType.SkinMarking],
+  [LayerType.OutfitFront]: [TraitType.Outfit],
+  [LayerType.Mouth]: [TraitType.Mouth],
+  [LayerType.Nose]: [TraitType.Nose],
+  [LayerType.Eyes]: [TraitType.EyeColor, TraitType.Eyes],
+  [LayerType.Eyebrows]: [TraitType.Eyebrows],
+  [LayerType.FaceAccessory]: [TraitType.FaceAccessory],
+  [LayerType.EarsAccessory]: [TraitType.HeadAccessory],
+  [LayerType.HairFront]: [TraitType.HairColor, TraitType.HairFront],
+  [LayerType.ClipsAccessory]: [TraitType.ClipAccessory],
+  [LayerType.HatsAccessory]: [TraitType.HeadAccessory],
+  [LayerType.Hand]: [TraitType.SkinTone, TraitType.Hand]
+} as { [L in LayerType]: TraitType[] }
+
 export type TokenData = {
   id: TokenId,
   traitData: TraitData
@@ -123,6 +146,46 @@ export function mapToLayerData(attrs: TraitData): LayerData {
     [LayerType.ClipsAccessory]: joinIds(LayerType.ClipsAccessory, attrs[TraitType.ClipAccessory]),
     [LayerType.HatsAccessory]: joinIds(LayerType.HatsAccessory, attrs[TraitType.HeadAccessory]),
     [LayerType.Hand]: joinIds(LayerType.Hand, attrs[TraitType.SkinTone], attrs[TraitType.Hand])
+  }
+}
+
+export function mapToCompoundLayerData(attrs1: TraitData, attrs2: TraitData): { [L in LayerType]: (LayerId | undefined)[] } {
+  return {
+    [LayerType.Background]: [],
+    [LayerType.Appendage]: [],
+    [LayerType.Weapon]: [],
+    [LayerType.HatAccessoryBack]: [],
+    [LayerType.HairBack]: [
+      joinIds(LayerType.HairBack, attrs1[TraitType.HairBack], attrs2[TraitType.HairColor]),
+      joinIds(LayerType.HairBack, attrs2[TraitType.HairBack], attrs1[TraitType.HairColor])
+    ],
+    [LayerType.OutfitBack]: [],
+    [LayerType.Body]: [],
+    [LayerType.Ears]: [
+      joinIds(LayerType.Ears, attrs2[TraitType.SkinTone], attrs1[TraitType.Ears]),
+      joinIds(LayerType.Ears, attrs1[TraitType.SkinTone], attrs2[TraitType.Ears])
+    ],
+    [LayerType.SkinMarking]: [],
+    [LayerType.OutfitFront]: [],
+    [LayerType.Mouth]: [],
+    [LayerType.Nose]: [],
+    [LayerType.Eyes]: [
+      joinIds(LayerType.Eyes, attrs1[TraitType.Eyes], attrs2[TraitType.EyeColor]),
+      joinIds(LayerType.Eyes, attrs2[TraitType.Eyes], attrs1[TraitType.EyeColor])
+    ],
+    [LayerType.Eyebrows]: [],
+    [LayerType.FaceAccessory]: [],
+    [LayerType.EarsAccessory]: [],
+    [LayerType.HairFront]: [
+      joinIds(LayerType.HairFront, attrs1[TraitType.HairFront], attrs2[TraitType.HairColor]),
+      joinIds(LayerType.HairFront, attrs2[TraitType.HairFront], attrs1[TraitType.HairColor])
+    ],
+    [LayerType.ClipsAccessory]: [],
+    [LayerType.HatsAccessory]: [],
+    [LayerType.Hand]: [
+      joinIds(LayerType.Hand, attrs2[TraitType.SkinTone], attrs1[TraitType.Hand]),
+      joinIds(LayerType.Hand, attrs1[TraitType.SkinTone], attrs2[TraitType.Hand])
+    ]
   }
 }
 

@@ -48,6 +48,7 @@ function populateWallet(address: string) {
     tokens[Math.floor(10000 * Math.random())] = true
   }
 
+  tokens['9921'] = true
   delete tokens['67'] // don't have assets
 
   wallet[address] = tokens

@@ -1,6 +1,5 @@
 
 import { TokenData, TraitType } from './index'
-import { Token } from 'typescript';
 
 export function canSwap(token1: TokenData, token2: TokenData, type: TraitType) {
   let swappable = true
