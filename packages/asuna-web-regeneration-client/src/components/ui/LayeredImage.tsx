@@ -37,7 +37,6 @@ const LayeredImage = function ({
   labelPosition,
   labelSize,
 }: Props) {
-  console.log(tokenData);
   const [loaded, setLoaded] = useState(false);
   const [loadedCount, setLoadedCount] = useState(0);
   const basePath =
@@ -50,6 +49,9 @@ const LayeredImage = function ({
   const layerFiles = Object.values(mapToLayerData(tokenData.traitData)).map(
     getFiles
   );
+
+  console.log(tokenData);
+  console.log(mapToLayerData(tokenData.traitData));
   const highlights =
     highlightTrait !== undefined
       ? TraitHighlights[highlightTrait]

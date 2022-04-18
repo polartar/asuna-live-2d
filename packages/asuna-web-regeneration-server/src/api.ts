@@ -8,6 +8,8 @@ import db from "./mockDatabase";
 import store from "./mockStore";
 import { InventoryParams } from "./validators";
 import axios from "axios";
+import traitTypeIds from "./trait-type-ids.json";
+import traitValueIds from "./trait-value-ids.json";
 
 const moralisKey =
   "ak4ClPYq259ou7IVWWx1OmFr5xDHrzWHk9A3cwgpM1gXB0TBjZRHN7s8ViUZGQ4y";
@@ -51,12 +53,40 @@ router.get("/wallet", async (req, res) => {
     }
   );
 
-  console.log(capsuleResponse.data);
+  if (capsuleResponse.status !== 200) {
+    res.status(400).send("400");
+    return;
+  }
+
+  const tokens = capsuleResponse.data.result.map((token) => {
+    const attributes = JSON.parse(token.metadata).attributes;
+    const traitData = {};
+
+    console.log(attributes);
+
+    attributes.forEach((attribute) => {
+      const traitType = traitTypeIds[attribute.trait_type];
+
+      if (traitType) {
+        const traitValue = traitValueIds[traitType][attribute.value];
+        traitData[traitType] = traitValue;
+      }
+    });
+
+    return {
+      id: token.token_id,
+      traitData,
+    };
+  });
+
+  console.log(tokens);
 
   const params: WalletParams = req.query as any;
   const tokenIds = store.getWalletTokens(params.address);
 
-  res.send(db.getTokenData(Object.keys(tokenIds)));
+  // res.send(db.getTokenData(Object.keys(tokenIds)));
+
+  res.send(tokens);
 });
 
 // transfers tokens from wallet into inventory

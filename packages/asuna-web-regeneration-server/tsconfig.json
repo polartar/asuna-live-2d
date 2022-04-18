@@ -2,22 +2,17 @@
   "compilerOptions": {
     "target": "es2019",
     "module": "commonjs",
-    "strict": true,
+    "strict": false,
     "strictNullChecks": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "removeComments": true,
     "outDir": "./dist",
-    "noEmitOnError": true
+    "noEmitOnError": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules",
-    "**/*.d.ts",
-    "**/*.spec.ts"
-  ]
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["node_modules", "**/*.d.ts", "**/*.spec.ts"]
 }
