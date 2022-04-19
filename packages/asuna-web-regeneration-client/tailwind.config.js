@@ -2,7 +2,7 @@ const path = require('path')
 const v = require('./src/styles/variables.js')
 
 let config = {
-  content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  purge: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     screens: {
       'sm': v.sm,

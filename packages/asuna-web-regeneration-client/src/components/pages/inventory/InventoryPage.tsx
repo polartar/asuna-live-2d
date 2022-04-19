@@ -5,7 +5,7 @@ import { walletAddress } from '../../../wallet'
 import LayeredImage, { LayeredImageQuality } from '../../ui/LayeredImage'
 import GridItem from '../../ui/GridItem'
 import { useAppDispatch, useAppSelector } from '../../../store/hooks'
-import { setInventory, setLoaded, toggleSelected, restoreSelected, clearSelected } from '../../../store/inventory'
+import { setInventory, setLoaded, toggleSelected, restoreSelected } from '../../../store/inventory'
 import ActionPanel from '../../ui/ActionPanel'
 
 

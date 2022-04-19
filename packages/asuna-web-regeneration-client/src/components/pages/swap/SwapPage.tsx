@@ -3,8 +3,7 @@ import { CSSTransition, SwitchTransition } from 'react-transition-group'
 import { TraitType } from 'asuna-data'
 
 import { useAppDispatch, useAppSelector } from '../../../store/hooks'
-import { setLoaded, swapTrait } from '../../../store/inventory'
-import LayeredImage from '../../ui/LayeredImage'
+import { setLoaded } from '../../../store/inventory'
 import { Page } from '../../App'
 import SwapOption from './SwapOption'
 import ActionPanel from '../../ui/ActionPanel'
@@ -43,6 +42,7 @@ function SwapPage({ changePage }: SwapPageProps) {
   const [highlightTrait, setHightlightTrait] = useState(undefined as TraitType | undefined)
   const [swapped, setSwapped] = useState({} as { [T in TraitType]?: boolean })
   const [highlight, setHighlight] = useState('flicker' as 'flash' | 'flicker')
+  const swappedCount = Object.values(swapped).filter(val => val).length
 
   const handleEnter = (trait: TraitType) => {
     setHighlight('flicker')
@@ -143,7 +143,10 @@ function SwapPage({ changePage }: SwapPageProps) {
                     Back
                   </span>
                 </div>
-                <button className='flex justify-center items-center w-210' onClick={() => { handleRegenerate() }}>
+                <button
+                  className={`flex justify-center items-center w-210${swappedCount === 0 ? ' hide' : ''}`}
+                  onClick={() => { handleRegenerate() }}
+                >
                   <i className='icon icon-sparkle text-xl' />
                   Regenerate
                 </button>

@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import { TraitHighlights, LayerTraits, mapToLayerData, getFiles, TokenData, TraitType, LayerType, mapToCompoundLayerData } from 'asuna-data'
 
-import wildcard from '../../assets/media/wildcard.jpg'
-
 interface SwapImageProps {
   token1: TokenData,
   token2: TokenData,
