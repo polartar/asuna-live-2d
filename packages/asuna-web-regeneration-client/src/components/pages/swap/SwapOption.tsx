@@ -17,6 +17,12 @@ function SwapOption({ handleEnter, handleExit, handleClick, token1, token2, type
   const hiddenClass = !swapStatus.swappable ? ' hide' : ''
   const swappedClass = swapped ? ' swapped' : ''
 
+  if (swapped) {
+    let temp = token1
+    token1 = token2
+    token2 = temp
+  }
+
   const handleMouseEnter = () => {
     handleEnter()
     setShowLabel(true)
