@@ -17,7 +17,7 @@ function getTokenData(tokenIds: string[]) {
   return res
 }
 
-function swapTraits(tokenId1: string, tokenId2: string, traitTypes: TraitType[]) {
+function swapTraits(tokenId1: number, tokenId2: number, traitTypes: TraitType[]) {
   for (let traitType of traitTypes) {
     let temp = metadata[tokenId1].traitData[traitType]
     metadata[tokenId1].traitData[traitType] = metadata[tokenId2].traitData[traitType]

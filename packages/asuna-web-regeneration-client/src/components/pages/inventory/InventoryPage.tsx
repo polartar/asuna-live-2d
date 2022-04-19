@@ -5,7 +5,7 @@ import { walletAddress } from '../../../wallet'
 import LayeredImage, { LayeredImageQuality } from '../../ui/LayeredImage'
 import GridItem from '../../ui/GridItem'
 import { useAppDispatch, useAppSelector } from '../../../store/hooks'
-import { setInventory, setLoaded, toggleSelected, restoreSelected } from '../../../store/inventory'
+import { setInventory, setLoaded, toggleSelected, restoreSelected, clearSelected } from '../../../store/inventory'
 import ActionPanel from '../../ui/ActionPanel'
 
 
@@ -28,16 +28,15 @@ function InventoryPage({ firstLoad, changePage }: React.PropsWithoutRef<Inventor
   }
 
   useEffect(() => {
-    dispatch(restoreSelected())
-
-    const url = new URL('/api/inventory', window.location.origin)
-    url.search = new URLSearchParams({ address: walletAddress }).toString()
-
     if (!loaded) {
+      const url = new URL('/api/inventory', window.location.origin)
+      url.search = new URLSearchParams({ address: walletAddress }).toString()
+
       fetch(url.href)
         .then(res => res.json())
         .then((val) => {
           dispatch(setInventory(val))
+          dispatch(restoreSelected())
           dispatch(setLoaded(true))
 
           if (firstLoad && Object.keys(val).length === 0) {
@@ -78,7 +77,7 @@ function InventoryPage({ firstLoad, changePage }: React.PropsWithoutRef<Inventor
         )}
       </div>
     </div>
-    <ActionPanel hidden={slotTokens.length === 0}>
+    <ActionPanel hidden={!loaded || slotTokens.length === 0}>
       <div className='flex-1'></div>
       <div className='flex items-center'>
         {[0, -1, 1].map(idx =>
@@ -89,7 +88,7 @@ function InventoryPage({ firstLoad, changePage }: React.PropsWithoutRef<Inventor
               className='slot relative cursor-pointer'
               onClick={() => slotTokens[idx] !== undefined ? dispatch(toggleSelected(slotTokens[idx].id)) : null}
             >
-              {slotTokens[idx] !== undefined
+              {loaded && slotTokens[idx] !== undefined
                 ? <LayeredImage
                   key={slotTokens[idx].id}
                   quality={LayeredImageQuality.Low}

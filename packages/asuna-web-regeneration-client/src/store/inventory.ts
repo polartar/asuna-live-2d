@@ -46,6 +46,9 @@ export const Inventory = createSlice({
         }
       }
     },
+    clearSelected: (state) => {
+      state.selected = {}
+    },
     restoreSelected: (state) => {
       for (let id of Object.keys(state.selected)) {
         state.selected[id] = JSON.parse(JSON.stringify(state.inventory[id]))
@@ -53,12 +56,8 @@ export const Inventory = createSlice({
     },
     setLoaded: (state, action: PayloadAction<boolean>) => {
       state.loaded = action.payload
-      if (action.payload === false) {
-        state.selected = {}
-      }
     },
     setInventory: (state, action: PayloadAction<InventoryState['inventory']>) => {
-      state.selected = {}
       state.inventory = action.payload
     },
     swapTrait: (state, action: PayloadAction<{ id1: number, id2: number, trait: TraitType }>) => {
@@ -73,5 +72,5 @@ export const Inventory = createSlice({
   }
 })
 
-export const { toggleSelected, restoreSelected, setLoaded, setInventory, swapTrait } = Inventory.actions
+export const { toggleSelected, clearSelected, restoreSelected, setLoaded, setInventory, swapTrait } = Inventory.actions
 export default Inventory.reducer

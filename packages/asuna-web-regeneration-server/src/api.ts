@@ -1,5 +1,5 @@
 import express from 'express'
-import validators, { DepositBody, WalletParams, WithdrawBody } from './validators'
+import validators, { DepositBody, SwapBody, WalletParams, WithdrawBody } from './validators'
 import db from './mockDatabase'
 import store from './mockStore'
 import { InventoryParams } from './validators'
@@ -43,14 +43,10 @@ router.get('/wallet', (req, res) => {
 // transfers tokens from wallet into inventory
 // req.body: DepositBody
 router.post('/deposit', (req, res) => {
-
-  console.log(req.body)
-
   const validate = validators.validateDepositBody
   const valid = validate(req.body)
   if (!valid) {
     res.status(400).send('400')
-    console.log(validate.errors)
     return
   }
 
@@ -59,7 +55,7 @@ router.post('/deposit', (req, res) => {
 
   setTimeout(() => {
     res.status(200).send({})
-  }, 5000)
+  }, 4000)
 })
 
 // transfers tokens from inventory into wallet
@@ -75,6 +71,27 @@ router.post('/withdraw', (req, res) => {
   const params: WithdrawBody = req.body
   store.withdraw(params.address, params.tokenIds)
   res.status(200).send({})
+})
+
+
+// swaps traits
+// req.body: SwapBody
+router.post('/swap', (req, res) => {
+  const validate = validators.validateSwapBody
+  const valid = validate(req.body)
+  if (!valid) {
+    res.status(400).send('400')
+    return
+  }
+
+  // TODO: validate swap operation
+
+  const params: SwapBody = req.body
+  db.swapTraits(params.tokenId1, params.tokenId2, params.traitTypes)
+
+  setTimeout(() => {
+    res.status(200).send({})
+  }, 4000)
 })
 
 // resets trait metadata to initial values
