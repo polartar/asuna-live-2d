@@ -58,7 +58,7 @@ const LayeredImage = function ({ quality, tokenData, labelPosition }: Props) {
           />
         )}
       </div>
-      <div className={`absolute right-0 bg-white font-bold text-indigo-900 drop-shadow-xl pl-80 pr-40 py-10 text-xs${labelPosClass}`}>#{tokenData.id}</div>
+      <div className={`absolute right-0 bg-white font-bold text-indigo-900 drop-shadow-xl pl-80 pr-40 py-10 text-xs ${labelPosClass}`}>#{tokenData.id}</div>
     </div>
   )
 }
