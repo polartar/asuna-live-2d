@@ -119,7 +119,7 @@ function WalletPage({ changePage }: WalletPageProps) {
                   Back
                 </button>
                 <h1 className='text-2xl leading-loose'>Select any number of Asunas to import</h1>
-                <p>Imported Asunas will be unable to be withdrawn for a period of 3 days. Approved is {String(approved)}</p>
+                <p>Imported Asunas will be unable to be withdrawn for a period of 3 days.</p>
               </div>
               <div className='grid-container'>
                 <div className='grid'>
