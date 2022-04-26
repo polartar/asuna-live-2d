@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
+import { useWeb3React } from '@web3-react/core'
 
 import { Page } from '../../App'
-import { walletAddress } from '../../../wallet'
 import LayeredImage, { LayeredImageQuality } from '../../ui/LayeredImage'
 import GridItem from '../../ui/GridItem'
 import { useAppDispatch, useAppSelector } from '../../../store/hooks'
@@ -16,6 +16,7 @@ export interface InventoryPageProps {
 
 function InventoryPage({ firstLoad, changePage }: React.PropsWithoutRef<InventoryPageProps>) {
   // Other components should run `dispatch(setLoaded(false))` when changing inventory to force reload here
+  const { account } = useWeb3React()
   const { loaded, selected, inventory } = useAppSelector(state => state.inventory)
   const dispatch = useAppDispatch()
   const hideClass = firstLoad && Object.keys(inventory).length === 0 ? ' hidden' : ''
@@ -30,7 +31,7 @@ function InventoryPage({ firstLoad, changePage }: React.PropsWithoutRef<Inventor
   useEffect(() => {
     if (!loaded) {
       const url = new URL('/api/inventory', window.location.origin)
-      url.search = new URLSearchParams({ address: walletAddress }).toString()
+      url.search = new URLSearchParams({ address: account! }).toString()
 
       fetch(url.href)
         .then(res => res.json())
@@ -46,7 +47,7 @@ function InventoryPage({ firstLoad, changePage }: React.PropsWithoutRef<Inventor
     }
   }, [])
 
-  return <div className={`page page-d0${hideClass}`}>
+  return <div className={`page page-d1${hideClass}`}>
     <div className='header flex items-end'>
       <div className='flex-1'>
         <h1 className='text-2xl leading-loose'>Select two Asunas to regenerate</h1>

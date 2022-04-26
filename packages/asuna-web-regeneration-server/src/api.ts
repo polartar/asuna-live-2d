@@ -1,15 +1,17 @@
 import express from 'express'
-import validators, { DepositBody, SwapBody, WalletParams, WithdrawBody } from './validators'
+import validators, { ApprovalParams, DepositBody, SwapBody, WalletParams, WithdrawBody } from './validators'
 import db from './mockDatabase'
 import store from './mockStore'
 import { InventoryParams } from './validators'
+import { getWalletTokens, isApprovedForAll } from './web3/asunaContract'
+import { getInventoryTokens } from './web3/holderContract'
 
 let router = express.Router()
 
 // gets tokens in inventory for wallet address
 // req.query: InventoryParams
 // res: TokenData[]
-router.get('/inventory', (req, res, next) => {
+router.get('/inventory', async (req, res, next) => {
   const validate = validators.validateInventoryParams
   const valid = validate(req.query)
   if (!valid) {
@@ -18,15 +20,39 @@ router.get('/inventory', (req, res, next) => {
   }
 
   const params: InventoryParams = req.query as any
-  const tokenIds = store.getInventoryTokens(params.address)
+  try {
+    const tokenIds = await getInventoryTokens(params.address)
+    tokenIds.sort()
+    res.status(200).send(db.getTokenData(tokenIds))
+  } catch {
+    res.status(400).send('400')
+  }
+})
 
-  res.send(db.getTokenData(Object.keys(tokenIds)))
+// get isApprovedForAll
+// req.query: ApprovalParams
+// res: boolean
+router.get('/isApproved', async (req, res) => {
+  const validate = validators.validateApprovalParams
+  const valid = validate(req.query)
+  if (!valid) {
+    res.status(400).send('400')
+    return
+  }
+
+  const params: ApprovalParams = req.query as any
+  try {
+    const approved = await isApprovedForAll(params.address)
+    res.status(200).send({ approved })
+  } catch {
+    res.status(400).send('400')
+  }
 })
 
 // gets tokens for wallet address
 // req.query: WalletParams
 // res: TokenData[]
-router.get('/wallet', (req, res) => {
+router.get('/wallet', async (req, res) => {
   const validate = validators.validateWalletParams
   const valid = validate(req.query)
   if (!valid) {
@@ -35,9 +61,12 @@ router.get('/wallet', (req, res) => {
   }
 
   const params: WalletParams = req.query as any
-  const tokenIds = store.getWalletTokens(params.address)
-
-  res.send(db.getTokenData(Object.keys(tokenIds)))
+  try {
+    const tokenIds = await getWalletTokens(params.address)
+    res.status(200).send(db.getTokenData(tokenIds))
+  } catch {
+    res.status(400).send('400')
+  }
 })
 
 // transfers tokens from wallet into inventory

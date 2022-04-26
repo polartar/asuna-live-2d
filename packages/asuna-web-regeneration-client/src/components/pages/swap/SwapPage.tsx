@@ -84,12 +84,12 @@ function SwapPage({ changePage }: SwapPageProps) {
     <SwitchTransition>
       <CSSTransition
         key={'' + swapping}
-        classNames='page-d1'
+        classNames='page-d2'
         timeout={300}
       >{
           swapping
             ? <AwaitSwapPage />
-            : <div className='page page-d1'>
+            : <div className='page page-d2'>
               <div className='header text-center'>
                 <h1 className='text-2xl leading-loose'>Regeneration Preview</h1>
                 <p>Select traits to swap.</p>

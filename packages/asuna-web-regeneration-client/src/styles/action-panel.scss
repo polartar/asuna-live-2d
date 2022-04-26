@@ -35,6 +35,10 @@
         @apply opacity-0 pointer-events-none;
       }
 
+      &.disabled {
+        @apply opacity-50 pointer-events-none;
+      }
+
       icon {
         @apply text-2xl;
         vertical-align: middle;

@@ -1,0 +1,29 @@
+.modal-bg {
+  @apply absolute flex justify-center items-center w-full h-full transition duration-1000;
+  background: rgba(15, 23, 42, .9);
+
+  &.hide {
+    pointer-events: none;
+    background: rgba(15, 23, 42, 0);
+  }
+
+  .modal {
+    @apply w-260 px-120 py-130 bg-slate-700 rounded-lg opacity-100 transition duration-300;
+
+    &.fade-enter {
+      opacity: 0;
+    }
+
+    &.fade-exit {
+      opacity: 1;
+    }
+
+    &.fade-enter-active {
+      opacity: 1;
+    }
+
+    &.fade-exit-active {
+      opacity: 0;
+    }
+  }
+}

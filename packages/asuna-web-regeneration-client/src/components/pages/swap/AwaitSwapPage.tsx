@@ -9,7 +9,7 @@ function AwaitSwapPage() {
     setLoaded(true)
   }
 
-  return <div className="page page-d2 h-full flex justify-center items-center font-bold">
+  return <div className="page page-d3 h-full flex justify-center items-center font-bold">
     <img src={wildcard}
       className={`asuna-ratio h-210 mb-80 rounded-lg transition duration-1000${loadedClass}`}
       onLoad={handleLoad}

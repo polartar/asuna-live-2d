@@ -6,6 +6,10 @@ export interface InventoryParams {
   address: string
 }
 
+export interface ApprovalParams {
+  address: string
+}
+
 export interface WalletParams {
   address: string
 }
@@ -27,6 +31,15 @@ export interface SwapBody {
 }
 
 const InventoryQuerySchema: JSONSchemaType<InventoryParams> = {
+  type: 'object',
+  properties: {
+    address: { type: 'string', pattern: '^0x([0-9a-fA-F])*$', minLength: 42, maxLength: 42, nullable: false }
+  },
+  required: ['address'],
+  additionalProperties: false
+}
+
+const ApprovalQuerySchema: JSONSchemaType<ApprovalParams> = {
   type: 'object',
   properties: {
     address: { type: 'string', pattern: '^0x([0-9a-fA-F])*$', minLength: 42, maxLength: 42, nullable: false }
@@ -101,6 +114,7 @@ const SwapBodySchema: JSONSchemaType<SwapBody> = {
 
 export default {
   validateInventoryParams: ajv.compile(InventoryQuerySchema),
+  validateApprovalParams: ajv.compile(ApprovalQuerySchema),
   validateWalletParams: ajv.compile(WalletQuerySchema),
   validateDepositBody: ajv.compile(DepositBodySchema),
   validateWithdrawBody: ajv.compile(WithdrawBodySchema),
