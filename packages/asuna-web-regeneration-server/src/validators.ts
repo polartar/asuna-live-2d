@@ -25,9 +25,11 @@ export interface WithdrawBody {
 }
 
 export interface SwapBody {
+  address: string
   tokenId1: TokenId
   tokenId2: TokenId
   traitTypes: TraitType[]
+  sig: string
 }
 
 const InventoryQuerySchema: JSONSchemaType<InventoryParams> = {
@@ -92,6 +94,7 @@ const WithdrawBodySchema: JSONSchemaType<WithdrawBody> = {
 const SwapBodySchema: JSONSchemaType<SwapBody> = {
   type: 'object',
   properties: {
+    address: { type: 'string', pattern: '^0x([0-9a-fA-F])*$', minLength: 42, maxLength: 42, nullable: false },
     tokenId1: { type: 'integer', minimum: 0, maximum: 9999, nullable: false },
     tokenId2: {
       type: 'integer',
@@ -106,9 +109,10 @@ const SwapBodySchema: JSONSchemaType<SwapBody> = {
       items: { type: 'integer', minimum: 0, maximum: 18 },
       minItems: 1,
       maxItems: 19
-    }
+    },
+    sig: { type: 'string', maxLength: 200, nullable: false }
   },
-  required: ['tokenId1', 'tokenId2', 'traitTypes'],
+  required: ['address', 'tokenId1', 'tokenId2', 'traitTypes', 'sig'],
   additionalProperties: false
 }
 

@@ -5,8 +5,6 @@ import { CSSTransition, SwitchTransition } from 'react-transition-group'
 import InventoryPage from './pages/inventory/InventoryPage'
 import WalletPage from './pages/wallet/WalletPage'
 import SwapPage from './pages/swap/SwapPage'
-
-import bg from '../assets/media/bg.png'
 import logo from '../assets/media/logo-white.png'
 import Wrapper from './Wrapper'
 import ConnectPage from './pages/connect/ConnectPage'
@@ -14,6 +12,8 @@ import Modal from './ui/Modal'
 import { useAppSelector } from '../store/hooks'
 import { ModalPage } from '../store/modal'
 import ApproveModal from './pages/wallet/ApproveModal'
+
+import bg1 from '../assets/media/bgtry1.jpg'
 
 export enum Page {
   Inventory,
@@ -36,7 +36,7 @@ function App() {
   }
 
   return (
-    <div className='flex h-full bg-cover' style={{ backgroundImage: `url(${bg})` }}>
+    <div className='flex h-full bg-cover bg-top' style={{ backgroundImage: `url(${bg1})` }}>
       <div className='flex-1 pt-120 pl-120'>
         <img src={logo} className='max-h-180' alt='logo' />
       </div>

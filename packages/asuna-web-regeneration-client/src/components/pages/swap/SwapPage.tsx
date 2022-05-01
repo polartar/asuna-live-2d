@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { useWeb3React } from '@web3-react/core'
+import { ethers } from 'ethers'
 import { CSSTransition, SwitchTransition } from 'react-transition-group'
 import { TraitType } from 'asuna-data'
 
@@ -36,15 +38,22 @@ export interface SwapPageProps {
 }
 
 function SwapPage({ changePage }: SwapPageProps) {
+  const { account } = useWeb3React()
+  const library = useWeb3React().library as ethers.providers.Web3Provider
   const dispatch = useAppDispatch()
   const selected = useAppSelector(state => Object.values(state.inventory.selected))
+  const [pending, setPending] = useState(false)
   const [swapping, setSwapping] = useState(false)
   const [highlightTrait, setHightlightTrait] = useState(undefined as TraitType | undefined)
   const [swapped, setSwapped] = useState({} as { [T in TraitType]?: boolean })
   const [highlight, setHighlight] = useState('flicker' as 'flash' | 'flicker')
   const swappedCount = Object.values(swapped).filter(val => val).length
+  const buttonDisabledClass = pending ? ' disabled' : ''
 
   const handleEnter = (trait: TraitType) => {
+    if (pending) {
+      return
+    }
     setHighlight('flicker')
     setHightlightTrait(trait)
   }
@@ -54,6 +63,9 @@ function SwapPage({ changePage }: SwapPageProps) {
   }
 
   const handleClick = (trait: TraitType) => {
+    if (pending) {
+      return
+    }
     setHighlight('flash')
     setSwapped({
       ...swapped,
@@ -61,7 +73,20 @@ function SwapPage({ changePage }: SwapPageProps) {
     })
   }
 
-  const handleRegenerate = () => {
+  const handleRegenerate = async () => {
+    const signer = library.getSigner()
+    const traitTypes = Object.entries(swapped).filter(item => item[1]).map(item => +item[0])
+    const msg = `Swap Asuna #${selected[0].id} & Asuna #${selected[1].id}. Traits: ${traitTypes.join(', ')}`
+    let sig: string
+    setPending(true)
+
+    try {
+      sig = await signer.signMessage(msg)
+    } catch {
+      setPending(false)
+      return
+    }
+
     dispatch(setLoaded(false))
     setSwapping(true)
 
@@ -69,14 +94,19 @@ function SwapPage({ changePage }: SwapPageProps) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        address: account,
         tokenId1: +selected[0].id,
         tokenId2: +selected[1].id,
-        traitTypes: Object.entries(swapped).filter(item => item[1]).map(item => +item[0])
+        traitTypes,
+        sig
       })
     })
       .then(res => res.json())
       .then(() => {
         changePage(Page.Inventory)
+      })
+      .catch(() => {
+        // TODO: handle errors
       })
   }
 
@@ -144,11 +174,11 @@ function SwapPage({ changePage }: SwapPageProps) {
                   </span>
                 </div>
                 <button
-                  className={`flex justify-center items-center w-210${swappedCount === 0 ? ' hide' : ''}`}
+                  className={`flex justify-center items-center w-210${buttonDisabledClass}${swappedCount === 0 ? ' hide' : ''}`}
                   onClick={() => { handleRegenerate() }}
                 >
                   <i className='icon icon-sparkle text-xl' />
-                  Regenerate
+                  {pending ? 'Waiting...' : 'Regenerate'}
                 </button>
                 <div className='flex-1'></div>
               </ActionPanel>

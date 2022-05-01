@@ -1,4 +1,7 @@
 ### createColorTable.js
+`node .\scripts\scale asuna\standardized_assets -w 275 -h 375`
+
+### createColorTable.js
 `node .\scripts\createColorTable.js temp/src.png temp/tgt.png -o temp/table.json`
 
 ### swap.js

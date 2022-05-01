@@ -1,4 +1,5 @@
 import express from 'express'
+import { ethers } from 'ethers'
 import validators, {
   ApprovalParams,
   DepositBody,
@@ -10,7 +11,7 @@ import db from './mockDatabase'
 import store from './mockStore'
 import { InventoryParams } from './validators'
 import { getWalletTokens, isApprovedForAll } from './web3/asunaContract'
-import { getInventoryTokens } from './web3/holderContract'
+import { checkOwnership, getInventoryTokens } from './web3/holderContract'
 import { MongoClient, ObjectId } from 'mongodb'
 
 let mongoDB: any
@@ -140,7 +141,7 @@ router.post('/withdraw', (req, res) => {
 
 // swaps traits
 // req.body: SwapBody
-router.post('/swap', (req, res) => {
+router.post('/swap', async (req, res) => {
   const validate = validators.validateSwapBody
   const valid = validate(req.body)
   if (!valid) {
@@ -148,9 +149,29 @@ router.post('/swap', (req, res) => {
     return
   }
 
-  // TODO: validate swap operation
-
   const params: SwapBody = req.body
+  const msg = `Swap Asuna #${params.tokenId1} & Asuna #${params.tokenId2}. Traits: ${params.traitTypes.join(', ')}`
+
+  // verify msg signature is valid
+  // authenticates address: address initated a swap operation with the parameters in msg
+  if (params.address !== ethers.utils.verifyMessage(msg, params.sig)) {
+    res.status(403).send('403')
+    return
+  }
+
+  // authorizes address: address must own both tokens in holding contract
+  let owned: boolean = false
+  try {
+    owned = await checkOwnership(params.address, params.tokenId1, params.tokenId2)
+  } catch {
+    res.status(403).send('403')
+    return
+  }
+  if (!owned) {
+    res.status(403).send('403')
+    return
+  }
+
   db.swapTraits(params.tokenId1, params.tokenId2, params.traitTypes)
 
   setTimeout(() => {
