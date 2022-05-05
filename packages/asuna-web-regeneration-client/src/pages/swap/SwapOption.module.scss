@@ -1,0 +1,68 @@
+.swap-option {
+  @apply relative bg-white w-180 py-40 font-semibold text-indigo-900 border border-white text-xs text-center rounded cursor-pointer;
+  transition: all 300ms;
+
+  &:hover {
+    @apply border-indigo-400;
+  }
+
+  &:global(.hide) {
+    @apply opacity-40 cursor-default pointer-events-none;
+  }
+
+  &:global(.swapped) {
+    @apply bg-indigo-400 text-white border-indigo-400;
+
+    &:hover {
+      @apply border-white;
+    }
+  }
+
+  :global {
+
+    .label {
+      @apply absolute whitespace-nowrap flex justify-center items-center top-0 h-full text-white rounded-full;
+      transition: opacity 300ms;
+      background: rgba(129, 140, 248, 100%);
+
+      &.label-left {
+        @apply pl-100 pr-50;
+        animation: label-left-hover 1s infinite;
+
+        @keyframes :global(label-left-hover) {
+          0% {
+            right: calc(100% + .5rem);
+          }
+
+          30% {
+            right: calc(100% + .3rem);
+          }
+
+          100% {
+            right: calc(100% + .5rem);
+          }
+        }
+      }
+
+      &.label-right {
+        @apply pr-100 pl-50;
+        z-index: 1;
+        animation: label-right-hover 1s infinite;
+
+        @keyframes :global(label-right-hover) {
+          0% {
+            left: calc(100% + .5rem);
+          }
+
+          30% {
+            left: calc(100% + .3rem);
+          }
+
+          100% {
+            left: calc(100% + .5rem);
+          }
+        }
+      }
+    }
+  }
+}

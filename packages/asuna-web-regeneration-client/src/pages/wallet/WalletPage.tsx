@@ -4,16 +4,17 @@ import { ethers } from 'ethers'
 import { CSSTransition, SwitchTransition } from 'react-transition-group'
 import { TokenData } from 'asuna-data'
 
-import { HOLDER_ADDRESS, HOLDER_ABI } from '../../../web3/HolderContract'
-import { store } from '../../../store/store'
-import { ModalActions, ModalPage } from '../../../store/modal'
+import { HOLDER_ADDRESS, HOLDER_ABI } from '../../web3/HolderContract'
+import { store } from '../../store/store'
+import { ModalActions, ModalPage } from '../../store/modal'
 import { Page } from '../../App'
-import LayeredImage, { LayeredImageQuality } from '../../ui/LayeredImage'
-import GridItem from '../../ui/GridItem'
-import ActionPanel from '../../ui/ActionPanel'
+import LayeredImage, { LayeredImageQuality } from '../../components/LayeredImage'
+import GridItem from '../../components/GridItem'
+import ActionPanel from '../../components/ActionPanel'
 import AwaitImportPage from './AwaitImportPage'
-import { useAppDispatch } from '../../../store/hooks'
-import { setLoaded } from '../../../store/inventory'
+import { useAppDispatch } from '../../store/hooks'
+import { setLoaded } from '../../store/inventory'
+import GridContainer from '../../components/GridContainer'
 
 
 export interface WalletPageProps {
@@ -121,20 +122,18 @@ function WalletPage({ changePage }: WalletPageProps) {
                 <h1 className='text-2xl leading-loose'>Select any number of Asunas to import</h1>
                 <p>Imported Asunas will be unable to be withdrawn for a period of 3 days.</p>
               </div>
-              <div className='grid-container'>
-                <div className='grid'>
-                  {Object.values(wallet).map(token =>
-                    <GridItem
-                      key={token.id}
-                      handleClick={() => handleSelect(token.id)}
-                      tokenData={token}
-                      selected={token.id in selection}
-                    >
-                      <LayeredImage quality={LayeredImageQuality.Low} tokenData={token} />
-                    </GridItem>
-                  )}
-                </div>
-              </div>
+              <GridContainer>
+                {Object.values(wallet).map(token =>
+                  <GridItem
+                    key={token.id}
+                    handleClick={() => handleSelect(token.id)}
+                    tokenData={token}
+                    selected={token.id in selection}
+                  >
+                    <LayeredImage quality={LayeredImageQuality.Low} tokenData={token} />
+                  </GridItem>
+                )}
+              </GridContainer>
               <ActionPanel hidden={selectedCount === 0 || approved === null}>
                 <button className={`w-210${buttonDisabledClass}`} onClick={handleImport}>
                   <i className='icon icon-download text-2xl' />

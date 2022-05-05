@@ -1,6 +1,8 @@
 import { TokenData, TraitType, canSwap, getTraitMetadata } from 'asuna-data'
 import React, { useState } from 'react'
 
+import styles from './SwapOption.module.scss'
+
 interface SwapOptionProps {
   handleEnter: () => void
   handleExit: () => void
@@ -37,7 +39,7 @@ function SwapOption({ handleEnter, handleExit, handleClick, token1, token2, type
     onClick={handleClick}
     onMouseEnter={handleMouseEnter}
     onMouseLeave={handleMouseExit}
-    className={`swap-option${hiddenClass}${swappedClass}`}
+    className={`${styles['swap-option']}${hiddenClass}${swappedClass}`}
   >
     {showLabel && token1.traitData[type] !== undefined
       ? <div className='label label-left'>

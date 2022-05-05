@@ -1,18 +1,19 @@
-.page {
-  .grid-container {
-    @apply flex-1 overflow-y-scroll mt-120 pr-90;
+.grid-container {
+  @apply flex-1 overflow-y-scroll mt-120 pr-90;
 
-    &::-webkit-scrollbar {
-      @apply w-80;
-    }
+  &::-webkit-scrollbar {
+    @apply w-80;
+  }
 
-    &::-webkit-scrollbar-track {
-      @apply bg-slate-800 opacity-0;
-    }
+  &::-webkit-scrollbar-track {
+    @apply bg-slate-800 opacity-0;
+  }
 
-    &::-webkit-scrollbar-thumb {
-      @apply bg-slate-500 rounded-lg;
-    }
+  &::-webkit-scrollbar-thumb {
+    @apply bg-slate-500 rounded-lg;
+  }
+
+  :global {
 
     .grid {
       @apply grid-cols-6 gap-90 mt-50;

@@ -2,12 +2,12 @@ import React, { useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 
 import { Page } from '../../App'
-import LayeredImage, { LayeredImageQuality } from '../../ui/LayeredImage'
-import GridItem from '../../ui/GridItem'
-import { useAppDispatch, useAppSelector } from '../../../store/hooks'
-import { setInventory, setLoaded, toggleSelected, restoreSelected } from '../../../store/inventory'
-import ActionPanel from '../../ui/ActionPanel'
-
+import LayeredImage, { LayeredImageQuality } from '../../components/LayeredImage'
+import GridItem from '../../components/GridItem'
+import { useAppDispatch, useAppSelector } from '../../store/hooks'
+import { setInventory, setLoaded, toggleSelected, restoreSelected } from '../../store/inventory'
+import ActionPanel from '../../components/ActionPanel'
+import GridContainer from '../../components/GridContainer'
 
 export interface InventoryPageProps {
   firstLoad: boolean,
@@ -22,7 +22,7 @@ function InventoryPage({ firstLoad, changePage }: React.PropsWithoutRef<Inventor
   const hideClass = firstLoad && Object.keys(inventory).length === 0 ? ' hidden' : ''
   const renderedInv = loaded ? inventory : {}
   const slotTokens = Object.values(selected)
-  const hideNextClass = slotTokens.length === 2 ? '' : 'opacity-0'
+  const hideNextClass = slotTokens.length === 2 ? '' : 'hide'
 
   const handleSelect = (id: number) => {
     dispatch(toggleSelected(id))
@@ -64,20 +64,18 @@ function InventoryPage({ firstLoad, changePage }: React.PropsWithoutRef<Inventor
         </button>
       </div>
     </div>
-    <div className='grid-container'>
-      <div className='grid'>
-        {Object.values(renderedInv).map(token =>
-          <GridItem
-            key={token.id}
-            handleClick={() => handleSelect(token.id)}
-            tokenData={token}
-            selected={token.id in selected}
-          >
-            <LayeredImage quality={LayeredImageQuality.Low} tokenData={token} />
-          </GridItem>
-        )}
-      </div>
-    </div>
+    <GridContainer>
+      {Object.values(renderedInv).map(token =>
+        <GridItem
+          key={token.id}
+          handleClick={() => handleSelect(token.id)}
+          tokenData={token}
+          selected={token.id in selected}
+        >
+          <LayeredImage quality={LayeredImageQuality.Low} tokenData={token} />
+        </GridItem>
+      )}
+    </GridContainer>
     <ActionPanel hidden={!loaded || slotTokens.length === 0}>
       <div className='flex-1'></div>
       <div className='flex items-center'>

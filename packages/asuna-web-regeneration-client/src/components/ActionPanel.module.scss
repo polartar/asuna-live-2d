@@ -1,11 +1,11 @@
-.page {
-  .action-panel {
+.action-panel {
+  @apply flex justify-center items-end py-125;
 
-    @apply flex justify-center items-end py-125;
+  &:global(.hide) {
+    @apply opacity-0 pointer-events-none;
+  }
 
-    &.hidden {
-      @apply opacity-0 pointer-events-none;
-    }
+  :global {
 
     .slot {
       @apply h-185 border-2 bg-cover border-indigo-200 rounded-md;

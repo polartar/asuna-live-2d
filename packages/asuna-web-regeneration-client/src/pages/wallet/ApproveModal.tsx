@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { ethers } from 'ethers'
 
-import { useAppDispatch } from '../../../store/hooks'
-import { ModalActions } from '../../../store/modal'
-import { ASUNA_ABI, ASUNA_ADDRESS } from '../../../web3/AsunaContract'
-import { HOLDER_ADDRESS } from '../../../web3/HolderContract'
+import { useAppDispatch } from '../../store/hooks'
+import { ModalActions } from '../../store/modal'
+import { ASUNA_ABI, ASUNA_ADDRESS } from '../../web3/AsunaContract'
+import { HOLDER_ADDRESS } from '../../web3/HolderContract'
 
 enum Progress {
   init,

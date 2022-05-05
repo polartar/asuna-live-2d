@@ -26,6 +26,7 @@
     "react-dom": "^18.0.0",
     "react-error-overlay": "6.0.9",
     "react-redux": "^7.2.8",
+    "react-router-dom": "^6.3.0",
     "react-scripts": "4.0.3",
     "react-transition-group": "^4.4.2",
     "sass": "^1.50.0",

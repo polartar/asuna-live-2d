@@ -4,11 +4,11 @@ import { ethers } from 'ethers'
 import { CSSTransition, SwitchTransition } from 'react-transition-group'
 import { TraitType } from 'asuna-data'
 
-import { useAppDispatch, useAppSelector } from '../../../store/hooks'
-import { setLoaded } from '../../../store/inventory'
+import { useAppDispatch, useAppSelector } from '../../store/hooks'
+import { setLoaded } from '../../store/inventory'
 import { Page } from '../../App'
 import SwapOption from './SwapOption'
-import ActionPanel from '../../ui/ActionPanel'
+import ActionPanel from '../../components/ActionPanel'
 import SwapImage from './SwapImage'
 import AwaitSwapPage from './AwaitSwapPage'
 
@@ -125,7 +125,7 @@ function SwapPage({ changePage }: SwapPageProps) {
                 <p>Select traits to swap.</p>
               </div>
               <div className='text-center mt-0 mb-50'>
-                <i className='icon icon-swap text-7xl' />
+                <i className='icon icon-swap text-5xl' />
               </div>
               <div className='flex'>
                 <div className='flex-1 overflow-hidden rounded-md'>

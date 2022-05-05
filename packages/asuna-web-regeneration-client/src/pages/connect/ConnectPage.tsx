@@ -1,5 +1,5 @@
 import { useWeb3React } from '@web3-react/core'
-import { connectors } from '../../../web3/connectors'
+import { connectors } from '../../web3/connectors'
 
 function ConnectPage() {
   const { activate } = useWeb3React()

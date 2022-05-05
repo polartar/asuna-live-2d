@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { mapToLayerData, getFiles, TokenData } from 'asuna-data'
 
+import styles from './LayeredImage.module.scss'
+
 export enum LayeredImageQuality {
   Low,
   Mid,
@@ -46,7 +48,7 @@ const LayeredImage = function ({ quality, tokenData, labelPosition }: Props) {
   }
 
   return (
-    <div className={`layered-image asuna-ratio`}>
+    <div className={`${styles['layered-image']} layered-image asuna-ratio`}>
       <div className={`images${opacityClass}`}>
         {imgs.map((src, idx) =>
           <img

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { TraitHighlights, LayerTraits, mapToLayerData, getFiles, TokenData, TraitType, LayerType, mapToCompoundLayerData } from 'asuna-data'
+import styles from '../../components/LayeredImage.module.scss'
 
 interface SwapImageProps {
   token1: TokenData,
@@ -89,7 +90,7 @@ const SwapImage = function ({ token1, token2, swappedTraits, highlight, highligh
   }
 
   return (
-    <div className={`layered-image asuna-ratio`}>
+    <div className={`${styles['layered-image']} layered-image asuna-ratio`}>
       <div className={`images${opacityClass}`}>
         {imgs.map((layer, idx) =>
           layer.type === 'img'

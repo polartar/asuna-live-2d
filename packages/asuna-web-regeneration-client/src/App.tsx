@@ -5,15 +5,15 @@ import { CSSTransition, SwitchTransition } from 'react-transition-group'
 import InventoryPage from './pages/inventory/InventoryPage'
 import WalletPage from './pages/wallet/WalletPage'
 import SwapPage from './pages/swap/SwapPage'
-import logo from '../assets/media/logo-white.png'
-import Wrapper from './Wrapper'
+import logo from './assets/media/logo-white.png'
+import Wrapper from './components/Wrapper'
 import ConnectPage from './pages/connect/ConnectPage'
-import Modal from './ui/Modal'
-import { useAppSelector } from '../store/hooks'
-import { ModalPage } from '../store/modal'
+import Modal from './components/Modal'
+import { useAppSelector } from './store/hooks'
+import { ModalPage } from './store/modal'
 import ApproveModal from './pages/wallet/ApproveModal'
 
-import bg1 from '../assets/media/bgtry1.jpg'
+import bg1 from './assets/media/bgtry1.jpg'
 
 export enum Page {
   Inventory,

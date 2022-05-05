@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import wildcard from '../../../assets/media/wildcard.jpg'
+import asunaBox from '../../assets/media/asuna_box.gif'
 
-function AwaitSwapPage() {
+function AwaitImportPage() {
   const [loaded, setLoaded] = useState(false)
   const loadedClass = loaded ? ' opacity-100' : ' opacity-0'
 
@@ -10,13 +10,13 @@ function AwaitSwapPage() {
   }
 
   return <div className="page page-d3 h-full flex justify-center items-center font-bold">
-    <img src={wildcard}
-      className={`asuna-ratio h-210 mb-80 rounded-lg transition duration-1000${loadedClass}`}
+    <img src={asunaBox}
+      className={`h-210 mb-80 transition duration-1000${loadedClass}`}
       onLoad={handleLoad}
       alt='importing'
     />
-    Regenerating...
+    Importing...
   </div>
 }
 
-export default AwaitSwapPage
+export default AwaitImportPage
