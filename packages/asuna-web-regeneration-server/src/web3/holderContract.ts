@@ -9,7 +9,7 @@ const contract = new ethers.Contract(HOLDER_ADDRESS, HOLDER_ABI, provider)
 
 export async function getInventoryTokens(address: string) {
   const resIds: [ethers.BigNumber[]] = await contract.functions.getLockedIds(address)
-  const tokenIds = resIds[0].map(bign => '' + bign.toNumber())
+  const tokenIds = resIds[0].map(bign => bign.toNumber())
 
   return tokenIds
 }

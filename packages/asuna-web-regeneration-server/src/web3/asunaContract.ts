@@ -10,7 +10,7 @@ export async function getWalletTokens(address: string) {
   const resBalance: [ethers.BigNumber] = await contract.functions.balanceOf(address)
   const count = resBalance[0].toNumber()
   const resTokens: [ethers.BigNumber][] = await Promise.all(Array(count).fill(true).map((_, idx) => contract.functions.tokenOfOwnerByIndex(address, idx)))
-  const tokenIds = resTokens.flat().map(bign => '' + bign.toNumber())
+  const tokenIds = resTokens.flat().map(bign => bign.toNumber())
 
   return tokenIds
 }

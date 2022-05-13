@@ -32,6 +32,10 @@ export interface SwapBody {
   sig: string
 }
 
+export interface MetadataBody {
+  tokenId: TokenId
+}
+
 const InventoryQuerySchema: JSONSchemaType<InventoryParams> = {
   type: 'object',
   properties: {
@@ -116,11 +120,21 @@ const SwapBodySchema: JSONSchemaType<SwapBody> = {
   additionalProperties: false
 }
 
+const MetadataBodySchema: JSONSchemaType<MetadataBody> = {
+  type: 'object',
+  properties: {
+    tokenId: { type: 'integer', minimum: 0, maximum: 9999, nullable: false }
+  },
+  required: ['tokenId'],
+  additionalProperties: false
+}
+
 export default {
   validateInventoryParams: ajv.compile(InventoryQuerySchema),
   validateApprovalParams: ajv.compile(ApprovalQuerySchema),
   validateWalletParams: ajv.compile(WalletQuerySchema),
   validateDepositBody: ajv.compile(DepositBodySchema),
   validateWithdrawBody: ajv.compile(WithdrawBodySchema),
-  validateSwapBody: ajv.compile(SwapBodySchema)
+  validateSwapBody: ajv.compile(SwapBodySchema),
+  validateMetadataBody: ajv.compile(MetadataBodySchema)
 }

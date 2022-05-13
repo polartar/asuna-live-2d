@@ -9,7 +9,7 @@ function reloadMetadata() {
   metadata = JSON.parse(JSON.stringify(traitMetadata))
 }
 
-function getTokenData(tokenIds: string[]) {
+function getTokenData(tokenIds: number[]) {
   let res: { [tokenId: string]: TokenData } = {}
   for (let id of tokenIds) {
     res[id] = metadata[id]

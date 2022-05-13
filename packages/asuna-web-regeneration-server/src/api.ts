@@ -3,45 +3,19 @@ import { ethers } from 'ethers'
 import validators, {
   ApprovalParams,
   DepositBody,
+  MetadataBody,
   SwapBody,
   WalletParams,
   WithdrawBody,
 } from './validators'
-import db from './mockDatabase'
+import db from './database'
+import mockdb from './mockDatabase'
 import store from './mockStore'
 import { InventoryParams } from './validators'
 import { getWalletTokens, isApprovedForAll } from './web3/asunaContract'
 import { checkOwnership, getInventoryTokens } from './web3/holderContract'
-import { MongoClient, ObjectId } from 'mongodb'
-
-let mongoDB: any
-
-// connect to our mongodb database
-async function connectToDatabase() {
-  let params = {}
-
-  if (process.env.DATABASE_URL) {
-    params = {
-      useNewurlParser: true,
-      useUnifiedTopology: true,
-      tls: true,
-      tlsCAFile: './ca-certificate.crt',
-    }
-  }
-  const client = await MongoClient.connect(
-    process.env.DATABASE_URL
-      ? process.env.DATABASE_URL
-      : 'mongodb://localhost:27017',
-    params
-  )
-
-  mongoDB = client.db('livesofasuna')
-  console.log('RegenerationAPI connected successfully to MongoDB')
-}
-
-// setTimeout(() => {
-//   connectToDatabase()
-// }, 1000)
+import msgQueue from './rabbitmq'
+import database from './database'
 
 let router = express.Router()
 
@@ -60,7 +34,8 @@ router.get('/inventory', async (req, res, next) => {
   try {
     const tokenIds = await getInventoryTokens(params.address)
     tokenIds.sort()
-    res.status(200).send(db.getTokenData(tokenIds))
+    const data = await db.getTokenData(tokenIds)
+    res.status(200).send(data)
   } catch {
     res.status(400).send('400')
   }
@@ -100,7 +75,8 @@ router.get('/wallet', async (req, res) => {
   const params: WalletParams = req.query as any
   try {
     const tokenIds = await getWalletTokens(params.address)
-    res.status(200).send(db.getTokenData(tokenIds))
+    const data = await db.getTokenData(tokenIds)
+    res.status(200).send(data)
   } catch {
     res.status(400).send('400')
   }
@@ -172,11 +148,46 @@ router.post('/swap', async (req, res) => {
     return
   }
 
-  db.swapTraits(params.tokenId1, params.tokenId2, params.traitTypes)
+  try {
 
-  setTimeout(() => {
-    res.status(200).send({})
-  }, 4000)
+    const nonce = getNonce()
+
+    await db.swapTraits(params.tokenId1, params.tokenId2, params.traitTypes, msg, params.sig, nonce)
+
+    msgQueue.send({
+      tokenId1: params.tokenId1,
+      tokenId2: params.tokenId2,
+      nonce
+    })
+
+    setTimeout(() => {
+      res.status(200).send({})
+    }, 4000)
+
+  } catch (err) {
+    res.status(500).send('500')
+  }
+})
+
+// get token metadata
+router.get('/metadata/:tokenId', async (req, res) => {
+  const reqParams = { tokenId: +req.params.tokenId }
+  const validate = validators.validateMetadataBody
+  const valid = validate(reqParams)
+  if (!valid) {
+    res.status(400).send('400')
+    return
+  }
+
+  const params: MetadataBody = reqParams
+
+  try {
+    const metadata = await database.getTokenMetadata(params.tokenId)
+
+    res.status(200).send(metadata)
+  } catch (err) {
+    res.status(500).send('500')
+  }
 })
 
 // resets trait metadata to initial values
@@ -185,3 +196,16 @@ router.get('/resetMetadata', (req, res) => {
 })
 
 export default router
+
+//----------------------------------------------------------------------------------------------------
+
+function getNonce() {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  let res = Array(20)
+
+  for (let i = 0; i < res.length; i++) {
+    res[i] = chars.charAt(Math.floor(chars.length * Math.random()))
+  }
+
+  return res.join('')
+}
