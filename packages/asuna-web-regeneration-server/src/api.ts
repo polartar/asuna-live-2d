@@ -1,4 +1,5 @@
 import express from 'express'
+import axios from 'axios'
 import { ethers } from 'ethers'
 import validators, {
   ApprovalParams,
@@ -16,6 +17,8 @@ import { getWalletTokens, isApprovedForAll } from './web3/asunaContract'
 import { checkOwnership, getInventoryTokens } from './web3/holderContract'
 import msgQueue from './rabbitmq'
 import database from './database'
+
+const OPENSEA_API = 'https://testnets-api.opensea.io/api/v1/asset/'
 
 let router = express.Router()
 
@@ -152,19 +155,27 @@ router.post('/swap', async (req, res) => {
 
     const nonce = getNonce()
 
+    // update metadata
     await db.swapTraits(params.tokenId1, params.tokenId2, params.traitTypes, msg, params.sig, nonce)
 
+    // trigger image regeneration
     msgQueue.send({
       tokenId1: params.tokenId1,
       tokenId2: params.tokenId2,
       nonce
     })
 
+    // trigger opensea update
+    await axios.get(`${OPENSEA_API}${process.env.ASUNA_ADDRESS}/${params.tokenId1}/?force_update=true`)
+    await new Promise((resolve) => setTimeout(resolve, 2000))
+    await axios.get(`${OPENSEA_API}${process.env.ASUNA_ADDRESS}/${params.tokenId2}/?force_update=true`)
+
     setTimeout(() => {
       res.status(200).send({})
     }, 4000)
 
   } catch (err) {
+    console.log(err)
     res.status(500).send('500')
   }
 })
