@@ -19,6 +19,15 @@ import msgQueue from './rabbitmq'
 import database from './database'
 
 const OPENSEA_API = 'https://testnets-api.opensea.io/api/v1/asset/'
+const NO_SWAP = {
+  '67': true,
+  '34': true,
+  '35': true,
+  '36': true,
+  '37': true,
+  '38': true,
+  '39': true
+}
 
 let router = express.Router()
 
@@ -130,6 +139,12 @@ router.post('/swap', async (req, res) => {
 
   const params: SwapBody = req.body
   const msg = `Swap Asuna #${params.tokenId1} & Asuna #${params.tokenId2}. Traits: ${params.traitTypes.join(', ')}`
+
+  // return if swapping legendaries / special
+  if (params.tokenId1 in NO_SWAP || params.tokenId2 in NO_SWAP) {
+    res.status(400).send('400')
+    return
+  }
 
   // verify msg signature is valid
   // authenticates address: address initated a swap operation with the parameters in msg
