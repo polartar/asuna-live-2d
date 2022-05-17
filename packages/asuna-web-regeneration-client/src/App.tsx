@@ -13,7 +13,7 @@ import { useAppSelector } from './store/hooks'
 import { ModalPage } from './store/modal'
 import ApproveModal from './pages/wallet/ApproveModal'
 
-import bg1 from './assets/media/bg1.png'
+import bg1 from './assets/media/bg1.jpg'
 
 export enum Page {
   Inventory,
