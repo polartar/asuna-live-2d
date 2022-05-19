@@ -11,13 +11,18 @@ interface SwapOptionProps {
   token2: TokenData
   type: TraitType
   swapped: boolean
+  invalid: boolean
+  clips: TraitType[][]
 }
 
-function SwapOption({ handleEnter, handleExit, handleClick, token1, token2, type, swapped, children }: React.PropsWithChildren<SwapOptionProps>) {
+function SwapOption({ handleEnter, handleExit, handleClick, token1, token2, type, swapped, invalid, clips, children }: React.PropsWithChildren<SwapOptionProps>) {
   const [showLabel, setShowLabel] = useState(false)
   const swapStatus = canSwap(token1, token2, type)
   const hiddenClass = !swapStatus.swappable ? ' hide' : ''
   const swappedClass = swapped ? ' swapped' : ''
+  const invalidClass = invalid ? ' invalid' : ''
+  const invalidLabelClass1 = clips[0].indexOf(type) >= 0 ? ' invalid' : ''
+  const invalidLabelClass2 = clips[1].indexOf(type) >= 0 ? ' invalid' : ''
 
   if (swapped) {
     let temp = token1
@@ -39,23 +44,23 @@ function SwapOption({ handleEnter, handleExit, handleClick, token1, token2, type
     onClick={handleClick}
     onMouseEnter={handleMouseEnter}
     onMouseLeave={handleMouseExit}
-    className={`${styles['swap-option']}${hiddenClass}${swappedClass}`}
+    className={`${styles['swap-option']}${hiddenClass}${swappedClass}${invalidClass}`}
   >
-    {showLabel && token1.traitData[type] !== undefined
-      ? <div className='label label-left'>
+    {(showLabel || invalid) && token1.traitData[type] !== undefined
+      ? <div className={`label label-left${invalidLabelClass1}`}>
         {getTraitMetadata(type, token1.traitData[type]!).name}
         <i className='icon icon-arrow-right' />
       </div>
       : null
     }
-    {showLabel && token2.traitData[type] !== undefined
-      ? <div className='label label-right'>
+    {(showLabel || invalid) && token2.traitData[type] !== undefined
+      ? <div className={`label label-right${invalidLabelClass2}`}>
         <i className='icon icon-arrow-left' />
         {getTraitMetadata(type, token2.traitData[type]!).name}
       </div>
       : null
     }
-    {children}
+    {invalid ? 'INCOMPATIBLE' : children}
   </div>
 }
 

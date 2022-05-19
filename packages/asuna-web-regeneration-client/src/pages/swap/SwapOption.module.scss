@@ -18,12 +18,24 @@
     }
   }
 
+  &:global(.invalid) {
+    @apply bg-red-500 text-white border-red-500;
+
+    &:hover {
+      @apply border-white;
+    }
+  }
+
   :global {
 
     .label {
       @apply absolute whitespace-nowrap flex justify-center items-center top-0 h-full text-white rounded-full;
       transition: opacity 300ms;
       background: rgba(129, 140, 248, 100%);
+
+      &.invalid {
+        @apply bg-red-500;
+      }
 
       &.label-left {
         @apply pl-100 pr-50;

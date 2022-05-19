@@ -17,6 +17,7 @@ import { getWalletTokens, isApprovedForAll } from './web3/asunaContract'
 import { checkOwnership, getInventoryTokens } from './web3/holderContract'
 import msgQueue from './rabbitmq'
 import database from './database'
+import { canSwapAll } from 'asuna-data'
 
 const OPENSEA_API = 'https://testnets-api.opensea.io/api/v1/asset/'
 const NO_SWAP = {
@@ -169,6 +170,17 @@ router.post('/swap', async (req, res) => {
   try {
 
     const nonce = getNonce()
+
+    // fetch token values
+    // technically a race condition, but such is life
+    const data = await db.getTokenData([params.tokenId1, params.tokenId2])
+
+    // validate swap is valid
+    const { valid } = canSwapAll(data[params.tokenId1], data[params.tokenId2], params.traitTypes)
+    if (!valid) {
+      res.status(400).send('400')
+      return
+    }
 
     // update metadata
     await db.swapTraits(params.tokenId1, params.tokenId2, params.traitTypes, msg, params.sig, nonce)

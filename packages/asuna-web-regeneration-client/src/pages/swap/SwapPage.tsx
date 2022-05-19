@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { ethers } from 'ethers'
 import { CSSTransition, SwitchTransition } from 'react-transition-group'
-import { TraitType } from 'asuna-data'
+import { TraitType, canSwapAll } from 'asuna-data'
 
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { setLoaded } from '../../store/inventory'
@@ -49,6 +49,7 @@ function SwapPage({ changePage }: SwapPageProps) {
   const [highlight, setHighlight] = useState('flicker' as 'flash' | 'flicker')
   const swappedCount = Object.values(swapped).filter(val => val).length
   const buttonDisabledClass = pending ? ' disabled' : ''
+  const { valid, clips } = canSwapAll(selected[0], selected[1], Object.entries(swapped).filter(item => item[1]).map(item => +item[0]))
 
   const handleEnter = (trait: TraitType) => {
     if (pending) {
@@ -148,6 +149,8 @@ function SwapPage({ changePage }: SwapPageProps) {
                       token2={selected[1]}
                       type={item.type}
                       swapped={!!swapped[item.type]}
+                      invalid={clips[0].indexOf(item.type) >= 0 || clips[1].indexOf(item.type) >= 0}
+                      clips={clips}
                     >
                       {item.text}
                     </SwapOption>
@@ -174,7 +177,7 @@ function SwapPage({ changePage }: SwapPageProps) {
                   </span>
                 </div>
                 <button
-                  className={`flex justify-center items-center w-210${buttonDisabledClass}${swappedCount === 0 ? ' hide' : ''}`}
+                  className={`flex justify-center items-center w-210${buttonDisabledClass}${swappedCount === 0 || !valid ? ' hide' : ''}`}
                   onClick={() => { handleRegenerate() }}
                 >
                   <i className='icon icon-sparkle text-xl' />
