@@ -141,7 +141,8 @@ function WalletPage({ changePage }: WalletPageProps) {
                 </button>
               </ActionPanel>
             </div>
-        }</CSSTransition>
+        }
+      </CSSTransition>
     </SwitchTransition >
   )
 }

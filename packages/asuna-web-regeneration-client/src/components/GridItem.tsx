@@ -4,13 +4,15 @@ import { TokenData } from "asuna-data"
 interface GridItemProps {
   tokenData: TokenData,
   selected: boolean,
-  handleClick: () => void
+  handleClick: () => void,
+  disabled?: boolean
 }
 
-function GridItem({ selected, handleClick, children }: React.PropsWithChildren<GridItemProps>) {
+function GridItem({ selected, handleClick, children, disabled }: React.PropsWithChildren<GridItemProps>) {
   const selectedClass = selected ? ' selected' : ''
+  const disabledClass = disabled === true ? ' disabled' : ''
   return <div
-    className={`grid-item${selectedClass}`}
+    className={`grid-item${selectedClass}${disabledClass}`}
     onClick={handleClick}
   >
     {children}

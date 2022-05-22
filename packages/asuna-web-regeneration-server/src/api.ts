@@ -3,18 +3,17 @@ import axios from 'axios'
 import { ethers } from 'ethers'
 import validators, {
   ApprovalParams,
-  DepositBody,
   MetadataBody,
   SwapBody,
+  UnlockParams,
   WalletParams,
-  WithdrawBody,
 } from './validators'
 import db from './database'
 import mockdb from './mockDatabase'
 import store from './mockStore'
 import { InventoryParams } from './validators'
 import { getWalletTokens, isApprovedForAll } from './web3/asunaContract'
-import { checkOwnership, getInventoryTokens } from './web3/holderContract'
+import { checkOwnership, getInventoryTokens, getUnlockDates } from './web3/holderContract'
 import msgQueue from './rabbitmq'
 import database from './database'
 import { canSwapAll } from 'asuna-data'
@@ -45,12 +44,17 @@ router.get('/inventory', async (req, res, next) => {
 
   const params: InventoryParams = req.query as any
   try {
-    const tokenIds = await getInventoryTokens(params.address)
+    const unsortedIds = await getInventoryTokens(params.address)
+    const tokenIds = [...unsortedIds]
     tokenIds.sort()
-    const data = await db.getTokenData(tokenIds)
-    res.status(200).send(data)
-  } catch {
-    res.status(400).send('400')
+    const tokenData = await db.getTokenData(tokenIds)
+    res.status(200).send({
+      unsortedIds,
+      tokenData
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(500).send('500')
   }
 })
 
@@ -95,37 +99,31 @@ router.get('/wallet', async (req, res) => {
   }
 })
 
-// transfers tokens from wallet into inventory
-// req.body: DepositBody
-router.post('/deposit', (req, res) => {
-  const validate = validators.validateDepositBody
-  const valid = validate(req.body)
+// gets timestamps for when tokens unlock
+// req.query: ids=1,2,3,...
+// res: number[]
+router.get('/unlockDates', async (req, res, next) => {
+  if (req.query.ids === undefined || typeof req.query.ids !== 'string') {
+    res.status(400).send('400')
+    return
+  }
+
+  const reqParams = { tokenIds: req.query.ids.split(',').map(s => +s) }
+  const validate = validators.validateUnlockParams
+  const valid = validate(reqParams)
   if (!valid) {
     res.status(400).send('400')
     return
   }
 
-  const params: DepositBody = req.body
-  store.deposit(params.address, params.tokenIds)
-
-  setTimeout(() => {
-    res.status(200).send({})
-  }, 4000)
-})
-
-// transfers tokens from inventory into wallet
-// req.body: WithdrawBody
-router.post('/withdraw', (req, res) => {
-  const validate = validators.validateWithdrawBody
-  const valid = validate(req.body)
-  if (!valid) {
+  const params: UnlockParams = reqParams
+  try {
+    const timestamps = await getUnlockDates(params.tokenIds)
+    res.status(200).send(timestamps)
+    // res.status(200).send(params.tokenIds.map(_ => (Date.now() + Math.floor(Math.random() * 180 * 1000))))
+  } catch {
     res.status(400).send('400')
-    return
   }
-
-  const params: WithdrawBody = req.body
-  store.withdraw(params.address, params.tokenIds)
-  res.status(200).send({})
 })
 
 // swaps traits

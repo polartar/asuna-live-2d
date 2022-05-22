@@ -14,10 +14,12 @@ import { ModalPage } from './store/modal'
 import ApproveModal from './pages/wallet/ApproveModal'
 
 import bg1 from './assets/media/bg1.jpg'
+import WithdrawPage from './pages/withdraw/WithdrawPage'
 
 export enum Page {
   Inventory,
   Wallet,
+  Withdraw,
   Swap
 }
 
@@ -29,10 +31,10 @@ function App() {
   const address = account || '0x'.padStart(40, '0')
 
   const changePage = (n: number) => {
-    if ((n % 3) === Page.Inventory) {
+    if ((n % 4) === Page.Inventory) {
       setFirstLoad(false)
     }
-    setPage(n % 3)
+    setPage(n % 4)
   }
 
   return (
@@ -57,8 +59,9 @@ function App() {
                   >
                     {page === Page.Inventory ? <InventoryPage firstLoad={firstLoad} changePage={changePage} />
                       : page === Page.Wallet ? <WalletPage changePage={changePage} />
-                        : page === Page.Swap ? <SwapPage changePage={changePage} />
-                          : null
+                        : page === Page.Withdraw ? <WithdrawPage changePage={changePage} />
+                          : page === Page.Swap ? <SwapPage changePage={changePage} />
+                            : null
                     }
                   </CSSTransition>
                 </SwitchTransition>

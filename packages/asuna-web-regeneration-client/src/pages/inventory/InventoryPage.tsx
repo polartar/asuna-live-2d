@@ -5,7 +5,7 @@ import { Page } from '../../App'
 import LayeredImage, { LayeredImageQuality } from '../../components/LayeredImage'
 import GridItem from '../../components/GridItem'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { setInventory, setLoaded, toggleSelected, restoreSelected } from '../../store/inventory'
+import { setInventory, setLoaded, toggleSelected, restoreSelected, setOrder } from '../../store/inventory'
 import ActionPanel from '../../components/ActionPanel'
 import GridContainer from '../../components/GridContainer'
 
@@ -35,12 +35,13 @@ function InventoryPage({ firstLoad, changePage }: React.PropsWithoutRef<Inventor
 
       fetch(url.href)
         .then(res => res.json())
-        .then((val) => {
-          dispatch(setInventory(val))
+        .then((obj) => {
+          dispatch(setInventory(obj.tokenData))
+          dispatch(setOrder(obj.unsortedIds))
           dispatch(restoreSelected())
           dispatch(setLoaded(true))
 
-          if (firstLoad && Object.keys(val).length === 0) {
+          if (firstLoad && Object.keys(obj.tokenData).length === 0) {
             changePage(Page.Wallet)
           }
         })
@@ -54,7 +55,7 @@ function InventoryPage({ firstLoad, changePage }: React.PropsWithoutRef<Inventor
         <p>Or import Asunas from wallet.</p>
       </div>
       <div className='page-actions'>
-        <button className='w-185 ml-80'>
+        <button className='w-185 ml-80' onClick={() => changePage(Page.Withdraw)}>
           <i className='icon icon-upload text-xl' />
           Withdraw
         </button>

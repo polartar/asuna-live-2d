@@ -8,13 +8,15 @@ type InventoryState = {
   },
   inventory: {
     [tokenId: string]: TokenData
-  }
+  },
+  stateOrder: number[]
 }
 
 const initialState: InventoryState = {
   loaded: false,
   selected: {},
-  inventory: {}
+  inventory: {},
+  stateOrder: []
 }
 
 export const Inventory = createSlice({
@@ -60,6 +62,9 @@ export const Inventory = createSlice({
     setInventory: (state, action: PayloadAction<InventoryState['inventory']>) => {
       state.inventory = action.payload
     },
+    setOrder: (state, action: PayloadAction<number[]>) => {
+      state.stateOrder = action.payload
+    },
     swapTrait: (state, action: PayloadAction<{ id1: number, id2: number, trait: TraitType }>) => {
       if (!(action.payload.id1 in state.selected && action.payload.id2 in state.selected)) {
         return
@@ -72,5 +77,5 @@ export const Inventory = createSlice({
   }
 })
 
-export const { toggleSelected, clearSelected, restoreSelected, setLoaded, setInventory, swapTrait } = Inventory.actions
+export const { toggleSelected, clearSelected, restoreSelected, setLoaded, setInventory, setOrder, swapTrait } = Inventory.actions
 export default Inventory.reducer

@@ -18,6 +18,15 @@
     .grid {
       @apply grid-cols-6 gap-90 mt-50;
 
+      .grid-timer {
+        @apply flex justify-center items-center absolute top-0 w-full h-full bg-slate-900 opacity-90 rounded-lg;
+        transition: opacity 300ms;
+
+        &.hide {
+          opacity: 0;
+        }
+      }
+
       .grid-item {
         @apply relative cursor-pointer;
 
@@ -27,6 +36,10 @@
 
         &.selected .layered-image {
           @apply bg-amber-500;
+        }
+
+        &.disabled {
+          @apply pointer-events-none;
         }
 
         .layered-image {

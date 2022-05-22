@@ -8,15 +8,15 @@ const provider = ethers.providers.getDefaultProvider('rinkeby')
 const contract = new ethers.Contract(HOLDER_ADDRESS, HOLDER_ABI, provider)
 
 export async function getInventoryTokens(address: string) {
-  const resIds: [ethers.BigNumber[]] = await contract.functions.getLockedIds(address)
-  const tokenIds = resIds[0].map(bign => bign.toNumber())
+  const resIds: [number[]] = await contract.functions.getLockedIds(address)
+  const tokenIds = resIds[0]
 
   return tokenIds
 }
 
 export async function checkOwnership(address: string, id1: TokenId, id2: TokenId) {
-  const resIds: [ethers.BigNumber[]] = await contract.functions.getLockedIds(address)
-  const tokenIds = resIds[0].map(bign => bign.toNumber())
+  const resIds: [number[]] = await contract.functions.getLockedIds(address)
+  const tokenIds = [...resIds[0]]
 
   let found1 = false, found2 = false
 
@@ -30,4 +30,11 @@ export async function checkOwnership(address: string, id1: TokenId, id2: TokenId
   }
 
   return found1 && found2
+}
+
+export async function getUnlockDates(ids: TokenId[]) {
+  const resTimestamps: [ethers.BigNumber[]] = await contract.functions.getUnlockDates(ids)
+  const timestamps = resTimestamps[0].map(bign => bign.toNumber() * 1000)
+
+  return timestamps
 }
