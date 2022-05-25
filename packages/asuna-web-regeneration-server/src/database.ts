@@ -59,6 +59,13 @@ async function getTokenMetadata(id: number) {
       }
     }
 
+    if (row['trait_legendary'] !== null) {
+      metadata.attributes.push({
+        trait_type: 'Legendary',
+        value: row['trait_legendary']
+      })
+    }
+
     return metadata
 
   } catch (err) {

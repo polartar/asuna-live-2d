@@ -95,7 +95,8 @@ initVer[0] = `
     trait_outfit            VARCHAR(80),
     trait_skin_marking      VARCHAR(80),
     trait_skin_tone         VARCHAR(80),
-    trait_weapon            VARCHAR(80)
+    trait_weapon            VARCHAR(80),
+    trait_legendary         VARCHAR(80)
   );
   CREATE INDEX token_nonce ON token(nonce);
 

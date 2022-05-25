@@ -21,7 +21,8 @@ const TraitTypes = [
   'Outfit',
   'Skin Marking',
   'Skin Tone',
-  'Weapon'
+  'Weapon',
+  'Legendary'
 ]
 
 
@@ -84,7 +85,8 @@ async function run() {
           trait_outfit,
           trait_skin_marking,
           trait_skin_tone,
-          trait_weapon
+          trait_weapon,
+          trait_legendary
         ) VALUES (
           $1,
           NULL,
@@ -93,7 +95,7 @@ async function run() {
           $3,
           $4,
           $5,
-          $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24
+          $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25
         )
       `, [
         +id,
