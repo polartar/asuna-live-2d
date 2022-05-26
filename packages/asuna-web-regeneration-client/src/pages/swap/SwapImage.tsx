@@ -20,7 +20,7 @@ interface Layer {
 const SwapImage = function ({ token1, token2, swappedTraits, highlight, highlightTrait }: SwapImageProps) {
   const [loaded, setLoaded] = useState(false)
   const [loadedCount, setLoadedCount] = useState(0)
-  const basePath = '/assets/lowres/'
+  const basePath = '/assets/midres/'
   const layerFiles1 = Object.values(mapToLayerData(token1.traitData)).map(getFiles)
   const layerFiles2 = Object.values(mapToLayerData(token2.traitData)).map(getFiles)
   const compoundFiles = Object.values(mapToCompoundLayerData(token1.traitData, token2.traitData)).map(arr => arr.map(getFiles))
