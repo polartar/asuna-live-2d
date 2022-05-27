@@ -18,7 +18,7 @@ import msgQueue from './rabbitmq'
 import database from './database'
 import { canSwapAll } from 'asuna-data'
 
-const OPENSEA_API = 'https://testnets-api.opensea.io/api/v1/asset/'
+const OPENSEA_API = 'https://api.opensea.io/api/v1/asset/'
 const NO_SWAP = {
   '67': true,
   '34': true,
@@ -191,9 +191,13 @@ router.post('/swap', async (req, res) => {
     })
 
     // trigger opensea update
-    await axios.get(`${OPENSEA_API}${process.env.ASUNA_ADDRESS}/${params.tokenId1}/?force_update=true`)
+    await axios.get(`${OPENSEA_API}${process.env.ASUNA_ADDRESS}/${params.tokenId1}/?force_update=true`, {
+      headers: { "X-API-KEY": process.env.OS_API_KEY! }
+    })
     await new Promise((resolve) => setTimeout(resolve, 2000))
-    await axios.get(`${OPENSEA_API}${process.env.ASUNA_ADDRESS}/${params.tokenId2}/?force_update=true`)
+    await axios.get(`${OPENSEA_API}${process.env.ASUNA_ADDRESS}/${params.tokenId2}/?force_update=true`, {
+      headers: { "X-API-KEY": process.env.OS_API_KEY! }
+    })
 
     setTimeout(() => {
       res.status(200).send({})
