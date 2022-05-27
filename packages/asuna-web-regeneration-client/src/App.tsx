@@ -15,6 +15,7 @@ import ApproveModal from './pages/wallet/ApproveModal'
 
 import bg1 from './assets/media/bg1.jpg'
 import WithdrawPage from './pages/withdraw/WithdrawPage'
+import Dialogue from './dialogue/Dialogue'
 
 export enum Page {
   Inventory,
@@ -38,7 +39,7 @@ function App() {
   }
 
   return (
-    <div className='flex h-full bg-cover bg-top' style={{ backgroundImage: `url(${bg1})` }}>
+    <div className='flex h-full bg-cover bg-top overflow-hidden' style={{ backgroundImage: `url(${bg1})` }}>
       <div className='flex-1 pt-120 pl-120'>
         <img src={logo} className='max-h-180' alt='logo' />
       </div>
@@ -78,6 +79,15 @@ function App() {
           {`${address.substring(0, 5)}...${address.substring(address.length - 4)}`}
         </div>
       </div>
+      <SwitchTransition>
+        <CSSTransition
+          key={'' + !active}
+          classNames='fade'
+          timeout={400}
+        >
+          {!active ? <Dialogue /> : <div></div>}
+        </CSSTransition>
+      </SwitchTransition>
       <Modal show={showModal}>
         <SwitchTransition>
           <CSSTransition

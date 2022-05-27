@@ -1,0 +1,122 @@
+.dialogue {
+  @apply absolute bottom-0 w-full;
+  transition: opacity 400ms;
+
+  &:global(.hide) {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &:global(.fade-enter-active) {
+    opacity: 1;
+  }
+
+  &:global(.fade-exit-active) {
+    opacity: 0;
+  }
+
+  :global {
+
+    .textbox {
+      @apply relative h-205 mx-auto;
+      width: 900px;
+
+      .box {
+        @apply absolute top-0 h-220 bg-cover;
+
+        width: 117%;
+        left: -8.5%;
+        top: -23%;
+        background-image: url('../assets/media/dialog-box.png');
+      }
+
+      .name {
+        @apply absolute left-100 -top-125 w-200 h-140 flex justify-center items-center text-lg font-bold bg-no-repeat bg-center bg-contain;
+
+        background-image: url('../assets/media/name-box.png');
+      }
+
+      .hand,
+      .avatar,
+      .smile {
+        @apply absolute w-230 h-230 -right-100 bg-cover;
+        bottom: 27px;
+
+        &.hide {
+          opacity: 0;
+        }
+
+        &.hand {
+          background-image: url('../assets/media/goddess-hand.png');
+        }
+
+        &.avatar {
+          background-image: url('../assets/media/goddess.png');
+        }
+
+        &.smile {
+          background-image: url('../assets/media/goddess-smile.png');
+        }
+      }
+
+      .text {
+        @apply absolute w-full h-full top-0 left-0 px-130 py-120 pr-230 text-lg text-justify cursor-pointer;
+
+        &.big {
+          @apply text-center text-2xl;
+          line-height: 130px;
+        }
+
+        .arrow {
+          @apply absolute left-130 right-230 h-80 bg-center bg-no-repeat bg-contain;
+          background-image: url('../assets/media/dialogue-arrow.png');
+          bottom: 2.2rem;
+
+          animation: text-arrow 1s ease infinite;
+
+          @keyframes :global(text-arrow) {
+            0% {
+              bottom: 2.2rem;
+            }
+
+            50% {
+              bottom: 2rem;
+            }
+
+            100% {
+              bottom: 2.2rem;
+            }
+          }
+        }
+
+        i {
+          @apply opacity-0;
+          font-style: normal;
+
+          &.show {
+            @apply opacity-100;
+          }
+        }
+
+        i.fancy {
+          @apply relative;
+          animation: letter-fancy 1s ease infinite;
+
+          @keyframes :global(letter-fancy) {
+            0% {
+              top: 0;
+            }
+
+            50% {
+              top: -.3em;
+            }
+
+            100% {
+              top: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}
