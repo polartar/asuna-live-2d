@@ -1,4 +1,4 @@
-export const HOLDER_ADDRESS = '0xd5587825564f77ef9Fbbf5DF9D1Cc378eF23e230'
+export const HOLDER_ADDRESS = '0x863526b39A4C48a3F9D0a3947c1A6e388071c41b'
 export const HOLDER_ABI = [
   'function lock(uint16[] calldata tokenId) external',
   'function withdraw(uint16[] calldata orderedTokenIds) external',

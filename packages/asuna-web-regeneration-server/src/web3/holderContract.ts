@@ -4,7 +4,9 @@ import { ethers } from 'ethers'
 const HOLDER_ADDRESS = process.env.HOLDER_ADDRESS!
 const HOLDER_ABI = require('./holderABI.json')
 
-const provider = ethers.providers.getDefaultProvider('rinkeby')
+const provider = ethers.providers.getDefaultProvider(process.env.NETWORK, {
+  alchemy: process.env.ALCHEMY_KEY
+})
 const contract = new ethers.Contract(HOLDER_ADDRESS, HOLDER_ABI, provider)
 
 export async function getInventoryTokens(address: string) {

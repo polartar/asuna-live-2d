@@ -31,7 +31,7 @@
       }
 
       .name {
-        @apply absolute left-100 -top-125 w-200 h-140 flex justify-center items-center text-lg font-bold bg-no-repeat bg-center bg-contain;
+        @apply absolute -left-75 -top-130 w-200 h-140 flex justify-center items-center text-lg font-bold bg-no-repeat bg-center bg-contain;
 
         background-image: url('../assets/media/name-box.png');
       }

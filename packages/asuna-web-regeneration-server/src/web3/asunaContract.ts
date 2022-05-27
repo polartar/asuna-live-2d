@@ -3,7 +3,9 @@ import { ethers } from 'ethers'
 const ASUNA_ADDRESS = process.env.ASUNA_ADDRESS!
 const ASUNA_ABI = require('./asunaABI.json')
 
-const provider = ethers.providers.getDefaultProvider('rinkeby')
+const provider = ethers.providers.getDefaultProvider(process.env.NETWORK, {
+  alchemy: process.env.ALCHEMY_KEY
+})
 const contract = new ethers.Contract(ASUNA_ADDRESS, ASUNA_ABI, provider)
 
 export async function getWalletTokens(address: string) {
