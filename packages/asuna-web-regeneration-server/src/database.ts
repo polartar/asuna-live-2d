@@ -44,7 +44,7 @@ async function getTokenMetadata(id: number) {
     let metadata = {
       name: row.name,
       description: row.description,
-      image: row.image_url || 'https://www.livesofasuna.com/static/media/unrevealed_rare.dada6b82.jpg',
+      image: row.image_url || 'https://regen.asunaverse.com/regen.gif',
       external_url: row.external_url,
       attributes: [] as any[]
     }
