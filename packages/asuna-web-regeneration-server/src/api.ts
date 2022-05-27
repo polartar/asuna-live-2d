@@ -1,4 +1,5 @@
 import express from 'express'
+import rateLimit from 'express-rate-limit'
 import axios from 'axios'
 import { ethers } from 'ethers'
 import validators, {
@@ -125,6 +126,28 @@ router.get('/unlockDates', async (req, res, next) => {
     res.status(400).send('400')
   }
 })
+
+
+const swapLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 5
+})
+
+const swapAddressLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 5,
+  keyGenerator: (req, res) => {
+    const key = '' + req.body.address
+    if (key.length !== 42) {
+      return 'null'
+    } else {
+      return key
+    }
+  }
+})
+
+router.use('/swap', swapLimiter)
+router.use('/swap', swapAddressLimiter)
 
 // swaps traits
 // req.body: SwapBody
