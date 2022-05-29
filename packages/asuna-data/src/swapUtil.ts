@@ -3,10 +3,13 @@ import { TokenData, TraitData, TraitType } from './index'
 const traitTags = require('../metadata/trait-value-tags.json')
 const clipTags = {
   'clip_face': true,
-  'clip_elf': true,
+  'clip_hf_hat': true,
+  'clip_hf_elf': true,
+  'clip_hb_hat': true,
+  'clip_hat_elf': true,
+  'clip_hand': true,
   'clip_mask': true,
-  'clip_hat': true,
-  'clip_hand': true
+  'clip_hat': true
 }
 
 export function canSwapAll(token1: TokenData, token2: TokenData, traitTypes: TraitType[]) {
