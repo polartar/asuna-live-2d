@@ -65,7 +65,7 @@ const UnlockQuerySchema: JSONSchemaType<UnlockParams> = {
       uniqueItems: true,
       items: { type: 'integer', minimum: 0, maximum: 9999 },
       minItems: 1,
-      maxItems: 200,
+      maxItems: 500,
     }
   },
   required: ['tokenIds'],
