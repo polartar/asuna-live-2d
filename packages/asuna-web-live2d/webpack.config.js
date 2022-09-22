@@ -9,8 +9,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'app.[hash].min.js',
-    publicPath: '/dist/',
-    clean: true
+    publicPath: '/dist/'
   },
   module: {
     rules: [
