@@ -253,6 +253,27 @@ router.get('/metadata/:tokenId', async (req, res) => {
   }
 })
 
+// get token metadata
+router.get('/token/:tokenId', async (req, res) => {
+  const reqParams = { tokenId: +req.params.tokenId }
+  const validate = validators.validateMetadataBody
+  const valid = validate(reqParams)
+  if (!valid) {
+    res.status(400).send('400')
+    return
+  }
+
+  const params: MetadataBody = reqParams
+
+  try {
+    const tokendata = await database.getTokenData([params.tokenId])
+
+    res.status(200).send(tokendata)
+  } catch (err) {
+    res.status(500).send('500')
+  }
+})
+
 // resets trait metadata to initial values
 router.get('/resetMetadata', (req, res) => {
   res.send('')
