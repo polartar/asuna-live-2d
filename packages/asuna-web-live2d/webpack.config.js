@@ -3,13 +3,14 @@ const { StatsWriterPlugin } = require("webpack-stats-plugin")
 
 module.exports = {
   mode: 'production',
-  target: 'web',
+  target: ['web', 'es5'],
   context: __dirname,
   entry: './src/index.ts',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'app.[hash].min.js',
-    publicPath: '/dist/'
+    publicPath: '/dist/',
+    clean: true
   },
   module: {
     rules: [
