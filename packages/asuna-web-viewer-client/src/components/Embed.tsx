@@ -16,7 +16,7 @@ class Embed extends MithrilTsxComponent<any> {
   view() {
     return <div class='embed bg-dark-900'>
       <iframe id='iframe' allow="accelerometer; autoplay  ; encrypted-media; gyroscope; picture-in-picture" frameborder="0"
-        height="100%" src="/embed" width="100%" sandbox="allow-scripts allow-same-origin" style="min-height: 750px; position:relative; top:-119px;"></iframe>
+        height="100%" src="/embed" width="100%" sandbox="allow-scripts allow-same-origin" style="min-height: 500px;"></iframe>
     </div>
   }
 }

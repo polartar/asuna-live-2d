@@ -1,5 +1,8 @@
-html, body {
-    background:#111;
+html,
+body {
+    background-color: #111;
+    background-image: url('/assets/01.jpg');
+    background-size: contain;
     margin: 0;
     overflow: hidden;
     cursor: grab;

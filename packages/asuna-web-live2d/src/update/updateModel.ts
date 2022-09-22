@@ -14,7 +14,7 @@ export function updateModel(state: WorldState, dt: number) {
     }
     m.asset.setDragging(screenX, screenY)
 
-    m.asset._dragManager.update(dt)
+    m.asset._dragManager.update(4 * dt)
     const dragX = m.asset._dragManager.getX()
     const dragY = m.asset._dragManager.getY()
 
