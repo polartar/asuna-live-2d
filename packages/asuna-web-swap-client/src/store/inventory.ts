@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { TraitType, TraitData, getTraitData } from 'asuna-data'
+import { TraitType, TraitData } from 'asuna-data'
+
+const data = require('asuna-data/metadata/normalized-metadata.json')
 
 type InventoryState = {
   selected: {
@@ -52,7 +54,7 @@ export const Inventory = createSlice({
           ...state.tokens,
           [action.payload]: {
             id: action.payload,
-            traits: getTraitData(action.payload)
+            traits: data[action.payload].traitData
           }
         }
       }
