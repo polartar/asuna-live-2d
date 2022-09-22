@@ -3,7 +3,7 @@ const { StatsWriterPlugin } = require("webpack-stats-plugin")
 
 module.exports = {
   mode: 'production',
-  target: ['web', 'es5'],
+  target: 'web',
   context: __dirname,
   entry: './src/index.ts',
   output: {
