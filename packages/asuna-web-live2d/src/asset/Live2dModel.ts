@@ -1,9 +1,11 @@
 import { CubismUserModel } from 'cubism-framework/dist/model/cubismusermodel'
+import { CubismMotion } from 'cubism-framework/dist/motion/cubismmotion'
 
 export type Live2dModelId = string
 
 export class Live2dModel extends CubismUserModel {
   id: Live2dModelId
+  motions: { [name: string]: CubismMotion }
 
   /*
   CubismUserModel call order:
@@ -15,6 +17,7 @@ export class Live2dModel extends CubismUserModel {
   constructor(id: Live2dModelId) {
     super()
     this.id = id
+    this.motions = {}
   }
 
   resetRenderer(gl: WebGLRenderingContext) {

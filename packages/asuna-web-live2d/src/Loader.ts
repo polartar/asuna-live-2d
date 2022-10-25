@@ -11,6 +11,7 @@ import { Live2dModelId, Live2dModel } from './asset/Live2dModel'
 import { Texture, TextureId } from './asset/Texture'
 import { LoaderState, LoaderStatus } from './state/LoaderState'
 import { WebGL } from './WebGL'
+import { CubismIdHandle } from 'cubism-framework/dist/id/cubismid'
 
 export enum FetchFormat {
   Buffer,
@@ -74,7 +75,8 @@ export class Loader {
 
     const modelFiles = [
       setting.getModelFileName,
-      setting.getPhysicsFileName
+      setting.getPhysicsFileName,
+      () => setting.getMotionFileName(setting.getMotionGroupName(0), 0)
     ]
     const textureFiles = Array(setting.getTextureCount()).fill(true).map((_, idx) => `texture/${fname}.${idx}/00`)
     const res = await Promise.all([
@@ -89,9 +91,21 @@ export class Loader {
     if (!buffers[0]) {
       throw `Model not specified ${id}`
     }
+
+    // load model
     asset.loadModel(buffers[0])
+
+    // load physics
     if (buffers[1]) {
       asset.loadPhysics(buffers[1], buffers[1].byteLength)
+    }
+
+    // load motions
+    if (buffers[2]) {
+      let motion = asset.loadMotion(buffers[2], buffers[2].byteLength, 'idle_0')
+      motion.setEffectIds(new csmVector<CubismIdHandle>(), new csmVector<CubismIdHandle>())
+
+      asset.motions['idle_0'] = motion
     }
 
     if (setting.getEyeBlinkParameterCount() > 0) {

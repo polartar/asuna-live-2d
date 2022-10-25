@@ -14,23 +14,21 @@ export function updateModel(state: WorldState, dt: number) {
     }
     m.asset.setDragging(screenX, screenY)
 
-    m.asset._dragManager.update(4 * dt)
+    m.asset._dragManager.update(3 * dt)
     const dragX = m.asset._dragManager.getX()
     const dragY = m.asset._dragManager.getY()
 
+    let uniform = CubismFramework.getIdManager().getId('Param4')
     let xId = CubismFramework.getIdManager().getId(CubismDefaultParameterId.ParamAngleX)
     let yId = CubismFramework.getIdManager().getId(CubismDefaultParameterId.ParamAngleY)
     let bxId = CubismFramework.getIdManager().getId(CubismDefaultParameterId.ParamBodyAngleX)
     let byId = CubismFramework.getIdManager().getId(CubismDefaultParameterId.ParamBodyAngleY)
 
+    m.asset._model.setParameterValueById(uniform, 1)
     m.asset._model.setParameterValueById(xId, 0)
     m.asset._model.setParameterValueById(yId, 0)
     m.asset._model.setParameterValueById(bxId, 0)
     m.asset._model.setParameterValueById(byId, 0)
-    m.asset._model.addParameterValueById(xId, dragX * 30)
-    m.asset._model.addParameterValueById(yId, dragY * 30)
-    m.asset._model.addParameterValueById(bxId, dragX * 10)
-    m.asset._model.addParameterValueById(byId, dragY * 10)
 
     // m.asset._model.loadParameters()
     // m.asset._model.saveParameters()
@@ -44,6 +42,20 @@ export function updateModel(state: WorldState, dt: number) {
     if (m.asset._eyeBlink !== null) {
       m.asset._eyeBlink.updateParameters(m.asset._model, dt)
     }
+
+    if (m.asset._motionManager != null) {
+      if (m.asset._motionManager.isFinished()) {
+
+        m.asset._motionManager.startMotionPriority(m.asset.motions['idle_0'], false, 3)
+      } else {
+        m.asset._motionManager.updateMotion(m.asset._model, dt)
+      }
+    }
+
+    m.asset._model.addParameterValueById(xId, dragX * 30)
+    m.asset._model.addParameterValueById(yId, dragY * 30)
+    m.asset._model.addParameterValueById(bxId, dragX * 10)
+    m.asset._model.addParameterValueById(byId, dragY * 10)
 
     if (m.asset._physics != null) {
       m.asset._physics.evaluate(m.asset._model, dt)
