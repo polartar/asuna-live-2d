@@ -7,10 +7,10 @@ import { MithrilTsxComponent } from 'mithril-tsx-component'
 // TODO: add types to functions
 // TODO: make upgrades into registry
 
-export type Wrapper = (c: typeof MithrilTsxComponent) => (...args: any[]) => typeof MithrilTsxComponent
+export type Wrapper = (c: typeof WrappedComponent) => (...args: any[]) => typeof WrappedComponent
 export type Upgrade = (...args: any[]) => typeof WrappedComponent
 export class WrappedComponent extends MithrilTsxComponent<any> {
-  static connect: Upgrade
+  static connect: ReturnType<typeof connect>
   view(vnode: m.Vnode<any, this>) { }
 }
 
@@ -25,10 +25,10 @@ export default (component: new () => MithrilTsxComponent<any>): typeof WrappedCo
     upgrade[name] = function (...args: any[]) {
       let wrapped = wrappers[name](this as any)(...args)
       Object.assign(wrapped, upgrade)
-      return wrapped as any
+      return wrapped
     }
   }
 
   Object.assign(component, upgrade)
-  return component as any
+  return component as typeof WrappedComponent
 }

@@ -7,11 +7,14 @@ export function updateModel(state: WorldState, dt: number) {
   for (let m of Object.values(state.models)) {
     // move this to input
     let screenX = 2 * (-.5 + state.input.x / state.view.width)
-    let screenY = 1.75 * 2 * (.5 - state.input.y / state.view.height)
+    let screenY = 1.2 * 2 * (.5 - state.input.y / state.view.height)
+
+    /* disable drag
     if (!state.input.drag) {
       screenX = 0
       screenY = 0
     }
+    */
     m.asset.setDragging(screenX, screenY)
 
     m.asset._dragManager.update(3 * dt)
@@ -45,7 +48,6 @@ export function updateModel(state: WorldState, dt: number) {
 
     if (m.asset._motionManager != null) {
       if (m.asset._motionManager.isFinished()) {
-
         m.asset._motionManager.startMotionPriority(m.asset.motions['idle_0'], false, 3)
       } else {
         m.asset._motionManager.updateMotion(m.asset._model, dt)
