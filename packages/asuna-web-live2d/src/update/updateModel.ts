@@ -2,12 +2,23 @@ import { WorldState } from "../state/WorldState"
 
 import { CubismFramework } from 'cubism-framework/dist/live2dcubismframework'
 import { CubismDefaultParameterId } from 'cubism-framework/dist/cubismdefaultparameterid'
+import { CubismId } from "cubism-framework/dist/id/cubismid"
+
+const reactions = {
+  'Face': ['smile', 'head_shake', 'head_weave'],
+  'Body': ['head_bob'],
+  'Bust': ['bounce', 'puff', 'disdain']
+}
+
+let bust_cycle = 0
+let lastMotion = -1
 
 export function updateModel(state: WorldState, dt: number) {
   for (let m of Object.values(state.models)) {
+
     // move this to input
     let screenX = 2 * (-.5 + state.input.x / state.view.width)
-    let screenY = 1.2 * 2 * (.5 - state.input.y / state.view.height)
+    let screenY = 1 * 2 * (.5 - state.input.y / state.view.height)
 
     /* disable drag
     if (!state.input.drag) {
@@ -15,9 +26,37 @@ export function updateModel(state: WorldState, dt: number) {
       screenY = 0
     }
     */
-    m.asset.setDragging(screenX, screenY)
 
-    m.asset._dragManager.update(3 * dt)
+    // hit detection
+
+    for (let i = 0; i < m.asset.setting.getHitAreasCount(); i++) {
+      if (state.input.mouseDown && m.asset.isHit(m.asset.setting.getHitAreaId(i), screenX, screenY)) {
+
+        if (lastMotion !== -1) {
+          continue
+        }
+
+        if (m.asset.setting.getHitAreaName(i) === 'Face') {
+          lastMotion = m.asset._motionManager.startMotionPriority(m.asset.motions[reactions['Face'][Math.floor(3 * Math.random())]], false, 3)
+        } else if (m.asset.setting.getHitAreaName(i) === 'Body') {
+          lastMotion = m.asset._motionManager.startMotionPriority(m.asset.motions[reactions['Body'][0]], false, 3)
+        } else if (m.asset.setting.getHitAreaName(i) === 'Bust') {
+          lastMotion = m.asset._motionManager.startMotionPriority(m.asset.motions[reactions['Bust'][bust_cycle++ % 3]], false, 3)
+        }
+
+        screenX = 0
+        screenY = 0
+        m.asset.setDragging(screenX, screenY)
+
+        break
+      }
+    }
+
+    if (lastMotion === -1) {
+      m.asset.setDragging(screenX, screenY)
+    }
+
+    m.asset._dragManager.update(2.5 * dt)
     const dragX = m.asset._dragManager.getX()
     const dragY = m.asset._dragManager.getY()
 
@@ -47,8 +86,13 @@ export function updateModel(state: WorldState, dt: number) {
     }
 
     if (m.asset._motionManager != null) {
+
+      if (lastMotion !== -1 && m.asset._motionManager.isFinishedByHandle(lastMotion)) {
+        lastMotion = -1
+      }
+
       if (m.asset._motionManager.isFinished()) {
-        m.asset._motionManager.startMotionPriority(m.asset.motions['idle_0'], false, 3)
+        m.asset._motionManager.startMotionPriority(m.asset.motions['idle'], false, 3)
       } else {
         m.asset._motionManager.updateMotion(m.asset._model, dt)
       }

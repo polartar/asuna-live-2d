@@ -73,10 +73,18 @@ export class Loader {
       return await this.fetchResource(`${path}${func.bind(setting)()}`, FetchFormat.Buffer) as ArrayBuffer
     }
 
+
+
+    const motionFiles = Array(setting.getMotionGroupCount()).fill(undefined).flatMap(
+      (_, gid) => Array(setting.getMotionCount(setting.getMotionGroupName(gid))).fill(undefined).map(
+        (_, idx) => setting.getMotionFileName(setting.getMotionGroupName(gid), idx)
+      )
+    )
+
     const modelFiles = [
       setting.getModelFileName,
       setting.getPhysicsFileName,
-      () => setting.getMotionFileName(setting.getMotionGroupName(0), 0)
+      ...motionFiles.map((fn) => () => fn)
     ]
     const textureFiles = Array(setting.getTextureCount()).fill(true).map((_, idx) => `texture/${fname}.${idx}/00`)
     const res = await Promise.all([
@@ -85,7 +93,7 @@ export class Loader {
     ])
     const buffers = res.slice(0, modelFiles.length) as ArrayBuffer[]
     const textures = res.slice(modelFiles.length) as Texture[]
-    const asset = new Live2dModel(id)
+    const asset = new Live2dModel(id, setting)
 
     // setup model systems
     if (!buffers[0]) {
@@ -102,10 +110,12 @@ export class Loader {
 
     // load motions
     if (buffers[2]) {
-      let motion = asset.loadMotion(buffers[2], buffers[2].byteLength, 'idle_0')
-      motion.setEffectIds(new csmVector<CubismIdHandle>(), new csmVector<CubismIdHandle>())
-
-      asset.motions['idle_0'] = motion
+      for (let [i, buffer] of buffers.slice(2).entries()) {
+        let name = motionFiles[i].match(/\/(.+)\.motion/)![1]
+        let motion = asset.loadMotion(buffer, buffer.byteLength, name)
+        motion.setEffectIds(new csmVector<CubismIdHandle>(), new csmVector<CubismIdHandle>())
+        asset.motions[name] = motion
+      }
     }
 
     if (setting.getEyeBlinkParameterCount() > 0) {

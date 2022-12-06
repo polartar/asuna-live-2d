@@ -5,4 +5,8 @@ export function handleInput(state: WorldState, dt: number) {
     state.input.x = state.view.width / 2
     state.input.y = state.view.height / 2
   }
+
+  if (state.input.mouseDown) {
+    state.input.mouseDown = false
+  }
 }

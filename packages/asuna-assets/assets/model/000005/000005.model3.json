@@ -1,0 +1,67 @@
+{
+	"Version": 3,
+	"FileReferences": {
+		"Moc": "000005.moc3",
+		"Textures": [
+			"000005.4096/texture_00.png"
+		],
+		"Physics": "000005.physics3.json",
+		"DisplayInfo": "000005.cdi3.json",
+		"Motions": {
+			"Idle": [
+				{
+					"File": "motion/idle.motion3.json"
+				}
+			],
+			"Motions": [
+				{
+					"File": "motion/head_shake.motion3.json"
+				},				
+				{
+					"File": "motion/head_weave.motion3.json"
+				},
+				{
+					"File": "motion/head_bob.motion3.json"
+				},
+				{
+					"File": "motion/smile.motion3.json"
+				},				
+				{
+					"File": "motion/bounce.motion3.json"
+				},				
+				{
+					"File": "motion/puff.motion3.json"
+				},				
+				{
+					"File": "motion/disdain.motion3.json"
+				}
+			]
+		}
+	},
+	"Groups": [
+		{
+			"Target": "Parameter",
+			"Name": "LipSync",
+			"Ids": []
+		},
+		{
+			"Target": "Parameter",
+			"Name": "EyeBlink",
+			"Ids": []
+		}
+	],
+	"HitAreas": [
+		{
+			"Id": "ArtMesh88",
+			"Name": "Face"
+		},
+		{
+			"Id": "Layer2275",
+			"Name": "Bust"
+		},
+		{
+			"Id": "torso2",
+			"Name": "Body"
+		}
+	]
+}

@@ -7,6 +7,7 @@ export class Events {
     this.inputState = inputState
 
     window.addEventListener('mousedown', (ev) => {
+      this.inputState.mouseDown = true
       this.inputState.drag = true
     })
 
