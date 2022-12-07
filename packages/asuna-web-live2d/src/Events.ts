@@ -1,3 +1,4 @@
+import { ENHANCE_RES } from './define'
 import { InputState } from './state/InputState'
 
 export class Events {
@@ -16,8 +17,8 @@ export class Events {
     })
 
     window.addEventListener('mousemove', (ev) => {
-      this.inputState.x = ev.offsetX
-      this.inputState.y = ev.offsetY
+      this.inputState.x = ENHANCE_RES * ev.offsetX
+      this.inputState.y = ENHANCE_RES * ev.offsetY
       this.inputState.lastUpdated = Date.now()
     })
   }

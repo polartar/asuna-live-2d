@@ -39,11 +39,11 @@
 			},
 			{
 				"Id": "PhysicsSetting6",
-				"Name": "BUST X"
+				"Name": "BUST X2"
 			},
 			{
 				"Id": "PhysicsSetting7",
-				"Name": "BUST Y"
+				"Name": "BUST Y2"
 			},
 			{
 				"Id": "PhysicsSetting8",
@@ -779,7 +779,7 @@
 						"Target": "Parameter",
 						"Id": "ParamBodyAngleX"
 					},
-					"Weight": 100,
+					"Weight": 60,
 					"Type": "X",
 					"Reflect": false
 				},
@@ -788,7 +788,7 @@
 						"Target": "Parameter",
 						"Id": "ParamBodyAngleZ"
 					},
-					"Weight": 100,
+					"Weight": 60,
 					"Type": "Angle",
 					"Reflect": false
 				}
@@ -889,7 +889,7 @@
 						"Target": "Parameter",
 						"Id": "ParamBodyAngleY"
 					},
-					"Weight": 100,
+					"Weight": 60,
 					"Type": "X",
 					"Reflect": false
 				},
@@ -898,7 +898,7 @@
 						"Target": "Parameter",
 						"Id": "ParamBodyAngleZ"
 					},
-					"Weight": 100,
+					"Weight": 60,
 					"Type": "Angle",
 					"Reflect": false
 				}

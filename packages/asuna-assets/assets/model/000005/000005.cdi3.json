@@ -247,14 +247,14 @@
 			"Name": "JAW_OPEN"
 		},
 		{
-			"Id": "ParamAngleY",
-			"GroupId": "",
-			"Name": "Angle Y"
-		},
-		{
 			"Id": "ParamAngleX",
 			"GroupId": "",
 			"Name": "Angle X"
+		},
+		{
+			"Id": "ParamAngleY",
+			"GroupId": "",
+			"Name": "Angle Y"
 		},
 		{
 			"Id": "ParamAngleZ",
@@ -585,6 +585,10 @@
 		[
 			"ParamMouthForm",
 			"ParamMouthOpenY"
+		],
+		[
+			"ParamAngleX",
+			"ParamAngleY"
 		],
 		[
 			"ParamBodyAngleX",

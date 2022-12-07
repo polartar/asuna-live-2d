@@ -1,5 +1,6 @@
-
+import { ENHANCE_RES } from './define'
 import { WorldState } from './state/WorldState'
+
 
 export class Canvas {
   element: HTMLCanvasElement
@@ -17,9 +18,11 @@ export class Canvas {
   }
 
   resizeCanvas() {
-    this.element.width = window.innerWidth;
-    this.element.height = window.innerHeight;
+    this.element.width = ENHANCE_RES * window.innerWidth
+    this.element.height = ENHANCE_RES * window.innerHeight
     this.state.view.width = this.element.width
     this.state.view.height = this.element.height
+    this.element.style.width = `${window.innerWidth}px`
+    this.element.style.height = `${window.innerHeight}px`
   }
 }

@@ -36,7 +36,8 @@ export function updateModel(state: WorldState, dt: number) {
           continue
         }
 
-        if (m.asset.setting.getHitAreaName(i) === 'Face') {
+        if (m.asset.setting.getHitAreaName(i) === 'Face'
+          || m.asset.setting.getHitAreaName(i) === 'Hair') {
           lastMotion = m.asset._motionManager.startMotionPriority(m.asset.motions[reactions['Face'][Math.floor(3 * Math.random())]], false, 3)
         } else if (m.asset.setting.getHitAreaName(i) === 'Body') {
           lastMotion = m.asset._motionManager.startMotionPriority(m.asset.motions[reactions['Body'][0]], false, 3)

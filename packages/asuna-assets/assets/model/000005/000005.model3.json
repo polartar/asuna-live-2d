@@ -52,6 +52,10 @@
 	],
 	"HitAreas": [
 		{
+			"Id": "ArtMesh65",
+			"Name": "Hair"
+		},
+		{
 			"Id": "ArtMesh88",
 			"Name": "Face"
 		},
