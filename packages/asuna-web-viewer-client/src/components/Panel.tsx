@@ -4,6 +4,7 @@ import { RootState, Dispatch } from '../store/store'
 import { TabId } from '../store/tab'
 import upgrade from '../hoc/upgrade'
 import Tab from './PanelTab'
+import TabOutfit from './tabs/TabOutfit'
 import TabBody from './tabs/TabBody'
 import TabEye from './tabs/TabEye'
 import TabHair from './tabs/TabHair'
@@ -17,6 +18,7 @@ export interface PanelAttrs extends PanelStoreAttrs {
 }
 
 const TabComponents = {
+  [TabId.Outfit]: TabOutfit,
   [TabId.Body]: TabBody,
   [TabId.Eye]: TabEye,
   [TabId.Hair]: TabHair,
@@ -28,6 +30,7 @@ class Panel extends MithrilTsxComponent<PanelAttrs> {
     const TabCompnent = TabComponents[attrs.activeTab]
     return <div class='flex w-240 bg-dark-800'>
       <div class='flex flex-col px-65 py-175'>
+        <Tab id={TabId.Outfit} activeTab={attrs.activeTab}>OUTFIT</Tab>
         <Tab id={TabId.Body} activeTab={attrs.activeTab}>BODY</Tab>
         <Tab id={TabId.Eye} activeTab={attrs.activeTab}>EYES</Tab>
         <Tab id={TabId.Hair} activeTab={attrs.activeTab}>HAIR</Tab>

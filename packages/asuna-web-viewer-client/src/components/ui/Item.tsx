@@ -3,7 +3,8 @@ import { MithrilTsxComponent } from 'mithril-tsx-component'
 import upgrade from '../../hoc/upgrade'
 import { Dispatch } from '../../store/store'
 import { ItemGroup, selectItem } from '../../store/items'
-import { swapTexture } from '../../store/iframe'
+import { swapModel, swapTexture } from '../../store/iframe'
+import { ModelLayer } from 'asuna-web-live2d/src/state/ModelState'
 
 type ItemAttrs = {
   itemGroup: ItemGroup
@@ -11,9 +12,10 @@ type ItemAttrs = {
   active: boolean
   iconSrc?: string
   color?: string
+  modelLayer?: ModelLayer
   modelId: string
-  index: number | number[]
-  variant: number
+  index?: number | number[]
+  variant?: number
   dispatch: Dispatch
 }
 
@@ -28,11 +30,16 @@ class Item extends MithrilTsxComponent<ItemAttrs> {
       attrs.dispatch(selectItem({
         group: attrs.itemGroup,
         index: attrs.itemIdx,
-        iFrameActions: modelIdx.map(idx => swapTexture({
-          modelId: attrs.modelId,
-          index: idx,
-          variant: attrs.variant
-        }))
+        iFrameActions: attrs.itemGroup === ItemGroup.Outfit
+          ? [swapModel({
+            layer: attrs.modelLayer!,
+            id: attrs.modelId
+          })]
+          : modelIdx.map(idx => swapTexture({
+            modelId: attrs.modelId,
+            index: idx!,
+            variant: attrs.variant!
+          }))
       }))
     }
 

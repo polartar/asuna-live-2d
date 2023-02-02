@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { MessageType, Payload_SC_SwapTexture } from 'asuna-web-live2d'
+import { MessageType, Payload_SC_SwapModel, Payload_SC_SwapTexture } from 'asuna-web-live2d'
 import { Dispatch, RootState } from './store'
 import { sendMessage } from '../messenger'
+import { ModelLayer } from 'asuna-web-live2d/src/state/ModelState'
 
 export enum IFrameStatus {
   Ready,
@@ -13,6 +14,25 @@ const initialState = {
   iFrameElement: null as (HTMLIFrameElement | null)
 }
 
+export const swapModel = createAsyncThunk<
+  void,
+  { layer: ModelLayer, id: string },
+  { dispatch: Dispatch, state: RootState }
+>('iframe/swap',
+  async ({ layer, id }, { dispatch, getState }) => {
+    if (getState().iframe.status === IFrameStatus.Pending) {
+      throw 'iframe action called while pending'
+    }
+    dispatch(setStatus(IFrameStatus.Pending))
+    await sendMessage(MessageType.SC_SwapModel, {
+      layer,
+      id
+    } as Payload_SC_SwapModel)
+    dispatch(setStatus(IFrameStatus.Ready))
+  }
+)
+
+// TODO: refactor
 export const swapTexture = createAsyncThunk<
   void,
   { modelId: string, index: number, variant: number },

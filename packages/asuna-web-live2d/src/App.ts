@@ -5,7 +5,7 @@ import { WebGL } from './WebGL'
 import { AssetStore } from './asset/AssetStore'
 import { LoaderStatus } from './state/LoaderState'
 import { WorldState } from './state/WorldState'
-import { Model } from './state/Model'
+import { Model } from './struct/Model'
 import { Live2dModel } from './asset/Live2dModel'
 import { update } from './update/update'
 import { render } from './render/render'
@@ -30,7 +30,7 @@ export default new class App {
     this.canvas = new Canvas(this.state)
     this.events = new Events(this.state.input)
     this.webgl = new WebGL(this.canvas.element)
-    this.loader = new Loader(this.webgl, this.assets, this.state.loader)
+    this.loader = new Loader(this.webgl, this.assets, this.state.motions, this.state.loader)
     this.messenger = new Messenger(this.state, this.loader, this.assets)
 
     this.setupScene().then(() => {
@@ -43,9 +43,14 @@ export default new class App {
   async setupScene() {
     this.loader.resetLoader(LoaderStatus.PRELOAD)
     await this.loader.loadAll([
-      this.loader.loadModelAsset('model/000005')
+      this.loader.loadModelAsset('model/Back_Hair/Back_Messy_Long_Gray'),
+      this.loader.loadModelAsset('model/Body/Body'),
+      this.loader.loadModelAsset('model/Front_Hair/Front_Messy_Long_Gray'),
+      this.loader.loadModelAsset('model/Eyes/Blue_Eyes'),
+      this.loader.loadModelAsset('model/Outfit/School_Uniform')
     ])
-    this.registerModel(new Model(this.assets.get('model/000005') as Live2dModel))
+
+    this.state.models.initialize(this.assets)
   }
 
   run() {
@@ -65,11 +70,5 @@ export default new class App {
 
   teardown() {
     // TODO
-  }
-
-  // TODO: fine better place for this
-  registerModel(model: Model) {
-    this.state.models[this.state.lastId++] = model
-    model.id = this.state.lastId
   }
 }()

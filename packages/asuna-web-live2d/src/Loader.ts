@@ -12,6 +12,7 @@ import { Texture, TextureId } from './asset/Texture'
 import { LoaderState, LoaderStatus } from './state/LoaderState'
 import { WebGL } from './WebGL'
 import { CubismIdHandle } from 'cubism-framework/dist/id/cubismid'
+import { WorldState } from './state/WorldState'
 
 export enum FetchFormat {
   Buffer,
@@ -22,12 +23,14 @@ export enum FetchFormat {
 export class Loader {
   webgl: WebGL
   assetStore: AssetStore
+  motions: WorldState['motions']
   loaderState: LoaderState
   lastId: number
 
-  constructor(webgl: WebGL, assetStore: AssetStore, loaderState: LoaderState) {
+  constructor(webgl: WebGL, assetStore: AssetStore, motions: WorldState['motions'], loaderState: LoaderState) {
     this.webgl = webgl
     this.assetStore = assetStore
+    this.motions = motions
     this.loaderState = loaderState
     this.lastId = 0
   }
@@ -62,7 +65,7 @@ export class Loader {
 
     this.incTotalProgress(10)
     const path = `${define.URL_CDN}${id}/`
-    const fname = id.split('/')[1]
+    const fname = id.split('/')[2]
     const buffer = await this.fetchResource(`${path}${fname}${define.EXT_MANIFEST}`, FetchFormat.Buffer) as ArrayBuffer
     const setting: ICubismModelSetting = new CubismModelSettingJson(buffer, buffer.byteLength)
 
@@ -72,7 +75,6 @@ export class Loader {
       }
       return await this.fetchResource(`${path}${func.bind(setting)()}`, FetchFormat.Buffer) as ArrayBuffer
     }
-
 
 
     const motionFiles = Array(setting.getMotionGroupCount()).fill(undefined).flatMap(
@@ -86,7 +88,7 @@ export class Loader {
       setting.getPhysicsFileName,
       ...motionFiles.map((fn) => () => fn)
     ]
-    const textureFiles = Array(setting.getTextureCount()).fill(true).map((_, idx) => `texture/${fname}.${idx}/00`)
+    const textureFiles = Array(setting.getTextureCount()).fill(true).map((_, idx) => `${id}/${fname}.${String(idx).padStart(2, '0')}/texture_00`)
     const res = await Promise.all([
       ...modelFiles.map(loadBuffer),
       ...textureFiles.map(this.loadTexture.bind(this))
@@ -114,7 +116,7 @@ export class Loader {
         let name = motionFiles[i].match(/\/(.+)\.motion/)![1]
         let motion = asset.loadMotion(buffer, buffer.byteLength, name)
         motion.setEffectIds(new csmVector<CubismIdHandle>(), new csmVector<CubismIdHandle>())
-        asset.motions[name] = motion
+        this.motions[name] = motion
       }
     }
 
@@ -122,7 +124,7 @@ export class Loader {
       asset._eyeBlink = CubismEyeBlink.create(setting)
     }
 
-    let val = CubismFramework.getIdManager().getId(CubismDefaultParameterId.ParamBreath)
+    // let val = CubismFramework.getIdManager().getId(CubismDefaultParameterId.ParamBreath)
 
     const breathParameters: csmVector<BreathParameterData> = new csmVector()
     breathParameters.pushBack(new BreathParameterData(

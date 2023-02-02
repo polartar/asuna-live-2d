@@ -1,8 +1,9 @@
 import { Loader } from "../Loader"
 import { AssetStore } from "../asset/AssetStore"
 import { Live2dModel } from "../asset/Live2dModel"
-import { Payload_SC_SetParameterOverride, Payload_SC_SetParameters, Payload_SC_SwapTexture } from "./MessagePayload"
+import { Payload_SC_SetParameterOverride, Payload_SC_SetParameters, Payload_SC_SwapModel, Payload_SC_SwapTexture } from "./MessagePayload"
 import { WorldState } from "../state/WorldState"
+import { Model } from "../struct/Model"
 
 const PARENT_ORIGIN = window.location.origin
 
@@ -16,6 +17,7 @@ export enum MessageType {
   CS_Loaded,
   CS_Complete,
 
+  SC_SwapModel,
   SC_SwapTexture,
   SC_SetParameterOverride,
   SC_SetParameters
@@ -44,7 +46,18 @@ export class Messenger {
 
       const msg = event.data as Message<any>
 
-      if (msg.type === MessageType.SC_SwapTexture) {
+      if (msg.type === MessageType.SC_SwapModel) {
+        const payload = msg.payload as Payload_SC_SwapModel
+
+        await this.loader.loadModelAsset(payload.id)
+        let model = new Model(this.assetStore.get(payload.id) as Live2dModel)
+        model.syncParams(this.state.params)
+        this.state.models.data[payload.layer] = model
+
+        this.sendMessage(MessageType.CS_Complete, null, msg.id)
+
+      } else if (msg.type === MessageType.SC_SwapTexture) {
+
         const payload = msg.payload as Payload_SC_SwapTexture
         if (!assetStore.has(payload.modelId)) {
           throw `Asset '${payload.modelId}' not found`
@@ -56,11 +69,13 @@ export class Messenger {
         this.sendMessage(MessageType.CS_Complete, null, msg.id)
 
       } else if (msg.type === MessageType.SC_SetParameterOverride) {
+
         const payload = msg.payload as Payload_SC_SetParameterOverride
         this.state.external.override = payload.override
         this.sendMessage(MessageType.CS_Complete, null, msg.id)
 
       } else if (msg.type === MessageType.SC_SetParameters) {
+
         const payload = msg.payload as Payload_SC_SetParameters
         this.state.external.faceX = payload.faceX / 50 - 1
         this.state.external.faceY = payload.faceY / 50 - 1

@@ -3,6 +3,7 @@ import { Dispatch, RootState } from './store'
 import { IFrameStatus } from './iframe'
 
 export enum ItemGroup {
+  Outfit,
   BodyColor,
   EyeColor,
   HairColor
@@ -32,6 +33,7 @@ export const Items = createSlice({
   name: 'items',
   initialState: {
     cursorPosition: {
+      [ItemGroup.Outfit]: 0,
       [ItemGroup.BodyColor]: 0,
       [ItemGroup.EyeColor]: 1,
       [ItemGroup.HairColor]: 3

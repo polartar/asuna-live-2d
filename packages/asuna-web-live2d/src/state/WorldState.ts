@@ -1,8 +1,9 @@
 import { ViewState } from "./ViewState"
 import { LoaderState } from "./LoaderState"
-import { Model } from "./Model"
 import { InputState } from "./InputState"
 import { ExternalState } from "./ExternalState"
+import { ModelState } from "./ModelState"
+import { CubismMotion } from "cubism-framework/dist/motion/cubismmotion"
 
 export class WorldState {
   lastId: number
@@ -10,7 +11,9 @@ export class WorldState {
   view: ViewState
   input: InputState
   external: ExternalState
-  models: { [id: number]: Model }
+  models: ModelState
+  motions: { [name: string]: CubismMotion }
+  params: { [id: string]: number }
 
   constructor() {
     this.lastId = 0
@@ -18,6 +21,8 @@ export class WorldState {
     this.view = new ViewState()
     this.input = new InputState()
     this.external = new ExternalState()
-    this.models = {}
+    this.models = new ModelState()
+    this.motions = {}
+    this.params = {}
   }
 }

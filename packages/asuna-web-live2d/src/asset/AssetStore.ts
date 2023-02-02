@@ -1,3 +1,4 @@
+import { CubismMotion } from "cubism-framework/dist/motion/cubismmotion"
 import { Live2dModelId, Live2dModel } from "./Live2dModel"
 import { Texture, TextureId } from "./Texture"
 

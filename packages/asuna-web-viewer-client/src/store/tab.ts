@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export enum TabId {
+  Outfit,
   Body,
   Eye,
   Hair,
@@ -9,7 +10,7 @@ export enum TabId {
 
 export const Tab = createSlice({
   name: 'tab',
-  initialState: TabId.Parameters,
+  initialState: TabId.Outfit,
   reducers: {
     setActiveTab: (state, action: PayloadAction<TabId>) => {
       return action.payload

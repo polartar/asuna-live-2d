@@ -1,4 +1,10 @@
 import { Live2dModelId } from "../asset/Live2dModel"
+import { ModelLayer } from "../state/ModelState"
+
+export type Payload_SC_SwapModel = {
+  layer: ModelLayer,
+  id: string
+}
 
 export type Payload_SC_SwapTexture = {
   modelId: Live2dModelId,

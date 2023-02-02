@@ -1,0 +1,18 @@
+{
+	"Version": 3,
+	"FileReferences": {
+		"Moc": "Blue_Eyes.moc3",
+		"Textures": [
+			"Blue_Eyes.512/texture_00.png"
+		],
+		"Physics": "Blue_Eyes.physics3.json",
+		"DisplayInfo": "Blue_Eyes.cdi3.json"
+	},
+	"Groups": [
+		{
+			"Target": "Parameter",
+			"Name": "EyeBlink",
+			"Ids": []
+		}
+	]
+}

@@ -1,0 +1,18 @@
+{
+	"Version": 3,
+	"FileReferences": {
+		"Moc": "Back_Messy_Long_Gray.moc3",
+		"Textures": [
+			"Back_Messy_Long_Gray.1024/texture_00.png"
+		],
+		"Physics": "Back_Messy_Long_Gray.physics3.json",
+		"DisplayInfo": "Back_Messy_Long_Gray.cdi3.json"
+	},
+	"Groups": [
+		{
+			"Target": "Parameter",
+			"Name": "EyeBlink",
+			"Ids": []
+		}
+	]
+}

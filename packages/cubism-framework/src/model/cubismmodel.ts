@@ -450,6 +450,15 @@ export class CubismModel {
   }
 
   /**
+   * Get the drawing order list of Drawable
+   * @return Drawable drawing order list
+   */
+  public getDrawableDrawOrders(): Int32Array {
+    const renderOrders: Int32Array = this._model.drawables.drawOrders;
+    return renderOrders;
+  }
+
+  /**
    * Get the texture index list of Drawable
    * @param drawableIndex Drawable index
    * @return drawable texture index list
@@ -796,7 +805,7 @@ export class CubismModel {
 
   private _savedParameters: csmVector<number>; // Saved parameters
 
-  private _model: Live2DCubismCore.Model; // Model
+  public _model: Live2DCubismCore.Model; // Model
 
   private _parameterValues: Float32Array; // List of parameter values
   private _parameterMaximumValues: Float32Array; // List of maximum parameter values
