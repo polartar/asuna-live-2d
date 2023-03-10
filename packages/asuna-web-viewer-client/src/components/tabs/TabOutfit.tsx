@@ -8,7 +8,9 @@ import { ModelLayer } from 'asuna-web-live2d/src/state/ModelState'
 
 const items = [
   { name: 'Ace of Spades', id: 'model/Outfit/Ace_Of_Spades', color: '#fff' },
+  { name: 'Magic Apprentice', id: 'model/Outfit/Magic_Apprentice', color: '#fff' },
   { name: 'Silverhorn', id: 'model/Outfit/Silverhorn', color: '#fff' },
+  // { name: 'Sweater Vest', id: 'model/Outfit/Sweater_Vest', color: '#fff' },
   { name: 'White Tank Top', id: 'model/Outfit/White_Tank_Top', color: '#fff' }
 ]
 

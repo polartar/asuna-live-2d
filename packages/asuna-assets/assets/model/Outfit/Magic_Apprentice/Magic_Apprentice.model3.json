@@ -1,0 +1,23 @@
+{
+	"Version": 3,
+	"FileReferences": {
+		"Moc": "Magic_Apprentice.moc3",
+		"Textures": [
+			"Magic_Apprentice.4096/texture_00.png"
+		],
+		"Physics": "Magic_Apprentice.physics3.json",
+		"DisplayInfo": "Magic_Apprentice.cdi3.json"
+	},
+	"Groups": [
+		{
+			"Target": "Parameter",
+			"Name": "LipSync",
+			"Ids": []
+		},
+		{
+			"Target": "Parameter",
+			"Name": "EyeBlink",
+			"Ids": []
+		}
+	]
+}
