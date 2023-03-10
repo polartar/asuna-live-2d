@@ -1,0 +1,23 @@
+{
+	"Version": 3,
+	"FileReferences": {
+		"Moc": "White_Tank_Top.moc3",
+		"Textures": [
+			"White_Tank_Top.00/texture_00.png"
+		],
+		"Physics": "White_Tank_Top.physics3.json",
+		"DisplayInfo": "White_Tank_Top.cdi3.json"
+	},
+	"Groups": [
+		{
+			"Target": "Parameter",
+			"Name": "EyeBlink",
+			"Ids": []
+		},
+		{
+			"Target": "Parameter",
+			"Name": "LipSync",
+			"Ids": []
+		}
+	]
+}

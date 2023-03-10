@@ -54,6 +54,10 @@ export class Messenger {
         model.syncParams(this.state.params)
         this.state.models.data[payload.layer] = model
 
+        for (let m of Object.values(this.state.models.data)) {
+          m?.asset._motionManager.stopAllMotions()
+        }
+
         this.sendMessage(MessageType.CS_Complete, null, msg.id)
 
       } else if (msg.type === MessageType.SC_SwapTexture) {

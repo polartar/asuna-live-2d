@@ -2,53 +2,278 @@
 	"Version": 3,
 	"Parameters": [
 		{
+			"Id": "Param",
+			"GroupId": "ParamGroup",
+			"Name": "Nurse"
+		},
+		{
+			"Id": "Param4",
+			"GroupId": "ParamGroup",
+			"Name": "School Uniform"
+		},
+		{
+			"Id": "Param2",
+			"GroupId": "ParamGroup",
+			"Name": "Vamp"
+		},
+		{
+			"Id": "Param3",
+			"GroupId": "ParamGroup",
+			"Name": "Blackbird"
+		},
+		{
+			"Id": "Param41",
+			"GroupId": "ParamGroup",
+			"Name": "Magic Apprentice"
+		},
+		{
+			"Id": "Param42",
+			"GroupId": "ParamGroup",
+			"Name": "Sweater Vest"
+		},
+		{
+			"Id": "Param43",
+			"GroupId": "ParamGroup",
+			"Name": "White Tank Top"
+		},
+		{
+			"Id": "Param44",
+			"GroupId": "ParamGroup",
+			"Name": "Heart Hoodie"
+		},
+		{
+			"Id": "Priestess_Toggle2",
+			"GroupId": "ParamGroup",
+			"Name": "Ace of Spades"
+		},
+		{
+			"Id": "Priestess_Toggle3",
+			"GroupId": "ParamGroup",
+			"Name": "Winter Solsicew Royal Cloak"
+		},
+		{
+			"Id": "Priestess_Toggle4",
+			"GroupId": "ParamGroup",
+			"Name": "Victorian Maid"
+		},
+		{
+			"Id": "Priestess_Toggle5",
+			"GroupId": "ParamGroup",
+			"Name": "Overalls"
+		},
+		{
+			"Id": "Priestess_Toggle6",
+			"GroupId": "ParamGroup",
+			"Name": "Vermillion Vest"
+		},
+		{
+			"Id": "Priestess_Toggle7",
+			"GroupId": "ParamGroup",
+			"Name": "Parka"
+		},
+		{
+			"Id": "Qipao_Toggle",
+			"GroupId": "ParamGroup",
+			"Name": "Qipao"
+		},
+		{
+			"Id": "Priestess_Toggle",
+			"GroupId": "ParamGroup",
+			"Name": "Priestess"
+		},
+		{
 			"Id": "Param33",
-			"GroupId": "",
+			"GroupId": "ParamGroup",
 			"Name": "ON_OFF_Breast"
 		},
 		{
+			"Id": "Param39",
+			"GroupId": "ParamGroup4",
+			"Name": "Shocked Eyes"
+		},
+		{
+			"Id": "Param40",
+			"GroupId": "ParamGroup4",
+			"Name": "Cheek Puff"
+		},
+		{
+			"Id": "Param13",
+			"GroupId": "ParamGroup3",
+			"Name": "Bust_Change"
+		},
+		{
+			"Id": "Param14",
+			"GroupId": "ParamGroup3",
+			"Name": "Resize"
+		},
+		{
+			"Id": "Param5",
+			"GroupId": "ParamGroup2",
+			"Name": "FI_EYE_1"
+		},
+		{
+			"Id": "Param6",
+			"GroupId": "ParamGroup2",
+			"Name": "FI_EYE_2"
+		},
+		{
+			"Id": "Param7",
+			"GroupId": "ParamGroup2",
+			"Name": "FI_EYE_3"
+		},
+		{
+			"Id": "Param8",
+			"GroupId": "ParamGroup2",
+			"Name": "FI_EYE_4"
+		},
+		{
+			"Id": "Param9",
+			"GroupId": "ParamGroup2",
+			"Name": "FI_EYE_5"
+		},
+		{
+			"Id": "Param10",
+			"GroupId": "ParamGroup2",
+			"Name": "FI_EYE_6"
+		},
+		{
+			"Id": "Param11",
+			"GroupId": "ParamGroup2",
+			"Name": "FI_EYE_7"
+		},
+		{
+			"Id": "Param12",
+			"GroupId": "ParamGroup2",
+			"Name": "FI_EYE_8"
+		},
+		{
+			"Id": "Param31",
+			"GroupId": "ParamGroup2",
+			"Name": "FI_HAIR_Y1"
+		},
+		{
+			"Id": "Param32",
+			"GroupId": "ParamGroup2",
+			"Name": "FI_HAIR_Y2"
+		},
+		{
+			"Id": "Param15",
+			"GroupId": "ParamGroup2",
+			"Name": "FI_HAIR_X1"
+		},
+		{
+			"Id": "Param16",
+			"GroupId": "ParamGroup2",
+			"Name": "FI_HAIR_X2"
+		},
+		{
+			"Id": "Param17",
+			"GroupId": "ParamGroup2",
+			"Name": "FI_HAIR_X3"
+		},
+		{
+			"Id": "Param34",
+			"GroupId": "ParamGroup2",
+			"Name": "FI_HAIR_X4 (Tiny Hairs)"
+		},
+		{
 			"Id": "Param25",
-			"GroupId": "",
+			"GroupId": "ParamGroup2",
 			"Name": "FI_BUST_X1"
 		},
 		{
 			"Id": "Param26",
-			"GroupId": "",
+			"GroupId": "ParamGroup2",
 			"Name": "FI_BUST_Y1"
 		},
 		{
 			"Id": "Param27",
-			"GroupId": "",
+			"GroupId": "ParamGroup2",
 			"Name": "FI_BUST_Y2"
 		},
 		{
-			"Id": "Param40",
-			"GroupId": "",
-			"Name": "Cheek Puff"
+			"Id": "Param18",
+			"GroupId": "ParamGroup2",
+			"Name": "FI_BACK_HAIR_X1"
 		},
 		{
-			"Id": "Param38",
-			"GroupId": "",
+			"Id": "Param19",
+			"GroupId": "ParamGroup2",
+			"Name": "FI_BACK_HAIR_X2"
+		},
+		{
+			"Id": "Param20",
+			"GroupId": "ParamGroup2",
+			"Name": "FI_BACK_HAIR_X3"
+		},
+		{
+			"Id": "Param21",
+			"GroupId": "ParamGroup2",
+			"Name": "FI_LIGHT_1_X1"
+		},
+		{
+			"Id": "Param22",
+			"GroupId": "ParamGroup2",
+			"Name": "FI_LIGHT_1_X2"
+		},
+		{
+			"Id": "Param23",
+			"GroupId": "ParamGroup2",
+			"Name": "FI_LIGHT_1_X3"
+		},
+		{
+			"Id": "Param29",
+			"GroupId": "ParamGroup2",
+			"Name": "FI_LIGHT_1_Y1"
+		},
+		{
+			"Id": "Param28",
+			"GroupId": "ParamGroup2",
+			"Name": "FI_LIGHT_1_Y2"
+		},
+		{
+			"Id": "Param24",
+			"GroupId": "ParamGroup2",
+			"Name": "FI_BASEOUTFIT_X1"
+		},
+		{
+			"Id": "Param30",
+			"GroupId": "ParamGroup2",
+			"Name": "FI_BASEOUTFIT_Y1"
+		},
+		{
+			"Id": "ParamMouthX",
+			"GroupId": "ParamGroup5",
 			"Name": "Mouth_X"
 		},
 		{
-			"Id": "Param35",
-			"GroupId": "",
+			"Id": "ParamMouthFunnel",
+			"GroupId": "ParamGroup5",
 			"Name": "MOUTH_FUNEL"
 		},
 		{
-			"Id": "Param36",
-			"GroupId": "",
+			"Id": "ParamMouthPressLipOpen",
+			"GroupId": "ParamGroup5",
 			"Name": "MOUTH_LIP_PRESS_OPEN"
 		},
 		{
-			"Id": "Param37",
-			"GroupId": "",
+			"Id": "ParamMouthOpenY",
+			"GroupId": "ParamGroup5",
+			"Name": "Mouth Open"
+		},
+		{
+			"Id": "ParamMouthForm",
+			"GroupId": "ParamGroup5",
+			"Name": "Mouth Form"
+		},
+		{
+			"Id": "ParamJawOpen",
+			"GroupId": "ParamGroup5",
 			"Name": "JAW_OPEN"
 		},
 		{
-			"Id": "Param45",
-			"GroupId": "",
+			"Id": "ParamMouthPuckerWiden",
+			"GroupId": "ParamGroup5",
 			"Name": "MOUTH PUCKER"
 		},
 		{
@@ -67,6 +292,21 @@
 			"Name": "Angle Z"
 		},
 		{
+			"Id": "ParamBodyAngleX",
+			"GroupId": "",
+			"Name": "Body X"
+		},
+		{
+			"Id": "ParamBodyAngleY",
+			"GroupId": "",
+			"Name": "Body Y"
+		},
+		{
+			"Id": "ParamBodyAngleZ",
+			"GroupId": "",
+			"Name": "Body Z"
+		},
+		{
 			"Id": "ParamEyeLOpen",
 			"GroupId": "",
 			"Name": "EyeL Open"
@@ -77,16 +317,6 @@
 			"Name": "EyeL Smile"
 		},
 		{
-			"Id": "ParamEyeROpen",
-			"GroupId": "",
-			"Name": "EyeR Open"
-		},
-		{
-			"Id": "ParamEyeRSmile",
-			"GroupId": "",
-			"Name": "EyeR Smile"
-		},
-		{
 			"Id": "ParamEyeBallX",
 			"GroupId": "",
 			"Name": "Eyeball X"
@@ -95,6 +325,11 @@
 			"Id": "ParamEyeBallY",
 			"GroupId": "",
 			"Name": "Eyeball Y"
+		},
+		{
+			"Id": "ParamCheek",
+			"GroupId": "",
+			"Name": "Cheek"
 		},
 		{
 			"Id": "ParamBrowLY",
@@ -132,39 +367,19 @@
 			"Name": "BrowL Form"
 		},
 		{
+			"Id": "ParamEyeRSmile",
+			"GroupId": "",
+			"Name": "EyeR Smile"
+		},
+		{
+			"Id": "ParamEyeROpen",
+			"GroupId": "",
+			"Name": "EyeR Open"
+		},
+		{
 			"Id": "ParamBrowRForm",
 			"GroupId": "",
 			"Name": "BrowR Form"
-		},
-		{
-			"Id": "ParamMouthForm",
-			"GroupId": "",
-			"Name": "Mouth Form"
-		},
-		{
-			"Id": "ParamMouthOpenY",
-			"GroupId": "",
-			"Name": "Mouth Open"
-		},
-		{
-			"Id": "ParamCheek",
-			"GroupId": "",
-			"Name": "Cheek"
-		},
-		{
-			"Id": "ParamBodyAngleX",
-			"GroupId": "",
-			"Name": "Body X"
-		},
-		{
-			"Id": "ParamBodyAngleY",
-			"GroupId": "",
-			"Name": "Body Y"
-		},
-		{
-			"Id": "ParamBodyAngleZ",
-			"GroupId": "",
-			"Name": "Body Z"
 		},
 		{
 			"Id": "ParamBreath",
@@ -187,67 +402,229 @@
 			"Name": "Hair Move Back"
 		}
 	],
-	"ParameterGroups": [],
+	"ParameterGroups": [
+		{
+			"Id": "ParamGroup",
+			"GroupId": "",
+			"Name": "Outfits"
+		},
+		{
+			"Id": "ParamGroup4",
+			"GroupId": "",
+			"Name": "Emotes"
+		},
+		{
+			"Id": "ParamGroup3",
+			"GroupId": "",
+			"Name": "FIXES"
+		},
+		{
+			"Id": "ParamGroup2",
+			"GroupId": "",
+			"Name": "PHYSICS"
+		},
+		{
+			"Id": "ParamGroup5",
+			"GroupId": "",
+			"Name": "MOUTH"
+		}
+	],
 	"Parts": [
 		{
-			"Id": "PartRough",
-			"Name": "Rough Design"
+			"Id": "HairStyles",
+			"Name": "HairStyles"
 		},
 		{
-			"Id": "PartFace",
-			"Name": "Face"
+			"Id": "Hats",
+			"Name": "Hats"
 		},
 		{
-			"Id": "PartEye",
-			"Name": "Eye"
+			"Id": "Part20",
+			"Name": "Outfits"
 		},
 		{
-			"Id": "PartEyeBall",
-			"Name": "Eyeball"
-		},
-		{
-			"Id": "PartBrow",
-			"Name": "Brows"
-		},
-		{
-			"Id": "PartMouth",
+			"Id": "Part17",
 			"Name": "Mouth"
 		},
 		{
-			"Id": "PartNose",
-			"Name": "Nose"
+			"Id": "Part",
+			"Name": "Base Body"
 		},
 		{
-			"Id": "PartEar",
-			"Name": "Ear"
+			"Id": "ReferencesFolder",
+			"Name": "References/Tests"
 		},
 		{
-			"Id": "PartHairFront",
-			"Name": "Bangs"
-		},
-		{
-			"Id": "PartHairSide",
-			"Name": "Hair Side"
-		},
-		{
-			"Id": "PartHairBack",
-			"Name": "Hair Back"
-		},
-		{
-			"Id": "PartNeck",
-			"Name": "Neck"
-		},
-		{
-			"Id": "PartBody",
-			"Name": "Body"
-		},
-		{
-			"Id": "PartBackground",
-			"Name": "Background"
-		},
-		{
-			"Id": "PartSketch",
+			"Id": "PartSketch0",
 			"Name": "[ Guide Image]"
+		},
+		{
+			"Id": "Part21",
+			"Name": "Messy Long Gray"
+		},
+		{
+			"Id": "Parka",
+			"Name": "Parka"
+		},
+		{
+			"Id": "Part23",
+			"Name": "Vermillion Vest"
+		},
+		{
+			"Id": "Part38",
+			"Name": "Victorian Maid"
+		},
+		{
+			"Id": "Overalls",
+			"Name": "Overalls"
+		},
+		{
+			"Id": "Part37",
+			"Name": "Winter Solistice Royal Cloak"
+		},
+		{
+			"Id": "Part36",
+			"Name": "Ace of Spades"
+		},
+		{
+			"Id": "Part33",
+			"Name": "Sweater Vest"
+		},
+		{
+			"Id": "Part35",
+			"Name": "Heart Hoodie"
+		},
+		{
+			"Id": "Part34",
+			"Name": "White Tank Top"
+		},
+		{
+			"Id": "Part31",
+			"Name": "Magic Apprentice"
+		},
+		{
+			"Id": "Part24",
+			"Name": "School Uniform"
+		},
+		{
+			"Id": "Nurse",
+			"Name": "Nurse"
+		},
+		{
+			"Id": "Part19",
+			"Name": "Blackbird"
+		},
+		{
+			"Id": "Vamp",
+			"Name": "Vamp"
+		},
+		{
+			"Id": "Part32",
+			"Name": "Black Wings Qipao"
+		},
+		{
+			"Id": "Part29",
+			"Name": "Priestess"
+		},
+		{
+			"Id": "face",
+			"Name": "face"
+		},
+		{
+			"Id": "body",
+			"Name": "body"
+		},
+		{
+			"Id": "Part22",
+			"Name": "Test Hair"
+		},
+		{
+			"Id": "Messy_Long_Gray_Front",
+			"Name": "Messy_Long_Gray_Front"
+		},
+		{
+			"Id": "Messy_Long_Gray_Back",
+			"Name": "Messy_Long_Gray_Back"
+		},
+		{
+			"Id": "Part2",
+			"Name": "pointy eyes"
+		},
+		{
+			"Id": "Part9",
+			"Name": "facial features A copy"
+		},
+		{
+			"Id": "Part11",
+			"Name": "face b copy 2"
+		},
+		{
+			"Id": "Part15",
+			"Name": "Chest2"
+		},
+		{
+			"Id": "Part14",
+			"Name": "Chest1"
+		},
+		{
+			"Id": "Part13",
+			"Name": "Arms"
+		},
+		{
+			"Id": "Part3",
+			"Name": "right eye"
+		},
+		{
+			"Id": "Part7",
+			"Name": "left eye"
+		},
+		{
+			"Id": "nose",
+			"Name": "nose"
+		},
+		{
+			"Id": "Part10",
+			"Name": "mouth copy"
+		},
+		{
+			"Id": "Part12",
+			"Name": "blush(2)"
+		},
+		{
+			"Id": "Part18",
+			"Name": "L boob"
+		},
+		{
+			"Id": "Part16",
+			"Name": "R boob"
+		},
+		{
+			"Id": "Part30",
+			"Name": "boob_shadows"
+		},
+		{
+			"Id": "Part4",
+			"Name": "lashes(2)"
+		},
+		{
+			"Id": "Part5",
+			"Name": "highlights(2)"
+		},
+		{
+			"Id": "Part6",
+			"Name": "eyelid crease(6)"
+		},
+		{
+			"Id": "lashes",
+			"Name": "lashes"
+		},
+		{
+			"Id": "highlights",
+			"Name": "highlights"
+		},
+		{
+			"Id": "Part8",
+			"Name": "eyelid crease"
 		}
 	]
 }

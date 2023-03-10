@@ -1,0 +1,23 @@
+{
+	"Version": 3,
+	"FileReferences": {
+		"Moc": "Ace_Of_Spades.moc3",
+		"Textures": [
+			"Ace_Of_Spades.00/texture_00.png"
+		],
+		"Physics": "Ace_Of_Spades.physics3.json",
+		"DisplayInfo": "Ace_Of_Spades.cdi3.json"
+	},
+	"Groups": [
+		{
+			"Target": "Parameter",
+			"Name": "EyeBlink",
+			"Ids": []
+		},
+		{
+			"Target": "Parameter",
+			"Name": "LipSync",
+			"Ids": []
+		}
+	]
+}

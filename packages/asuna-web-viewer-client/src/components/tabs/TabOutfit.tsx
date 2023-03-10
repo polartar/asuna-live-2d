@@ -7,9 +7,9 @@ import Item from '../ui/Item'
 import { ModelLayer } from 'asuna-web-live2d/src/state/ModelState'
 
 const items = [
-  { name: 'School Uniform', id: 'model/Outfit/School_Uniform', color: '#fff' },
-  { name: 'Priestess', id: 'model/Outfit/Priestess', color: '#fff' },
-  { name: 'Vietnamese Dress', id: 'model/Outfit/Qipao', color: '#fff' }
+  { name: 'Ace of Spades', id: 'model/Outfit/Ace_Of_Spades', color: '#fff' },
+  { name: 'Silverhorn', id: 'model/Outfit/Silverhorn', color: '#fff' },
+  { name: 'White Tank Top', id: 'model/Outfit/White_Tank_Top', color: '#fff' }
 ]
 
 interface StoreAttrs {

@@ -3,7 +3,8 @@
 	"FileReferences": {
 		"Moc": "Body.moc3",
 		"Textures": [
-			"Body.2048/texture_00.png"
+			"Body.00/texture_00.png",
+			"Body.00/texture_01.png"
 		],
 		"Physics": "Body.physics3.json",
 		"DisplayInfo": "Body.cdi3.json",
@@ -42,6 +43,11 @@
 		{
 			"Target": "Parameter",
 			"Name": "EyeBlink",
+			"Ids": []
+		},
+		{
+			"Target": "Parameter",
+			"Name": "LipSync",
 			"Ids": []
 		}
 	]

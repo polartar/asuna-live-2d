@@ -11,7 +11,7 @@ export enum ModelLayer {
 }
 
 export type ModelData = {
-  [L in ModelLayer]: Model
+  [L in ModelLayer]: Model | null
 }
 
 export class ModelState {
@@ -23,11 +23,11 @@ export class ModelState {
 
   initialize(assets: AssetStore) {
     this.data = {
-      [ModelLayer.BackHair]: new Model(assets.get('model/Back_Hair/Back_Messy_Long_Gray') as Live2dModel),
+      [ModelLayer.BackHair]: null, // new Model(assets.get('model/Back_Hair/Back_Messy_Long_Gray') as Live2dModel),
       [ModelLayer.Body]: new Model(assets.get('model/Body/Body') as Live2dModel),
-      [ModelLayer.Eyes]: new Model(assets.get('model/Eyes/Blue_Eyes') as Live2dModel),
-      [ModelLayer.FrontHair]: new Model(assets.get('model/Front_Hair/Front_Messy_Long_Gray') as Live2dModel),
-      [ModelLayer.Outfit]: new Model(assets.get('model/Outfit/School_Uniform') as Live2dModel)
+      [ModelLayer.Eyes]: null, // new Model(assets.get('model/Eyes/Blue_Eyes') as Live2dModel),
+      [ModelLayer.FrontHair]: null, // new Model(assets.get('model/Front_Hair/Front_Messy_Long_Gray') as Live2dModel),
+      [ModelLayer.Outfit]: new Model(assets.get('model/Outfit/Ace_Of_Spades') as Live2dModel)
     }
   }
 }

@@ -1,0 +1,23 @@
+{
+	"Version": 3,
+	"FileReferences": {
+		"Moc": "Silverhorn.moc3",
+		"Textures": [
+			"Silverhorn.00/texture_00.png"
+		],
+		"Physics": "Silverhorn.physics3.json",
+		"DisplayInfo": "Silverhorn.cdi3.json"
+	},
+	"Groups": [
+		{
+			"Target": "Parameter",
+			"Name": "EyeBlink",
+			"Ids": []
+		},
+		{
+			"Target": "Parameter",
+			"Name": "LipSync",
+			"Ids": []
+		}
+	]
+}

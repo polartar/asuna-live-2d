@@ -43,11 +43,14 @@ export default new class App {
   async setupScene() {
     this.loader.resetLoader(LoaderStatus.PRELOAD)
     await this.loader.loadAll([
-      this.loader.loadModelAsset('model/Back_Hair/Back_Messy_Long_Gray'),
+      // this.loader.loadModelAsset('model/Back_Hair/Back_Messy_Long_Gray'),
       this.loader.loadModelAsset('model/Body/Body'),
-      this.loader.loadModelAsset('model/Front_Hair/Front_Messy_Long_Gray'),
-      this.loader.loadModelAsset('model/Eyes/Blue_Eyes'),
-      this.loader.loadModelAsset('model/Outfit/School_Uniform')
+      // this.loader.loadModelAsset('model/Front_Hair/Front_Messy_Long_Gray'),
+      // this.loader.loadModelAsset('model/Eyes/Blue_Eyes'),
+      this.loader.loadModelAsset('model/Outfit/Ace_Of_Spades'),
+      // this.loader.loadModelAsset('model/Outfit/Silverhorn'),
+      // this.loader.loadModelAsset('model/Outfit/Sweater_Vest'),
+      // this.loader.loadModelAsset('model/Outfit/White_Tank_Top')
     ])
 
     this.state.models.initialize(this.assets)

@@ -1,0 +1,24 @@
+{
+	"Version": 3,
+	"FileReferences": {
+		"Moc": "Sweater_Vest.moc3",
+		"Textures": [
+			"Sweater_Vest.00/texture_00.png",
+			"Sweater_Vest.00/texture_01.png"
+		],
+		"Physics": "Sweater_Vest.physics3.json",
+		"DisplayInfo": "Sweater_Vest.cdi3.json"
+	},
+	"Groups": [
+		{
+			"Target": "Parameter",
+			"Name": "EyeBlink",
+			"Ids": []
+		},
+		{
+			"Target": "Parameter",
+			"Name": "LipSync",
+			"Ids": []
+		}
+	]
+}

@@ -16,12 +16,13 @@ let lastMotion = -1
 let focusX = 0
 let focusY = 0
 let v = 0
-let maxv = .04
-let a = .0002
+let maxv = .1
+let a = .002
 
 export function updateModel(state: WorldState, dt: number) {
 
   for (let m of Object.values(state.models.data)) {
+    if (m === null) continue
 
     let xId = CubismFramework.getIdManager().getId(CubismDefaultParameterId.ParamAngleX)
     let yId = CubismFramework.getIdManager().getId(CubismDefaultParameterId.ParamAngleY)

@@ -6,6 +6,9 @@ import { WebGL } from "../WebGL"
 export function render({ gl, framebuffer }: WebGL, state: WorldState) {
 
   for (let m of Object.values(state.models.data)) {
+
+    if (m === null) continue
+
     // TODO: move matrix to view, making a new matrix every frame is bad
     const scale = 2.55
     let mat = new CubismMatrix44()
@@ -30,18 +33,21 @@ export function render({ gl, framebuffer }: WebGL, state: WorldState) {
     ////////////////////////////////////////////////////////////////////////////////
   }
 
-  let orderedDrawables: { r: CubismRenderer_WebGL, id: number, i: number, d: number }[] = []
+  let orderedDrawables: { r: CubismRenderer_WebGL, i: number, rr: number, d: number }[] = []
 
   for (let [id, m] of Object.values(state.models.data).entries()) {
 
+    if (m === null) continue
+
     let renderer = m.asset.getRenderer()
     let drawOrder = renderer.getModel().getDrawableDrawOrders()
+    let renderOrder = renderer.getModel().getDrawableRenderOrders()
 
     for (let i = 0; i < drawOrder.length; i++) {
       orderedDrawables.push({
         r: renderer,
-        id,
         i,
+        rr: renderOrder[i],
         d: drawOrder[i]
       })
     }
@@ -49,10 +55,7 @@ export function render({ gl, framebuffer }: WebGL, state: WorldState) {
 
   orderedDrawables.sort((a, b) => {
     if (a.d === b.d) {
-      if (a.id === b.id) {
-        return a.i - b.i
-      }
-      return a.id - b.id
+      return a.rr - b.rr
     } else {
       return a.d - b.d
     }
