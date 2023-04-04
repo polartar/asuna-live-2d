@@ -3,9 +3,7 @@ import { LoaderState } from "./LoaderState"
 import { InputState } from "./InputState"
 import { ExternalState } from "./ExternalState"
 import { ModelState } from "./ModelState"
-import { CubismMotion } from "cubism-framework/dist/motion/cubismmotion"
 import { AssetStore } from "../asset/AssetStore"
-import { Loader } from "../Loader"
 
 export class WorldState {
   lastId: number
@@ -14,7 +12,7 @@ export class WorldState {
   input: InputState
   external: ExternalState
   models: ModelState
-  motions: { [name: string]: CubismMotion }
+  motions: { [name: string]: any } // TODO: fix this
   params: { [id: string]: number }
 
   constructor(assets: AssetStore) {
