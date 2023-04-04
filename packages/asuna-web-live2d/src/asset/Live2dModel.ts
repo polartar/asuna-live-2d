@@ -1,6 +1,5 @@
 import { CubismPhysics } from 'asuna-cubism-framework/dist/legacy/physics/cubismphysics'
-import { Model as AsunaModel } from 'asuna-cubism-framework/dist/Model'
-import { ModelJson } from 'asuna-cubism-framework/dist/model/Model'
+import { Model as AsunaModel, ModelJson } from 'asuna-cubism-framework/dist/model/Model'
 import { PhysicsJson } from 'asuna-cubism-framework/dist/physics/Physics'
 
 export type Live2dModelId = string
