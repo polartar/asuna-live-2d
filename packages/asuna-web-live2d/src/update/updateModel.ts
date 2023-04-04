@@ -50,9 +50,8 @@ export function updateModel(state: WorldState, dt: number) {
 
 
     if (m.asset.physics != null) {
-      m.asset.physics.evaluate(m.asset, dt / 3)
-      m.asset.physics.evaluate(m.asset, dt / 3)
-      m.asset.physics.evaluate(m.asset, dt / 3)
+      m.asset.physics.evaluate(m.asset, dt / 2)
+      m.asset.physics.evaluate(m.asset, dt / 2)
     }
 
     m.asset._model.update()
