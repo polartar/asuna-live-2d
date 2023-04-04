@@ -1,4 +1,4 @@
-import { ENHANCE_RES } from './define'
+import { ENHANCE_RES, MVP_SCALE } from './define'
 import { WorldState } from './state/WorldState'
 
 
@@ -24,5 +24,9 @@ export class Canvas {
     this.state.view.height = this.element.height
     this.element.style.width = `${window.innerWidth}px`
     this.element.style.height = `${window.innerHeight}px`
+
+    this.state.view.mvp.loadIdentity()
+    this.state.view.mvp.scale(MVP_SCALE * this.state.view.height / this.state.view.width, MVP_SCALE * 1.0)
+    this.state.view.mvp.translateY(.2)
   }
 }

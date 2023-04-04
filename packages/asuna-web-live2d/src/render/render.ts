@@ -1,5 +1,4 @@
-import { CubismMatrix44 } from 'cubism-framework/dist/math/cubismmatrix44'
-import { CubismRenderer_WebGL } from 'cubism-framework/dist/rendering/cubismrenderer_webgl'
+import { CubismRenderer_WebGL } from "asuna-cubism-framework/dist/legacy/render/cubismrenderer_webgl"
 import { WorldState } from "../state/WorldState"
 import { WebGL } from "../WebGL"
 
@@ -9,20 +8,14 @@ export function render({ gl, framebuffer }: WebGL, state: WorldState) {
 
     if (m === null) continue
 
-    // TODO: move matrix to view, making a new matrix every frame is bad
-    const scale = 2.55
-    let mat = new CubismMatrix44()
-    mat.scale(scale * state.view.height / state.view.width, scale * 1.0)
-    mat.translateY(.2)
-
-    m.asset.getRenderer().setMvpMatrix(mat)
-    m.asset.getRenderer().setRenderState(framebuffer, [0, 0, state.view.width, state.view.height])
-    // m.asset.getRenderer().drawModel()
+    m.asset.renderer.setMvpMatrix(state.view.mvp)
+    m.asset.renderer.setRenderState(framebuffer, [0, 0, state.view.width, state.view.height])
+    // m.asset.renderer.drawModel()
 
     ////////////////////////////////////////////////////////////////////////////////
     // Predraw
 
-    let renderer = m.asset.getRenderer()
+    let renderer = m.asset.renderer
 
     if (renderer._clippingManager != null) {
       renderer.preDraw()
@@ -39,7 +32,7 @@ export function render({ gl, framebuffer }: WebGL, state: WorldState) {
 
     if (m === null) continue
 
-    let renderer = m.asset.getRenderer()
+    let renderer = m.asset.renderer
     let drawOrder = renderer.getModel().getDrawableDrawOrders()
     let renderOrder = renderer.getModel().getDrawableRenderOrders()
 

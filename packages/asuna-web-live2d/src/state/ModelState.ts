@@ -1,5 +1,6 @@
 import { AssetStore } from "../asset/AssetStore"
 import { Live2dModel } from "../asset/Live2dModel"
+import { Loader } from "../Loader"
 import { Model } from "../struct/Model"
 
 export enum ModelLayer {
@@ -15,19 +16,17 @@ export type ModelData = {
 }
 
 export class ModelState {
+  assets: AssetStore
   data: ModelData
 
-  constructor() {
-    this.data = null as any
-  }
-
-  initialize(assets: AssetStore) {
+  constructor(assets: AssetStore) {
+    this.assets = assets
     this.data = {
-      [ModelLayer.BackHair]: null, // new Model(assets.get('model/Back_Hair/Back_Messy_Long_Gray') as Live2dModel),
-      [ModelLayer.Body]: new Model(assets.get('model/Body/Body') as Live2dModel),
-      [ModelLayer.Eyes]: null, // new Model(assets.get('model/Eyes/Blue_Eyes') as Live2dModel),
-      [ModelLayer.FrontHair]: null, // new Model(assets.get('model/Front_Hair/Front_Messy_Long_Gray') as Live2dModel),
-      [ModelLayer.Outfit]: new Model(assets.get('model/Outfit/Ace_Of_Spades') as Live2dModel)
+      [ModelLayer.BackHair]: null,
+      [ModelLayer.Body]: null,
+      [ModelLayer.Eyes]: null,
+      [ModelLayer.FrontHair]: null,
+      [ModelLayer.Outfit]: null
     }
   }
 }

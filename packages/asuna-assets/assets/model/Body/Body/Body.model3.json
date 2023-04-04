@@ -7,47 +7,17 @@
 			"Body.00/texture_01.png"
 		],
 		"Physics": "Body.physics3.json",
-		"DisplayInfo": "Body.cdi3.json",
-    "Motions": {
-			"Idle": [
-				{
-					"File": "motion/idle.motion3.json"
-				}
-			],
-			"Motions": [
-				{
-					"File": "motion/head_shake.motion3.json"
-				},				
-				{
-					"File": "motion/head_weave.motion3.json"
-				},
-				{
-					"File": "motion/head_bob.motion3.json"
-				},
-				{
-					"File": "motion/smile.motion3.json"
-				},				
-				{
-					"File": "motion/bounce.motion3.json"
-				},				
-				{
-					"File": "motion/puff.motion3.json"
-				},				
-				{
-					"File": "motion/disdain.motion3.json"
-				}
-			]
-		}
+		"DisplayInfo": "Body.cdi3.json"
 	},
 	"Groups": [
 		{
 			"Target": "Parameter",
-			"Name": "EyeBlink",
+			"Name": "LipSync",
 			"Ids": []
 		},
 		{
 			"Target": "Parameter",
-			"Name": "LipSync",
+			"Name": "EyeBlink",
 			"Ids": []
 		}
 	]

@@ -19,6 +19,6 @@
   },
   "dependencies": {
     "asuna-data": "^1.0.0",
-    "cubism-framework": "^1.0.0"
+    "asuna-cubism-framework": "^1.0.0"
   }
 }

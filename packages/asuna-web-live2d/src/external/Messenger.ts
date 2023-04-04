@@ -49,14 +49,21 @@ export class Messenger {
       if (msg.type === MessageType.SC_SwapModel) {
         const payload = msg.payload as Payload_SC_SwapModel
 
+        // if (this.state.models.data[payload.layer]?.asset.id) {
+        //   this.assetStore.delete(this.state.models.data[payload.layer]!.asset.id)
+        //   this.state.models.data[payload.layer] = null
+        // }
+
+        await this.loader.reinitialize()
         await this.loader.loadModelAsset(payload.id)
+
         let model = new Model(this.assetStore.get(payload.id) as Live2dModel)
-        model.syncParams(this.state.params)
+        // model.syncParams(this.state.params)
         this.state.models.data[payload.layer] = model
 
-        for (let m of Object.values(this.state.models.data)) {
-          m?.asset._motionManager.stopAllMotions()
-        }
+        // for (let m of Object.values(this.state.models.data)) {
+        // m?.asset._motionManager.stopAllMotions()
+        // }
 
         this.sendMessage(MessageType.CS_Complete, null, msg.id)
 
@@ -69,7 +76,7 @@ export class Messenger {
         const asset = assetStore.get(payload.modelId) as Live2dModel
         const textureId = `texture/${payload.modelId.split('/')[1]}.${payload.index}/${String(payload.variant).padStart(2, '0')}`
         const texture = await loader.loadTexture(textureId)
-        asset.getRenderer().bindTexture(payload.index, texture.data)
+        asset.renderer?.bindTexture(payload.index, texture.data)
         this.sendMessage(MessageType.CS_Complete, null, msg.id)
 
       } else if (msg.type === MessageType.SC_SetParameterOverride) {

@@ -37,44 +37,34 @@
 			"Name": "White Tank Top"
 		},
 		{
-			"Id": "Param44",
-			"GroupId": "ParamGroup",
-			"Name": "Heart Hoodie"
-		},
-		{
-			"Id": "Priestess_Toggle2",
-			"GroupId": "ParamGroup",
-			"Name": "Ace of Spades"
-		},
-		{
-			"Id": "Priestess_Toggle3",
-			"GroupId": "ParamGroup",
-			"Name": "Winter Solsicew Royal Cloak"
-		},
-		{
-			"Id": "Priestess_Toggle4",
-			"GroupId": "ParamGroup",
-			"Name": "Victorian Maid"
-		},
-		{
-			"Id": "Priestess_Toggle5",
-			"GroupId": "ParamGroup",
-			"Name": "Overalls"
-		},
-		{
-			"Id": "Priestess_Toggle6",
-			"GroupId": "ParamGroup",
-			"Name": "Vermillion Vest"
-		},
-		{
-			"Id": "Priestess_Toggle7",
-			"GroupId": "ParamGroup",
-			"Name": "Parka"
-		},
-		{
 			"Id": "Qipao_Toggle",
 			"GroupId": "ParamGroup",
 			"Name": "Qipao"
+		},
+		{
+			"Id": "Qipao_Toggle2",
+			"GroupId": "ParamGroup",
+			"Name": "Silverhorn  Knight"
+		},
+		{
+			"Id": "Qipao_Toggle3",
+			"GroupId": "ParamGroup",
+			"Name": "Lilac Plug Suit"
+		},
+		{
+			"Id": "Priestess_Toggle8",
+			"GroupId": "ParamGroup",
+			"Name": "Azure Adventurer"
+		},
+		{
+			"Id": "Priestess_Toggle9",
+			"GroupId": "ParamGroup",
+			"Name": "Vierge"
+		},
+		{
+			"Id": "Qipao_Toggle4",
+			"GroupId": "ParamGroup",
+			"Name": "Office"
 		},
 		{
 			"Id": "Priestess_Toggle",
@@ -435,10 +425,6 @@
 			"Name": "HairStyles"
 		},
 		{
-			"Id": "Hats",
-			"Name": "Hats"
-		},
-		{
 			"Id": "Part20",
 			"Name": "Outfits"
 		},
@@ -461,70 +447,6 @@
 		{
 			"Id": "Part21",
 			"Name": "Messy Long Gray"
-		},
-		{
-			"Id": "Parka",
-			"Name": "Parka"
-		},
-		{
-			"Id": "Part23",
-			"Name": "Vermillion Vest"
-		},
-		{
-			"Id": "Part38",
-			"Name": "Victorian Maid"
-		},
-		{
-			"Id": "Overalls",
-			"Name": "Overalls"
-		},
-		{
-			"Id": "Part37",
-			"Name": "Winter Solistice Royal Cloak"
-		},
-		{
-			"Id": "Part36",
-			"Name": "Ace of Spades"
-		},
-		{
-			"Id": "Part33",
-			"Name": "Sweater Vest"
-		},
-		{
-			"Id": "Part35",
-			"Name": "Heart Hoodie"
-		},
-		{
-			"Id": "Part34",
-			"Name": "White Tank Top"
-		},
-		{
-			"Id": "Part31",
-			"Name": "Magic Apprentice"
-		},
-		{
-			"Id": "Part24",
-			"Name": "School Uniform"
-		},
-		{
-			"Id": "Nurse",
-			"Name": "Nurse"
-		},
-		{
-			"Id": "Part19",
-			"Name": "Blackbird"
-		},
-		{
-			"Id": "Vamp",
-			"Name": "Vamp"
-		},
-		{
-			"Id": "Part32",
-			"Name": "Black Wings Qipao"
-		},
-		{
-			"Id": "Part29",
-			"Name": "Priestess"
 		},
 		{
 			"Id": "face",
@@ -626,5 +548,15 @@
 			"Id": "Part8",
 			"Name": "eyelid crease"
 		}
+	],
+	"CombinedParameters": [
+		[
+			"ParamAngleX",
+			"ParamAngleY"
+		],
+		[
+			"ParamBodyAngleX",
+			"ParamBodyAngleY"
+		]
 	]
 }

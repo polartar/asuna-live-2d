@@ -207,6 +207,41 @@
 			"Name": "FI_BACK_HAIR_X3"
 		},
 		{
+			"Id": "Param35",
+			"GroupId": "ParamGroup2",
+			"Name": "FI_BODY_PENDANT_X1"
+		},
+		{
+			"Id": "Param45",
+			"GroupId": "ParamGroup2",
+			"Name": "FI_BODY_PENDANT_X2"
+		},
+		{
+			"Id": "Param46",
+			"GroupId": "ParamGroup2",
+			"Name": "FI_BODY_PENDANT_Y1"
+		},
+		{
+			"Id": "Param36",
+			"GroupId": "ParamGroup2",
+			"Name": "FI_HEAVY_CLOTH_X1"
+		},
+		{
+			"Id": "Param37",
+			"GroupId": "ParamGroup2",
+			"Name": "FI_HEAVY_CLOTH_X2"
+		},
+		{
+			"Id": "Param38",
+			"GroupId": "ParamGroup2",
+			"Name": "FI_HEAVY_CLOTH_Y1"
+		},
+		{
+			"Id": "Param47",
+			"GroupId": "ParamGroup2",
+			"Name": "FI_HEAVY_CLOTH_Y2"
+		},
+		{
 			"Id": "Param21",
 			"GroupId": "ParamGroup2",
 			"Name": "FI_LIGHT_1_X1"
@@ -431,16 +466,200 @@
 	],
 	"Parts": [
 		{
+			"Id": "HairStyles",
+			"Name": "HairStyles"
+		},
+		{
+			"Id": "Hats",
+			"Name": "Hats"
+		},
+		{
 			"Id": "Part20",
 			"Name": "Outfits"
+		},
+		{
+			"Id": "Part17",
+			"Name": "Mouth"
+		},
+		{
+			"Id": "Part",
+			"Name": "Base Body"
+		},
+		{
+			"Id": "ReferencesFolder",
+			"Name": "References/Tests"
 		},
 		{
 			"Id": "PartSketch0",
 			"Name": "[ Guide Image]"
 		},
 		{
+			"Id": "Part21",
+			"Name": "Messy Long Gray"
+		},
+		{
+			"Id": "Parka",
+			"Name": "Parka"
+		},
+		{
+			"Id": "Part23",
+			"Name": "Vermillion Vest"
+		},
+		{
+			"Id": "Part38",
+			"Name": "Victorian Maid"
+		},
+		{
+			"Id": "Overalls",
+			"Name": "Overalls"
+		},
+		{
+			"Id": "Part37",
+			"Name": "Winter Solistice Royal Cloak"
+		},
+		{
+			"Id": "Part36",
+			"Name": "Ace of Spades"
+		},
+		{
 			"Id": "Part33",
 			"Name": "Sweater Vest"
+		},
+		{
+			"Id": "Part35",
+			"Name": "Heart Hoodie"
+		},
+		{
+			"Id": "Part34",
+			"Name": "White Tank Top"
+		},
+		{
+			"Id": "Part31",
+			"Name": "Magic Apprentice"
+		},
+		{
+			"Id": "Part24",
+			"Name": "School Uniform"
+		},
+		{
+			"Id": "Nurse",
+			"Name": "Nurse"
+		},
+		{
+			"Id": "Part19",
+			"Name": "Blackbird"
+		},
+		{
+			"Id": "Vamp",
+			"Name": "Vamp"
+		},
+		{
+			"Id": "Part32",
+			"Name": "Black Wings Qipao"
+		},
+		{
+			"Id": "Part29",
+			"Name": "Priestess"
+		},
+		{
+			"Id": "face",
+			"Name": "face"
+		},
+		{
+			"Id": "body",
+			"Name": "body"
+		},
+		{
+			"Id": "Part22",
+			"Name": "Test Hair"
+		},
+		{
+			"Id": "Messy_Long_Gray_Front",
+			"Name": "Messy_Long_Gray_Front"
+		},
+		{
+			"Id": "Messy_Long_Gray_Back",
+			"Name": "Messy_Long_Gray_Back"
+		},
+		{
+			"Id": "Part2",
+			"Name": "pointy eyes"
+		},
+		{
+			"Id": "Part9",
+			"Name": "facial features A copy"
+		},
+		{
+			"Id": "Part11",
+			"Name": "face b copy 2"
+		},
+		{
+			"Id": "Part15",
+			"Name": "Chest2"
+		},
+		{
+			"Id": "Part14",
+			"Name": "Chest1"
+		},
+		{
+			"Id": "Part13",
+			"Name": "Arms"
+		},
+		{
+			"Id": "Part3",
+			"Name": "right eye"
+		},
+		{
+			"Id": "Part7",
+			"Name": "left eye"
+		},
+		{
+			"Id": "nose",
+			"Name": "nose"
+		},
+		{
+			"Id": "Part10",
+			"Name": "mouth copy"
+		},
+		{
+			"Id": "Part12",
+			"Name": "blush(2)"
+		},
+		{
+			"Id": "Part18",
+			"Name": "L boob"
+		},
+		{
+			"Id": "Part16",
+			"Name": "R boob"
+		},
+		{
+			"Id": "Part30",
+			"Name": "boob_shadows"
+		},
+		{
+			"Id": "Part4",
+			"Name": "lashes(2)"
+		},
+		{
+			"Id": "Part5",
+			"Name": "highlights(2)"
+		},
+		{
+			"Id": "Part6",
+			"Name": "eyelid crease(6)"
+		},
+		{
+			"Id": "lashes",
+			"Name": "lashes"
+		},
+		{
+			"Id": "highlights",
+			"Name": "highlights"
+		},
+		{
+			"Id": "Part8",
+			"Name": "eyelid crease"
 		}
 	]
 }

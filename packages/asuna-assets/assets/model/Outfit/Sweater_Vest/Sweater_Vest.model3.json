@@ -3,11 +3,10 @@
 	"FileReferences": {
 		"Moc": "Sweater_Vest.moc3",
 		"Textures": [
-			"SweaterVest_VER_FIX2_phy_VER5.00/texture_00.png",
-			"SweaterVest_VER_FIX2_phy_VER5.00/texture_01.png"
+			"Sweater_Vest.00/texture_00.png"
 		],
-		"Physics": "SweaterVest_VER_FIX2_phy_VER5.physics3.json",
-		"DisplayInfo": "SweaterVest_VER_FIX2_phy_VER5.cdi3.json"
+		"Physics": "Sweater_Vest.physics3.json",
+		"DisplayInfo": "Sweater_Vest.cdi3.json"
 	},
 	"Groups": [
 		{

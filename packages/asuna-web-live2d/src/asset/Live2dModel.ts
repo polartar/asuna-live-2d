@@ -1,32 +1,25 @@
-import { ICubismModelSetting } from 'cubism-framework/dist/icubismmodelsetting'
-import { CubismUserModel } from 'cubism-framework/dist/model/cubismusermodel'
-import { CubismMotion } from 'cubism-framework/dist/motion/cubismmotion'
+import { CubismPhysics } from 'asuna-cubism-framework/dist/legacy/physics/cubismphysics'
+import { Model as AsunaModel } from 'asuna-cubism-framework/dist/Model'
+import { ModelJson } from 'asuna-cubism-framework/dist/model/Model'
+import { PhysicsJson } from 'asuna-cubism-framework/dist/physics/Physics'
 
 export type Live2dModelId = string
 
-export class Live2dModel extends CubismUserModel {
+export class Live2dModel extends AsunaModel {
   id: Live2dModelId
-  setting: ICubismModelSetting
-  motions: { [name: string]: CubismMotion }
+  setting: ModelJson
+  physics: CubismPhysics | null
+  motions: { [name: string]: {} }
 
-  /*
-  CubismUserModel call order:
-  - .loadModel(...)
-  - .load{{System}}(...)
-  - .resetRenderer()
-  - .getRenderer().bindTexture(...)
-  */
-  constructor(id: Live2dModelId, setting: ICubismModelSetting) {
-    super()
-    this.id = id
-    this.setting = setting
+  constructor(args: { id: Live2dModelId, setting: ModelJson, physicsJSON: PhysicsJson, modelData: ArrayBuffer, gl: WebGLRenderingContext }) {
+    super(args.modelData, args.gl)
+    this.physics = args.physicsJSON ? CubismPhysics.create(args.physicsJSON) : null
+    this.id = args.id
+    this.setting = args.setting
     this.motions = {}
   }
 
-  resetRenderer(gl: WebGLRenderingContext) {
-    this.deleteRenderer()
-    this.createRenderer()
-    this.getRenderer().setIsPremultipliedAlpha(true)
-    this.getRenderer().startUp(gl)
+  release() {
+    super.release()
   }
 }

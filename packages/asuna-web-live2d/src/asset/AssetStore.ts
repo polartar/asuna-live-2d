@@ -56,6 +56,14 @@ export class AssetStore {
     return asset
   }
 
+  delete(id: AssetId) {
+    const type = this.getAssetType(id)
+    if (type === AssetType.Model) {
+      this.modelRegistry[id].release()
+      delete this.modelRegistry[id]
+    }
+  }
+
   getAssetType(id: AssetId): AssetType {
     if (id.startsWith(AssetType.Model)) {
       return AssetType.Model

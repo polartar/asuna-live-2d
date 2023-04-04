@@ -1,18 +1,13 @@
-import { CubismFramework } from 'cubism-framework/dist/live2dcubismframework'
-import { CubismDefaultParameterId } from 'cubism-framework/dist/cubismdefaultparameterid'
-import { ICubismModelSetting } from 'cubism-framework/dist/icubismmodelsetting'
-import { CubismModelSettingJson } from 'cubism-framework/dist/cubismmodelsettingjson'
-import { BreathParameterData, CubismBreath } from 'cubism-framework/dist/effect/cubismbreath'
-import { CubismEyeBlink } from 'cubism-framework/dist/effect/cubismeyeblink'
-import { csmVector } from 'cubism-framework/dist/type/csmvector'
 import * as define from './define'
+import { ModelJson } from 'asuna-cubism-framework/dist/model/Model'
 import { AssetId, AssetStore } from './asset/AssetStore'
 import { Live2dModelId, Live2dModel } from './asset/Live2dModel'
 import { Texture, TextureId } from './asset/Texture'
 import { LoaderState, LoaderStatus } from './state/LoaderState'
 import { WebGL } from './WebGL'
-import { CubismIdHandle } from 'cubism-framework/dist/id/cubismid'
 import { WorldState } from './state/WorldState'
+import { ModelData, ModelLayer } from './state/ModelState'
+import { Model } from './struct/Model'
 
 export enum FetchFormat {
   Buffer,
@@ -23,13 +18,15 @@ export enum FetchFormat {
 export class Loader {
   webgl: WebGL
   assetStore: AssetStore
+  models: WorldState['models']
   motions: WorldState['motions']
   loaderState: LoaderState
   lastId: number
 
-  constructor(webgl: WebGL, assetStore: AssetStore, motions: WorldState['motions'], loaderState: LoaderState) {
+  constructor(webgl: WebGL, assetStore: AssetStore, models: WorldState['models'], motions: WorldState['motions'], loaderState: LoaderState) {
     this.webgl = webgl
     this.assetStore = assetStore
+    this.models = models
     this.motions = motions
     this.loaderState = loaderState
     this.lastId = 0
@@ -66,79 +63,61 @@ export class Loader {
     this.incTotalProgress(10)
     const path = `${define.URL_CDN}${id}/`
     const fname = id.split('/')[2]
-    const buffer = await this.fetchResource(`${path}${fname}${define.EXT_MANIFEST}`, FetchFormat.Buffer) as ArrayBuffer
-    const setting: ICubismModelSetting = new CubismModelSettingJson(buffer, buffer.byteLength)
-
-    const loadBuffer = async (func: () => string) => {
-      if (func.bind(setting)() === '') {
-        return
-      }
-      return await this.fetchResource(`${path}${func.bind(setting)()}`, FetchFormat.Buffer) as ArrayBuffer
-    }
-
-
-    const motionFiles = Array(setting.getMotionGroupCount()).fill(undefined).flatMap(
-      (_, gid) => Array(setting.getMotionCount(setting.getMotionGroupName(gid))).fill(undefined).map(
-        (_, idx) => setting.getMotionFileName(setting.getMotionGroupName(gid), idx)
-      )
-    )
-
-    const modelFiles = [
-      setting.getModelFileName,
-      setting.getPhysicsFileName,
-      ...motionFiles.map((fn) => () => fn)
+    const setting = await this.fetchResource(`${path}${fname}${define.EXT_MANIFEST}`, FetchFormat.JSON) as ModelJson
+    const motionFiles = setting.FileReferences.Motions ? Object.values(setting.FileReferences.Motions).flat().map(obj => path + obj.File) : []
+    const modelFile = path + setting.FileReferences.Moc
+    const jsonFiles = [
+      path + setting.FileReferences.Physics,
+      ...motionFiles
     ]
-    const textureFiles = Array(setting.getTextureCount()).fill(true).map((_, idx) => `${id}/${fname}.00/texture_${String(idx).padStart(2, '0')}`)
+    const textureFiles = setting.FileReferences.Textures.map((_, idx) => `${id}/${fname}.00/texture_${String(idx).padStart(2, '0')}`)
     const res = await Promise.all([
-      ...modelFiles.map(loadBuffer),
+      this.fetchResource(modelFile, FetchFormat.Buffer),
+      ...jsonFiles.map(path => this.fetchResource(path, FetchFormat.JSON)),
       ...textureFiles.map(this.loadTexture.bind(this))
     ])
-    const buffers = res.slice(0, modelFiles.length) as ArrayBuffer[]
-    const textures = res.slice(modelFiles.length) as Texture[]
-    const asset = new Live2dModel(id, setting)
+    const modelBuffer = res[0] as ArrayBuffer
+    const physicsSettings = res[1]
+    const motionSettings = res.slice(2, 2 + motionFiles.length) as any[]
+    const textures = res.slice(2 + motionFiles.length) as Texture[]
+    const asset = new Live2dModel({
+      id,
+      setting,
+      physicsJSON: physicsSettings || null,
+      modelData: modelBuffer,
+      gl: this.webgl.gl
+    })
 
-    // setup model systems
-    if (!buffers[0]) {
-      throw `Model not specified ${id}`
-    }
+    // // load motions
+    // if (buffers[2]) {
+    //   for (let [i, buffer] of buffers.slice(2).entries()) {
+    //     let name = motionFiles[i].match(/\/(.+)\.motion/)![1]
+    //     let motion = asset.loadMotion(buffer, buffer.byteLength, name)
+    //     motion.setEffectIds(new csmVector<CubismIdHandle>(), new csmVector<CubismIdHandle>())
+    //     this.motions[name] = motion
+    //   }
+    // }
 
-    // load model
-    asset.loadModel(buffers[0])
-
-    // load physics
-    if (buffers[1]) {
-      asset.loadPhysics(buffers[1], buffers[1].byteLength)
-    }
-
-    // load motions
-    if (buffers[2]) {
-      for (let [i, buffer] of buffers.slice(2).entries()) {
-        let name = motionFiles[i].match(/\/(.+)\.motion/)![1]
-        let motion = asset.loadMotion(buffer, buffer.byteLength, name)
-        motion.setEffectIds(new csmVector<CubismIdHandle>(), new csmVector<CubismIdHandle>())
-        this.motions[name] = motion
-      }
-    }
-
-    if (setting.getEyeBlinkParameterCount() > 0) {
-      asset._eyeBlink = CubismEyeBlink.create(setting)
-    }
+    // if (setting.getEyeBlinkParameterCount() > 0) {
+    //   asset._eyeBlink = CubismEyeBlink.create(setting)
+    // }
 
     // let val = CubismFramework.getIdManager().getId(CubismDefaultParameterId.ParamBreath)
 
-    const breathParameters: csmVector<BreathParameterData> = new csmVector()
-    breathParameters.pushBack(new BreathParameterData(
-      CubismFramework.getIdManager().getId(CubismDefaultParameterId.ParamBreath),
-      0.5, 0.5, 3.2345, 1
-    ))
-    asset._breath = CubismBreath.create()
-    asset._breath.setParameters(breathParameters)
+    // const breathParameters: csmVector<BreathParameterData> = new csmVector()
+    // breathParameters.pushBack(new BreathParameterData(
+    //   CubismFramework.getIdManager().getId(CubismDefaultParameterId.ParamBreath),
+    //   0.5, 0.5, 3.2345, 1
+    // ))
+    // asset._breath = CubismBreath.create()
+    // asset._breath.setParameters(breathParameters)
 
     // setup model textures
-    asset.resetRenderer(this.webgl.gl)
     textures.map((tex, idx) => {
-      asset.getRenderer().bindTexture(idx, tex.data)
+      asset.renderer.bindTexture(idx, tex.data)
     })
+
+    console.log(asset._model)
 
     this.assetStore.set(id, asset)
     return asset
@@ -167,6 +146,9 @@ export class Loader {
       if (type === FetchFormat.Buffer) {
         let res = await fetch(path)
         return res.arrayBuffer()
+      } else if (type === FetchFormat.JSON) {
+        let res = await fetch(path)
+        return res.json()
       } else if (type === FetchFormat.Image) {
         let img = new Image()
         return new Promise((resolve, reject) => {
@@ -179,6 +161,20 @@ export class Loader {
     } catch (e) {
       throw `Failed to fetch ${path}`
     }
+  }
+
+  async reinitialize() {
+    let data = this.models.data
+
+    for (let k of Object.keys(data) as any as Array<keyof ModelData>) {
+      if (data[k] !== null) {
+        this.assetStore.delete(data[k]!.asset.id)
+        data[k] = null
+      }
+    }
+
+    await this.loadModelAsset('model/Body/Body')
+    data[ModelLayer.Body] = new Model(this.assetStore.get('model/Body/Body') as Live2dModel)
   }
 
   incProgress(n: number = 1) {
