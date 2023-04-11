@@ -6,6 +6,9 @@ const reactions = {
   'Bust': ['bounce', 'puff', 'disdain']
 }
 
+const frameInterval = 1.0 / 60
+let frameElapsedTime = 0
+
 let lastMotion = -1
 
 let focusX = 0
@@ -15,6 +18,12 @@ let maxv = .2
 let a = .003
 
 export function updateModel(state: WorldState, dt: number) {
+  let runUpdate = false
+  frameElapsedTime += dt
+  if (frameElapsedTime >= frameInterval) {
+    frameElapsedTime -= frameInterval
+    runUpdate = true
+  }
 
   for (let m of Object.values(state.models.data)) {
     if (m === null) continue
@@ -49,9 +58,8 @@ export function updateModel(state: WorldState, dt: number) {
     m.asset.setParam('ParamBodyAngleY', focusY * 10)
 
 
-    if (m.asset.physics != null) {
-      m.asset.physics.evaluate(m.asset, dt / 2)
-      m.asset.physics.evaluate(m.asset, dt / 2)
+    if (m.asset.physics != null && runUpdate) {
+      m.asset.physics.evaluate(m.asset, dt)
     }
 
     m.asset._model.update()
