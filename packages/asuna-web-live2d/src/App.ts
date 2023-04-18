@@ -12,6 +12,10 @@ import { ModelLayer } from './state/ModelState'
 import { Model } from './struct/Model'
 import { Live2dModel } from './asset/Live2dModel'
 
+const frameIntervalMax = 1.0 / 59
+const frameIntervalMin = 1.0 / 61
+let frameElapsedTime = 0
+
 export default new class App {
   canvas: Canvas
   events: Events
@@ -61,9 +65,16 @@ export default new class App {
     const loop = (now: DOMHighResTimeStamp) => {
       const dt = (now - prev) / 1000
       prev = now
+      frameElapsedTime += dt
 
-      update(this.state, dt)
-      render(this.webgl, this.state)
+      if (frameElapsedTime > frameIntervalMin) {
+        update(this.state, dt)
+        render(this.webgl, this.state)
+
+        frameElapsedTime -= frameIntervalMax
+        frameElapsedTime = Math.max(Math.min(frameElapsedTime, frameIntervalMin), 0)
+      }
+
       requestAnimationFrame(loop)
     }
 
