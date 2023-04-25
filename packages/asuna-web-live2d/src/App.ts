@@ -68,7 +68,7 @@ export default new class App {
       frameElapsedTime += dt
 
       if (frameElapsedTime > frameIntervalMin) {
-        update(this.state, dt)
+        update(this.state, frameIntervalMax)
         render(this.webgl, this.state)
 
         frameElapsedTime -= frameIntervalMax
