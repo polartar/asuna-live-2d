@@ -39,6 +39,59 @@ export default new class App {
       // TODO: load sync
       this.run()
     })
+
+    this.loadMetadata()
+  }
+
+  getLayer(name: string): ModelLayer {
+    return ModelLayer[name as keyof typeof ModelLayer];
+  }
+
+  getValue(layer: string) {
+    if (layer === 'Outfit') {
+      return `Outfit/` + ['Ace_Of_Spades', 'Magic_Apprentice', 'Silverhorn', 'Sweater_Vest','White_Tank_Top'][Math.floor(Math.random()* 100) % 5]
+    }  
+  }
+
+   
+  async loadMetadata (){
+    const path = window.location.pathname
+    if (path.includes('embed')) {
+      const id = path.split("/")[2];
+      try {
+        const response = await fetch(`https://regen.asunaverse.com/api/metadata/${id}`);
+        if(response.status === 200) {
+          const metadata = await response.json();
+          const attributes = metadata.attributes;
+          attributes.forEach( async(attribute:{ trait_type: string, Value: string}) => {
+            const id = `model/${this.getValue(attribute.trait_type)}`
+            const layer = this.getLayer(attribute.trait_type)
+            
+            if (!id.includes("undefined") && layer) {
+              const msg: any = {
+                id: 0,
+                type: MessageType.SC_SwapModel,
+                payload: {
+                    // layer: ModelLayer.Outfit,
+                    // id: "model/Outfit/Sweater_Vest",
+                    layer: layer,
+                    id: id
+                    // id: `model/${attribute.trait_type}/${attribute.Value}`,
+                },
+              }
+
+              await this.messenger.updateModel(msg)
+            }
+            
+          });
+        }
+      } catch(err) {
+        console.log(err)
+      }
+    }
+
+    
+   
   }
 
   async setupScene() {

@@ -43,6 +43,13 @@ app.get('/embed', (req, res) => {
   res.render('embed')
 })
 
+app.get('/embed/:tokenId', (req, res) => {
+  // hash prevents browser cache for local dev
+  res.locals.hash = JSON.parse(fs.readFileSync(path.join(live2dPath, 'stats.json'))).hash
+  // res.locals.hash = appHash
+  res.render('embed')
+})
+
 app.listen(port, () => {
   console.log(`App listening on port ${port}`)
 })

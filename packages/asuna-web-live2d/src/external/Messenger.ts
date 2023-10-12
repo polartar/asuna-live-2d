@@ -43,7 +43,7 @@ export class Messenger {
       if (event.origin !== PARENT_ORIGIN) {
         throw 'Message origin does not match'
       }
-
+      
       const msg = event.data as Message<any>
 
       if (msg.type === MessageType.SC_SwapModel) {
@@ -109,5 +109,28 @@ export class Messenger {
       payload
     }
     this.parentWindow.postMessage(msg, PARENT_ORIGIN)
+  }
+
+  async updateModel(msg: any) {
+    console.log("Update model", msg)
+    const payload = msg.payload as Payload_SC_SwapModel
+
+    // if (this.state.models.data[payload.layer]?.asset.id) {
+    //   this.assetStore.delete(this.state.models.data[payload.layer]!.asset.id)
+    //   this.state.models.data[payload.layer] = null
+    // }
+
+    await this.loader.reinitialize()
+    await this.loader.loadModelAsset(payload.id)
+
+    let model = new Model(this.assetStore.get(payload.id) as Live2dModel)
+    // model.syncParams(this.state.params)
+    this.state.models.data[payload.layer] = model
+
+    // for (let m of Object.values(this.state.models.data)) {
+    // m?.asset._motionManager.stopAllMotions()
+    // }
+
+    this.sendMessage(MessageType.CS_Complete, null, msg.id)
   }
 }
